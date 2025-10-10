@@ -1,12 +1,13 @@
 import React from "react";
 import Card from "../components/Card";
+import HomePageCard from "../components/HomePageCard";
+import HomePageCarouselCard from "../components/HomePageCarouselCard";
+import ManualCarousel from "../components/Carousel";
 
 const home = () => {
   return (
-    <div>
-      <div className="s8FW+c">
-        <h1 className="_0FYq1K">Big Diwali days!</h1>
-      </div>
+    <div className="w-full min-h-screen px-4 gap-2 bg-gray-50">
+      
       <div>
         <img
           src="https://rukminim2.flixcart.com/fk-p-flap/3600/3600/image/a85bf06bede8464f.jpg?q=80"
@@ -19,138 +20,161 @@ const home = () => {
           alt="image"
         />
       </div>
-      <div className="wvIX4U">
-        <div className="_8z-Twi _4bzjfU gqcSqV" style={{ paddingTop: "8.63%" }}>
-          <img
-            className="_4qMbau CwNMnK"
-            alt="sss"
-            src="https://rukminim2.flixcart.com/fk-p-flap/2000/2000/image/adbf6edaf3ce2633.jpg?q=50"
-          />
-          <img
-            className="xTaogf _3iTqAS"
-            src="https://rukminim2.flixcart.com/fk-p-flap/100/100/image/adbf6edaf3ce2633.jpg?q=50"
-            alt="sss"
-          />
-        </div>
+      <div className="flex items-center justify-center w-full">
+      <div className="w-[85%] px-2 bg-white">
+        <h1 className="text-2xl font-semibold">Best deals on smartphones</h1>
+        <ManualCarousel/>
       </div>
-      <div>
+      <div className="w-48 h-full ">
+        <img src="https://rukminim1.flixcart.com/fk-p-flap/1060/1620/image/0cc12d558f0730bb.jpeg?q=60" alt="img" className="object-contain" />
+      </div>
+      </div>
+
+      {/*image*/}
+      <div className="w-full h-full flex flex-wrap gap-2">
+      <div className="w-[30rem] h-full">
         <img
+        className="object-cover w-full h-full"
           src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
           alt="image"
         />
       </div>
-
-      <div className="wvIX4U">
-        <div className="_8z-Twi _4bzjfU gqcSqV" style={{ paddingTop: "8.63%" }}>
-          <img
-            className="_4qMbau CwNMnK"
-            alt="sss"
-            src="https://rukminim2.flixcart.com/fk-p-flap/2000/2000/image/8f00de8fe2de53d1.jpg?q=50"
-          />
-          <img
-            className="xTaogf _3iTqAS"
-            src="https://rukminim2.flixcart.com/fk-p-flap/100/100/image/8f00de8fe2de53d1.jpg?q=50"
-            alt="sss"
-          />
-        </div>
+      <div className="w-[30rem] h-full">
+        <img
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
+          alt="image"
+        />
+      </div>
+      <div className="w-[30rem] h-full">
+        <img
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
+          alt="image"
+        />
+      </div>
+      <div className="w-[30rem] h-full">
+        <img
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
+          alt="image"
+        />
+      </div>
+      <div className="w-[30rem] h-full">
+        <img
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
+          alt="image"
+        />
+      </div>
+      <div className="w-[30rem] h-full">
+        <img
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
+          alt="image"
+        />
+      </div>
+      </div>
+     
+      <div className="w-full px-2 bg-white">
+        <h1 className="text-2xl font-semibold">Top Deals Product</h1>
+        <ManualCarousel/>
       </div>
 
-      <div>
+      <div className="w-full h-full flex items-center justify-center ">
+        <img src="https://rukminim1.flixcart.com/fk-p-flap/1600/660/image/cb7abaa53e8b0fdb.jpg?q=60"className="w-92" alt="image" />
+        <img src="https://rukminim1.flixcart.com/fk-p-flap/1600/660/image/cb7abaa53e8b0fdb.jpg?q=60"className="w-92" alt="image" />
+        <img src="https://rukminim1.flixcart.com/fk-p-flap/1600/660/image/cb7abaa53e8b0fdb.jpg?q=60"className="w-92" alt="image" />
+        <img src="https://rukminim1.flixcart.com/fk-p-flap/1600/660/image/cb7abaa53e8b0fdb.jpg?q=60"className="w-92" alt="image" />
+      </div>
+
+      <div className="w-full h-full flex items-center justify-center gap-3 ">
+        <div className="w-[32%] flex flex-col items-center justify-center gap-3 bg-white p-2">
+        <div className="flex items-center justify-between w-full"><h1 className="text-2xl font-semibold">Make Your style</h1> <span className="bg-blue-600 text-white px-2 p-1 rounded-full">{">"}</span></div>
+          <div className="w-full flex flex-wrap items-center justify-center gap-2">
+            <HomePageCard />
+          <HomePageCard />
+          <HomePageCard />
+          <HomePageCard />
+          </div>
+      </div>
+
+      <div className="w-[32%] flex flex-col items-center justify-center gap-3 bg-white p-2">
+        <div className="flex items-center justify-between w-full"><h1 className="text-2xl font-semibold">Make Your style</h1> <span className="bg-blue-600 text-white px-2 p-1 rounded-full">{">"}</span></div>
+          <div className="w-full flex flex-wrap items-center justify-center gap-2">
+            <HomePageCard />
+          <HomePageCard />
+          <HomePageCard />
+          <HomePageCard />
+          </div>
+      </div>
+      <div className="w-[32%] h-[38rem]">
+        <img src="https://rukminim1.flixcart.com/www/1060/1460/promos/26/09/2023/6c3c5fe2-c236-4fa2-8d97-595e1e01da01.jpg?q=60" className="object-cover w-full h-full object-fill" alt="image" />
+      </div>
+      </div>
+
+      <div className="w-full h-full flex flex-wrap gap-2">
+      <div className="w-[30rem] h-full">
         <img
+        className="object-cover w-full h-full"
           src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/edc8ecb1b252e88a.jpg?q=50"
           alt="image"
         />
+      </div>
+      <div className="w-[30rem] h-full">
         <img
-          src="https://rukminim2.flixcart.com/fk-p-flap/50/50/image/edc8ecb1b252e88a.jpg?q=50"
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/edc8ecb1b252e88a.jpg?q=50"
           alt="image"
         />
       </div>
-
-      <div className="wvIX4U">
-        <div className="_8z-Twi _4bzjfU gqcSqV" style={{ paddingTop: "8.63%" }}>
-          <img
-            className="_4qMbau CwNMnK"
-            alt="sss"
-            src="https://rukminim2.flixcart.com/fk-p-flap/2000/2000/image/996db5b2255fc226.jpg?q=50"
-          />
-          <img
-            className="xTaogf _3iTqAS"
-            src="https://rukminim2.flixcart.com/fk-p-flap/100/100/image/996db5b2255fc226.jpg?q=50"
-            alt="sss"
-          />
-        </div>
-      </div>
-
-      <div>
+      <div className="w-[30rem] h-full">
         <img
-          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/70de95792dca6dca.jpg?q=50"
-          alt="image"
-        />
-        <img
-          src="https://rukminim2.flixcart.com/fk-p-flap/50/50/image/70de95792dca6dca.jpg?q=50"
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/edc8ecb1b252e88a.jpg?q=50"
           alt="image"
         />
       </div>
-
-      <div className="wvIX4U">
-        <div className="_8z-Twi _4bzjfU gqcSqV" style={{ paddingTop: "8.63%" }}>
-          <img
-            className="_4qMbau CwNMnK"
-            alt="sss"
-            src="https://rukminim2.flixcart.com/fk-p-flap/2000/2000/image/a32af1f55251fb5a.jpg?q=50"
-          />
-          <img
-            className="xTaogf _3iTqAS"
-            src="https://rukminim2.flixcart.com/fk-p-flap/100/100/image/a32af1f55251fb5a.jpg?q=50"
-            alt="sss"
-          />
-        </div>
-      </div>
-
-      <div>
+      <div className="w-[30rem] h-full">
         <img
-          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/c919efd443817bab.jpg?q=50"
-          alt="image"
-        />
-        <img
-          src="https://rukminim2.flixcart.com/fk-p-flap/50/50/image/c919efd443817bab.jpg?q=50"
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/edc8ecb1b252e88a.jpg?q=50"
           alt="image"
         />
       </div>
-
-      <div className="wvIX4U">
-        <div className="_8z-Twi _4bzjfU gqcSqV" style={{ paddingTop: "8.63%" }}>
-          <img
-            className="_4qMbau CwNMnK"
-            alt="sss"
-            src="https://rukminim2.flixcart.com/fk-p-flap/2000/2000/image/a98ee5b8cc22c2b3.jpg?q=50"
-          />
-          <img
-            className="xTaogf _3iTqAS"
-            src="https://rukminim2.flixcart.com/fk-p-flap/100/100/image/a98ee5b8cc22c2b3.jpg?q=50"
-            alt="sss"
-          />
-        </div>
+      <div className="w-[30rem] h-full">
+        <img
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/edc8ecb1b252e88a.jpg?q=50"
+          alt="image"
+        />
+      </div>
+      <div className="w-[30rem] h-full">
+        <img
+        className="object-cover w-full h-full"
+          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/edc8ecb1b252e88a.jpg?q=50"
+          alt="image"
+        />
+      </div>
       </div>
 
-      <div className="_6A9zEr">
-        <div className="Y77NLA">
-          <h2 className="iW697U">Air Conditioners</h2>
-        </div>
-        <div className="o3ELXX">
-          <a
-            className="QqFHMw M5XAsp"
-            href="/"
-          >
-            <span>VIEW ALL</span>
-          </a>
-        </div>
-      </div>
+
+     
+
+      
+
+    
+      <div className="w-full px-2 bg-white">
+        <h1 className="text-2xl font-semibold">Top Deals Product</h1>
+  <ManualCarousel/>
+</div>
+
       <div className="grid grid-cols-4">
         <Card />
         <Card />
         <Card />
       </div>
+        <HomePageCard/>
 
     </div>
   );

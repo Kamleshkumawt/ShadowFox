@@ -1,12 +1,11 @@
-import React from 'react'
-import { Button } from "@/components/ui/button"
 import AppRouter from './routes/AppRouter'
+import { BrowserRouter } from 'react-router-dom'
 
 const App = () => {
   return (
-    <div>
+    <BrowserRouter>
       <AppRouter/>
-    </div>
+    </BrowserRouter>
   )
 }
 
