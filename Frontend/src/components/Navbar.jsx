@@ -10,7 +10,7 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import ProfileDropdown from "./ProfileDropdown";
 
 const popularSearches = [
   "saree",
@@ -58,7 +59,9 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
   const containerRef = useRef(null);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   // Load from localStorage
   useEffect(() => {
@@ -111,9 +114,9 @@ const Navbar = () => {
   );
 
   return (
-    <div>
-      <div className="w-full h-[70px] flex items-center justify-between px-20 py-2 border-b-2 border-gray-300">
-        <span className="text-2xl cursor-pointer">ApanaStore</span>
+    <div className="fixed bg-white w-full z-50">
+      <div className=" w-full h-[70px] flex items-center justify-between px-20 py-2 border-b-2 border-gray-300 z-50">
+        <span onClick={()=>{navigate("/");scrollTo(0,0);}} className="text-2xl cursor-pointer">ApanaStore</span>
         <div
           className="relative w-full max-w-2xl mx-auto px-4"
           ref={containerRef}
@@ -233,16 +236,17 @@ const Navbar = () => {
           <span className="w-[2px] h-9 bg-gray-300"></span>
           <span className="text-[16px] cursor-pointer">Investor Relations</span>
           <span className="w-[2px] h-9 bg-gray-300"></span>
+
           <div className="flex items-center gap-6">
             {/* Profile Icon */}
             <div
               className="flex flex-col items-center  group"
               aria-label="Profile"
             >
-              <DropdownMenu open={open} onOpenChange={setOpen} >
+              {/* <DropdownMenu open={open} onOpenChange={setOpen} >
                 <div onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-        className="relative p-4 z-50 transition-all duration-200 ease-out " >
+                  onMouseLeave={() => setOpen(false)}
+                  className="relative p-4 z-50 transition-all duration-200 ease-out " >
 
                 
                 <DropdownMenuTrigger className="flex flex-col items-center gap-1 pt-2 cursor-pointer group">
@@ -261,6 +265,7 @@ const Navbar = () => {
                   <span className="text-[16px] group-hover:text-yellow-600 transition-colors">
                     Profile
                   </span>
+
                   <span className="w-20 h-[3px] mt-1 bg-gray-300 opacity-0 group-hover:opacity-100 group-hover:bg-yellow-600 transition-colors"></span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="p-4">
@@ -391,11 +396,13 @@ const Navbar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
                 </div>
-              </DropdownMenu>
+              </DropdownMenu> */}
+              <ProfileDropdown/>
             </div>
 
             {/* Cart Icon */}
-            <div
+            <Link 
+              to="/cart"
               className="flex flex-col items-center gap-1 cursor-pointer"
               aria-label="Cart"
             >
@@ -430,7 +437,7 @@ const Navbar = () => {
                 />
               </svg>
               <span>Cart</span>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

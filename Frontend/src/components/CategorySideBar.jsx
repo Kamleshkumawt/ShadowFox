@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Card from "../components/Card";
-import { Link } from "react-router-dom";
 
 const ratingOptions = [
   { label: "2.0 and above", value: "2.0" },
@@ -57,98 +55,73 @@ const discountOptions = [
   "Deals"
 ];
 
-
-
-const CategoryProduct = () => {
-  const [openMenu, setOpenMenu] = useState(null);
-  const [checked, setChecked] = useState(false);
-  const [checkedSize, setCheckedSize] = useState(false);
-  const [checkedStyling, setCheckedStyling] = useState(false);
-  const [gender, setGender] = useState(false);
-  const [price, setPrice] = useState(false);
-  const [checkedRatings, setCheckedRatings] = useState([]);
-  const [selectedColors, setSelectedColors] = useState([]);
-  const [selectedFabrics, setSelectedFabrics] = useState([]);
-  const [selectedCombos, setSelectedCombos] = useState([]);
-  const [selectedDiscounts, setSelectedDiscounts] = useState([]);
-
-  const [showAllFabrics, setShowAllFabrics] = useState(false);
-
-  const visibleFabrics = showAllFabrics ? fabricOptions : fabricOptions.slice(0, 12);
-
-
-const handleRatingChange = (value) => {
-  setCheckedRatings((prev) =>
-    prev.includes(value)
-      ? prev.filter((v) => v !== value)
-      : [...prev, value]
-  );
-};
-
-const toggleColor = (color) => {
-  setSelectedColors((prev) =>
-    prev.includes(color)
-      ? prev.filter((c) => c !== color)
-      : [...prev, color]
-  );
-};
-
-const toggleFabric = (fabric) => {
-  setSelectedFabrics((prev) =>
-    prev.includes(fabric)
-      ? prev.filter((f) => f !== fabric)
-      : [...prev, fabric]
-  );
-};
-
-const toggleCombo = (combo) => {
-  setSelectedCombos((prev) =>
-    prev.includes(combo)
-      ? prev.filter((c) => c !== combo)
-      : [...prev, combo]
-  );
-};
-
-const toggleDiscount = (discount) => {
-  setSelectedDiscounts((prev) =>
-    prev.includes(discount)
-      ? prev.filter((d) => d !== discount)
-      : [...prev, discount]
-  );
-};
-
-
-
-  const handleClick = () => {
-    setChecked((prev) => !prev);
-  };
-
-  const toggleMenu = (menu) => {
-    setOpenMenu((prev) => (prev === menu ? null : menu));
-  };
+const CategorySideBar = () => {
+     const [openMenu, setOpenMenu] = useState(null);
+      const [checked, setChecked] = useState(false);
+      const [checkedSize, setCheckedSize] = useState(false);
+      const [checkedStyling, setCheckedStyling] = useState(false);
+      const [gender, setGender] = useState(false);
+      const [price, setPrice] = useState(false);
+      const [checkedRatings, setCheckedRatings] = useState([]);
+      const [selectedColors, setSelectedColors] = useState([]);
+      const [selectedFabrics, setSelectedFabrics] = useState([]);
+      const [selectedCombos, setSelectedCombos] = useState([]);
+      const [selectedDiscounts, setSelectedDiscounts] = useState([]);
+    
+      const [showAllFabrics, setShowAllFabrics] = useState(false);
+    
+      const visibleFabrics = showAllFabrics ? fabricOptions : fabricOptions.slice(0, 12);
+    
+    
+    const handleRatingChange = (value) => {
+      setCheckedRatings((prev) =>
+        prev.includes(value)
+          ? prev.filter((v) => v !== value)
+          : [...prev, value]
+      );
+    };
+    
+    const toggleColor = (color) => {
+      setSelectedColors((prev) =>
+        prev.includes(color)
+          ? prev.filter((c) => c !== color)
+          : [...prev, color]
+      );
+    };
+    
+    const toggleFabric = (fabric) => {
+      setSelectedFabrics((prev) =>
+        prev.includes(fabric)
+          ? prev.filter((f) => f !== fabric)
+          : [...prev, fabric]
+      );
+    };
+    
+    const toggleCombo = (combo) => {
+      setSelectedCombos((prev) =>
+        prev.includes(combo)
+          ? prev.filter((c) => c !== combo)
+          : [...prev, combo]
+      );
+    };
+    
+    const toggleDiscount = (discount) => {
+      setSelectedDiscounts((prev) =>
+        prev.includes(discount)
+          ? prev.filter((d) => d !== discount)
+          : [...prev, discount]
+      );
+    };
+    
+      const handleClick = () => {
+        setChecked((prev) => !prev);
+      };
+    
+      const toggleMenu = (menu) => {
+        setOpenMenu((prev) => (prev === menu ? null : menu));
+      };
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center px-20 pt-20">
-      <div className="w-full h-full flex flex-col items-start justify-start gap-2">
-        <p className="text-[16px] mt-2">
-          Home/Women/Women Western Wear/Palazzo Pants
-        </p>
-        <h1 className="text-[24px] font-semibold">Palazzo Pants</h1>
-        <p className="text-[17px] text-gray-700 font-medium">
-          Showing 21-40 out of 10000 products
-        </p>
-        <p className="text-[14px] text-gray-500">
-          We love to be fashionable and always try to experiment with different
-          types of styles so is the case with bottom wear as well. There are
-          lots of bottom wear available but palazzos are getting very popular
-          these days. Palazzos were very much in trend in the ’60s, 70’s, and in
-          retro time from daily wear to occasional, ethnic to formal, normal as
-          well as ramp walk also. Since then from Bollywood to Hollywood
-          everyone is making space for this bottom wear and Meesho provides you
-          a wide range of palazzo from simple to stylish to choose from.
-        </p>
-      </div>
-      <div className="w-full h-full flex items-start justify-center">
-        <div className="w-[23%] h-full flex flex-col items-start justify-start py-5 gap-3">
+        <div className="w-full h-full flex flex-col items-start justify-start py-5 gap-3">
           <div className="border border-gray-200 rounded-sm p-2 w-full flex items-center justify-between px-4">
             <div className="flex items-center gap-2">
               <span className="text-gray-400 font-medium"> Sort by :</span>{" "}
@@ -617,19 +590,7 @@ const toggleDiscount = (discount) => {
             </div>
           </div>
         </div>
-        <div className="w-[77%] h-full grid  grid-cols-4 p-5 gap-3">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-        </div>
-      </div>
-    </div>
-  );
-};
+  )
+}
 
-export default CategoryProduct;
+export default CategorySideBar

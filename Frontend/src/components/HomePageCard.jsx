@@ -1,8 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const HomePageCard = () => {
+  const navigate = useNavigate();
   return (
-    <div className="max-w-[14rem] rounded-xs overflow-hidden  border border-gray-200 p-3 space-y-2 bg-white">
+    <div 
+    onClick={() => {
+      navigate(`/products`);
+      scrollTo(0, 0);
+    }} 
+    className="max-w-[14rem] rounded-xs overflow-hidden  border border-gray-200 p-3 space-y-2 cursor-pointer bg-white">
+
   {/* Image container */}
   <div className="w-full h-48 flex items-center justify-center bg-gray-100">
     <img

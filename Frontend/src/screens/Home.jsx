@@ -3,10 +3,11 @@ import Card from "../components/Card";
 import HomePageCard from "../components/HomePageCard";
 import HomePageCarouselCard from "../components/HomePageCarouselCard";
 import ManualCarousel from "../components/Carousel";
+import CategorySideBar from "../components/CategorySideBar";
 
 const home = () => {
   return (
-    <div className="w-full min-h-screen px-4 gap-2 bg-gray-50">
+    <div className="w-full min-h-screen px-4 gap-2 bg-gray-50 pt-30">
       
       <div>
         <img
@@ -169,13 +170,27 @@ const home = () => {
   <ManualCarousel/>
 </div>
 
-      <div className="grid grid-cols-4">
+    <h1 className="text-3xl my-5 px-5">Products For You</h1>
+    <div className="w-full h-full flex items-start justify-center px-5">
+       <div className="w-[23%] h-full flex flex-col items-start justify-start  ">
+      <CategorySideBar/>
+       </div>
+      <div className="w-[77%] h-full grid grid-cols-4 p-5 gap-3">
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+        </div>
+    </div>
+      {/* <div className="grid grid-cols-4">
         <Card />
         <Card />
         <Card />
-      </div>
-        <HomePageCard/>
-
+      </div> */}
     </div>
   );
 };

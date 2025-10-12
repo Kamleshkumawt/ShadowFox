@@ -1,13 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Card = () => {
+  const navigate = useNavigate();
   return (
   <div className="max-w-[15rem] rounded-lg overflow-hidden border border-gray-200 bg-white">
-  <a href="/samsung" target="_blank" rel="noopener noreferrer">
-    <div className=" relative w-full h-48 flex items-center justify-center  p-2">
+    <div onClick={()=>{navigate('/product/samsung-2025');scrollTo(0,0)}} className=" relative w-full h-48 flex items-center justify-center  cursor-pointer p-2">
       <img
-        loading="eager"
         src="https://rukminim2.flixcart.com/image/312/312/xif0q/air-conditioner-new/r/h/n/-original-imah8ugkn36egznd.jpeg?q=70"
         alt="Samsung 2025 Model AC"
         className="object-contain h-full w-full"
@@ -29,20 +28,18 @@ const Card = () => {
         </svg>
       </button>
     </div>
+
     </div>
-  </a>
 
   <div className="p-4">
     {/* Title */}
-    <Link
-      to="/samsung-2025 "
-      // target="_blank"
-      // rel="noopener noreferrer"
-      className="text-[14px] text-gray-800 hover:text-blue-500 block line-clamp-2"
+    <div
+      onClick={()=>{navigate('/product/samsung-2025');scrollTo(0,0)}}
+      className="text-[14px] text-gray-800 block line-clamp-2 cursor-pointer"
       // title="Samsung 2025 Model Bespoke AI, 5 Step Convertible 1.5 Ton 3 Star Split Inverter..."
     >
       Samsung 2025 Model Bespoke AI, 5 Step Convertible 1.5 Ton 3 Star ...
-    </Link>
+    </div>
 
     {/* Rating and Reviews */}
     <div className="flex items-center text-sm text-gray-600 mt-2 space-x-2">

@@ -1,9 +1,11 @@
 import { useRef } from "react";
 import HomePageCarouselCard from "./HomePageCarouselCard";
+import { useNavigate } from "react-router-dom";
 // import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Install react-icons if not already
 
 const ManualCarousel = () => {
   const scrollRef = useRef(null);
+  const navigate = useNavigate();
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -28,7 +30,8 @@ const ManualCarousel = () => {
       {/* Scrollable Carousel */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto space-x-1 snap-x snap-mandatory scroll-smooth scrollbar-hide py-4 px-2"
+        onClick={()=>{navigate('/products');scrollTo(0,0)}}
+        className="flex overflow-x-auto space-x-1 snap-x snap-mandatory cursor-pointer scroll-smooth scrollbar-hide py-4 px-2"
       >
         {[...Array(9)].map((_, idx) => (
           <div key={idx} className="min-w-[250px] snap-start">
