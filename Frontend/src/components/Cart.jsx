@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const sizes = ["S", "M", "L", "XL", "XXL"];
 
-const Cart = ({location }) => {
+const Cart = ({location, product }) => {
   const [openSideBar, setOpenSideBar] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("Free Size");

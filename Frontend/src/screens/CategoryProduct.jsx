@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
-import { Link } from "react-router-dom";
+// import { Link, useParams } from "react-router-dom";
+import { useGetProductByCategoryQuery } from "../store/api/productApi";
+import { useSelector } from "react-redux";
 
 const ratingOptions = [
   { label: "2.0 and above", value: "2.0" },
@@ -71,10 +73,46 @@ const CategoryProduct = () => {
   const [selectedFabrics, setSelectedFabrics] = useState([]);
   const [selectedCombos, setSelectedCombos] = useState([]);
   const [selectedDiscounts, setSelectedDiscounts] = useState([]);
+  // const { categoryName } = useParams();
 
   const [showAllFabrics, setShowAllFabrics] = useState(false);
 
   const visibleFabrics = showAllFabrics ? fabricOptions : fabricOptions.slice(0, 12);
+  const [products, setProducts] = useState([]);
+  // const [getAllProduct, { data }] = useGetAllProductMutation();
+  
+  const categories = useSelector((state) => state.category.list);
+
+  // console.log('categories data redux : ',categories);
+
+  // Find the matching category from the Redux store
+  // const category = categories.find(
+  //   (cat) => cat.name.toLowerCase() === categoryName.toLowerCase()
+  // );
+
+  const categoryId = categories?._id;
+
+    const { data, isLoading } = useGetProductByCategoryQuery(categoryId);
+
+    // useEffect(() => {
+    //   getAllProduct();
+    //   // getProductByCategory(id);
+    // }, []);
+  
+    useEffect(() => {
+      if (data) {
+        console.log('products : ',data.products);
+        setProducts(data.products);
+      }
+    }, [data]);
+    
+    // useEffect(() => {
+    //   if (data2) {
+    //     console.log('category data API se  : ',data);
+    //   }
+    // }, [data2]);
+  
+
 
 
 const handleRatingChange = (value) => {
@@ -117,8 +155,6 @@ const toggleDiscount = (discount) => {
   );
 };
 
-
-
   const handleClick = () => {
     setChecked((prev) => !prev);
   };
@@ -126,25 +162,26 @@ const toggleDiscount = (discount) => {
   const toggleMenu = (menu) => {
     setOpenMenu((prev) => (prev === menu ? null : menu));
   };
-  return (
+  return !isLoading && (
     <div className="w-full h-full flex flex-col items-center justify-center px-20 pt-20">
       <div className="w-full h-full flex flex-col items-start justify-start gap-2">
         <p className="text-[16px] mt-2">
           Home/Women/Women Western Wear/Palazzo Pants
         </p>
-        <h1 className="text-[24px] font-semibold">Palazzo Pants</h1>
+        <h1 className="text-[24px] font-semibold">{categories?.name}</h1>
         <p className="text-[17px] text-gray-700 font-medium">
           Showing 21-40 out of 10000 products
         </p>
         <p className="text-[14px] text-gray-500">
-          We love to be fashionable and always try to experiment with different
+          {/* We love to be fashionable and always try to experiment with different
           types of styles so is the case with bottom wear as well. There are
           lots of bottom wear available but palazzos are getting very popular
           these days. Palazzos were very much in trend in the ’60s, 70’s, and in
           retro time from daily wear to occasional, ethnic to formal, normal as
           well as ramp walk also. Since then from Bollywood to Hollywood
           everyone is making space for this bottom wear and Meesho provides you
-          a wide range of palazzo from simple to stylish to choose from.
+          a wide range of palazzo from simple to stylish to choose from. */}
+          {categories?.description}
         </p>
       </div>
       <div className="w-full h-full flex items-start justify-center">
@@ -618,14 +655,9 @@ const toggleDiscount = (discount) => {
           </div>
         </div>
         <div className="w-[77%] h-full grid  grid-cols-4 p-5 gap-3">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+         {products.map((product) => (
+          <Card key={product._id} data={product} />
+        ))}
         </div>
       </div>
     </div>

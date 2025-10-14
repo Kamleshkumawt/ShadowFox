@@ -12,18 +12,19 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const handleLogin = async() => {
-    try{
-       console.log("Login with:", contact, password);
-       
-       const response = await login({ contact, password }).unwrap();
-       console.log("Logged in user:", response);
+    try{       
+       const response = await login({ phone:contact, email:contact, password }).unwrap();
+      //  console.log("Logged in user:", response);
        dispatch(setUser(response.user));
-       // navigate("/");
+       navigate("/");
 
     }catch(err){
       console.error("Login error:", err);
     }
   };
+
+  
+  
   return (
     <div className="h-[110vh] w-full flex flex-col items-center justify-center bg-[#fdecef]">
       <div className=" w-full max-w-md bg-white rounded-sm overflow-hidden flex flex-col  gap-5 mt-30">
@@ -37,7 +38,7 @@ const Login = () => {
 
         <div className="w-full px-10 py-5 flex flex-col gap-3">
           {/* Contact Number Field */}
-          <div className="flex items-center gap-2 w-full">
+          {/* <div className="flex items-center gap-2 w-full">
             <div className="flex items-end gap-1 font-semibold border-b-2 border-gray-300 p-2 -mt-3 font-serif text-xs">
               IN <span className="font-sans text-base">+91</span>
             </div>
@@ -65,6 +66,32 @@ const Login = () => {
                 Phone Number
               </label>
             </div>
+          </div> */}
+
+           <div className="flex items-center gap-2 w-full">
+            <div className="relative mb-5 w-full">
+              <input
+                type="text"
+                id="contact"
+                name="contact"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                placeholder=" "
+                className="peer w-full border-b-2 border-gray-300 px-4 pt-5 pb-2 text-sm focus:outline-none focus:border-purple-600"
+              />
+              <label
+                htmlFor="contact"
+                className={`absolute left-2 transition-all duration-200 font-medium cursor-pointer
+                  ${
+                    contact
+                      ? "top-1 text-xs text-purple-600"
+                      : "top-3 text-base text-gray-400"
+                  }
+                  peer-focus:top-1 peer-focus:text-xs peer-focus:text-purple-600`}
+              >
+                Enter Email/Mobile Number
+              </label>
+            </div>
           </div>
 
           {/* password Field */}
@@ -77,7 +104,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder=" "
               maxLength={50}
-              className='"peer w-full border-b-2 border-gray-300 px-4 pt-5 pb-2 text-sm focus:outline-none focus:border-purple-600"'
+              className="peer w-full border-b-2 border-gray-300 px-4 pt-5 pb-2 text-sm focus:outline-none focus:border-purple-600"
             />
             <label
               htmlFor="password"
@@ -115,6 +142,7 @@ const Login = () => {
           </p>
         </div>
       </div>
+
     </div>
   );
 };

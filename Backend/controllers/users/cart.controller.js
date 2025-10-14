@@ -3,6 +3,9 @@ import cartModel from '../../models/carts.model.js';
 export const createCart = async (req, res) => {
     try {
         const { items } = req.body;
+
+        console.log('req.body',req.body);
+        console.log('items',items);
         const userId = req.user._id;
         const newCart = new cartModel({ userId, items });
         await newCart.save();
@@ -41,8 +44,10 @@ export const updateCart = async (req, res) => {
 
 export const deleteCart = async (req, res) => {
     try {
+        const {id} = req.body;
         const userId = req.user._id;
-        const cart = await cartModel.findOneAndDelete({ userId });
+        //remove  cart product  by product id
+        const cart = await cartModel.findByIdAndUpdate(userId, { $pull: { items: { productId: id } } }, { new: true });   
         if (!cart) {
             return res.status(404).json({ success: false, message: 'Cart not found' });
         }

@@ -78,7 +78,7 @@ const CartAddress = () => {
                       type="checkbox"
                       checked={selectedAddress}
                       className="w-5 h-5 rounded-full appearance-none bg-white border-2 border-gray-300 
-             checked:bg-pink-500 checked:border-white  cursor-pointer focus:outline-none"
+                    checked:bg-pink-500 checked:border-white  cursor-pointer focus:outline-none"
                     onChange={(e) => setSelectedAddress(e.target.checked)}
                     />
                     <span>Kamlesh Kumawat</span>

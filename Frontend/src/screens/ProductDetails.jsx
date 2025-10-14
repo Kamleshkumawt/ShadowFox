@@ -1,8 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
+import { useAddToCartProductMutation } from "../store/api/userApi";
+import { useGetAllProductMutation } from "../store/api/productApi";
 
 const ProductDetails = () => {
   const [pincode, setPincode] = useState("");
+  const [addToCartProduct, { isLoading }] = useAddToCartProductMutation();
+  const [products, setProducts] = useState([]);
+  const [getAllProduct, { data }] = useGetAllProductMutation();
+    
+    useEffect(() => {
+      getAllProduct();
+    }, []);
+  
+    useEffect(() => {
+      if (data) {
+        console.log(data.products);
+        setProducts(data.products);
+      }
+    }, [data]);
+  
+
   const ratings = [
     { label: "Excellent", count: 722 },
     { label: "Very Good", count: 700 },
@@ -25,6 +43,16 @@ const ProductDetails = () => {
         return {}; // fallback to green via class
     }
   };
+
+  const handleAddToCartProduct = async() => {
+    try {
+      const items = {productId : "68e3811559820adf30e7ccfb", quantity : "2"};
+      const res = await addToCartProduct({items}).unwrap();
+      console.log('create cart response successfully',res);
+    } catch(error) {
+      console.error('Add to cart error:', error);
+    }
+  }
 
   return (
     <div className="flex flex-col px-16 gap-3 pt-28">
@@ -65,7 +93,7 @@ const ProductDetails = () => {
               />
             </div>
             <div className="flex items-center w-full gap-3 px-5">
-              <div className="border border-[#9f2089] text-[#9f2089] p-2 px-5  text-lg font-medium rounded-xs flex items-center justify-center gap-2 w-full">
+              <div onClick={() => handleAddToCartProduct()} disabled={!isLoading} className="border border-[#9f2089] text-[#9f2089] p-2 px-5  text-lg font-medium rounded-xs flex items-center justify-center gap-2 w-full cursor-pointer">
                 <svg
                   width="21"
                   height="20"
@@ -166,7 +194,7 @@ const ProductDetails = () => {
                   height="16"
                   width="16"
                   // iconSize="20"
-                  classname="sc-ftTHYK kizHtP"
+                  className="sc-ftTHYK kizHtP"
                 >
                   <g clip-path="url(#info_svg__a)" fill="#666">
                     <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0Zm0 18.44c-4.65 0-8.44-3.79-8.44-8.44 0-4.65 3.79-8.44 8.44-8.44 4.65 0 8.44 3.79 8.44 8.44 0 4.65-3.79 8.44-8.44 8.44Z"></path>
@@ -710,11 +738,9 @@ const ProductDetails = () => {
       <div className="flex flex-col gap-2">
         <h1 className="font-semibold text-xl">People also viewed</h1>
         <div className="flex items-center justify-center gap-4 mt-3 mb-20">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          {products.map((product) => (
+          <Card key={product._id} data={product} />
+        ))}
         </div>
       </div>
     </div>

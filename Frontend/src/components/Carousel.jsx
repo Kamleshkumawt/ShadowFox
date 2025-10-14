@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import {useRef} from "react";
 import HomePageCarouselCard from "./HomePageCarouselCard";
 import { useNavigate } from "react-router-dom";
 // import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Install react-icons if not already
 
-const ManualCarousel = () => {
+const ManualCarousel = ({ data}) => {
   const scrollRef = useRef(null);
   const navigate = useNavigate();
 
@@ -35,7 +35,10 @@ const ManualCarousel = () => {
       >
         {[...Array(9)].map((_, idx) => (
           <div key={idx} className="min-w-[250px] snap-start">
-            <HomePageCarouselCard />
+            {/* <HomePageCarouselCard /> */}
+            {data.map((product) => (
+              <HomePageCarouselCard key={product._id} data={product} />
+            ))}
           </div>
         ))}
       </div>

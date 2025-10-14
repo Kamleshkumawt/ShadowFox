@@ -9,12 +9,10 @@ const userSchema = new mongoose.Schema({
     },
     firstName: {
         type: String,
-        required: true,
         trim: true,
     },
     lastName: {
         type: String,
-        required: true,
         trim: true,
     },
     date_of_birth: {
@@ -37,10 +35,21 @@ const userSchema = new mongoose.Schema({
         trim: true,
         select: false
     },
-    profile_picture: {
-        type: String,
-        default: 'https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg?w=2000',
+    profile_picture:[{
+    url: {
+      type: String,
+//      required: true
     },
+    publicId: String,
+    width: Number,
+    height: Number,
+    format: String,
+    bytes: Number,
+    uploadedAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
     role: {
         type: String,
         enum: ['user', 'admin', 'seller'],

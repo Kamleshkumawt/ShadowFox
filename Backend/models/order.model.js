@@ -12,8 +12,8 @@ const orderSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        enum:['pending','shipped','delivered','cancelled'],
-        default:'pending'
+        enum:['Pending','Shipped','Delivered','Cancelled'],
+        default:'Pending'
     },
     shipping_address:{
         type:String,
@@ -28,6 +28,11 @@ const orderSchema = new mongoose.Schema({
         type:String,
         unique:true,
         sparse:true
+    },
+    sellerId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'seller',
+        required:true
     },
     items:[{
         productId:{

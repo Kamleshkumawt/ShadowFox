@@ -30,6 +30,7 @@ import upload from "../middleware/multer.js";
 
 const router = Router();
 
+
 router.post(
   "/seller/register",
   protect,
@@ -67,6 +68,7 @@ router.post(
     }
   }
 );
+
 
 router.put("/seller/update", protect, async (req, res) => {
   try {
@@ -165,6 +167,7 @@ router.post(
 
 router.post("/payment/callback", protect, callbackPayment);
 
+
 router.post('/returns/products', protect,
     [
         body('orderId').notEmpty().withMessage('orderId is required'),
@@ -183,6 +186,7 @@ router.get('/returns/getAllReturns', protect, getAllReturns);
     body('comment').notEmpty().withMessage('comment is required'),
  ], reviewsController);
 
+ {/* not implementes*/}
  router.get('/review/getProduct/:id', protect, getReviewsByProductId);
 
  router.post('/wishlist/create', protect, createWishlist);
@@ -193,6 +197,7 @@ router.get('/returns/getAllReturns', protect, getAllReturns);
 
  router.delete('/wishlist/delete', protect, deleteWishlist);
 
+ {/** not implementes*/}
  router.post('/category/create', protect, createCategoryController);
  
 export default router;

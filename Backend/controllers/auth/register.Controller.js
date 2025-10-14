@@ -2,9 +2,9 @@ import userModel from '../../models/user.model.js';
 import { asyncHandler } from '../../middleware/errorHandler.js';
 
 export const registerController = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, phone, password, date_of_birth } = req.body;
+    const {email, phone, password,name } = req.body;
 
-    if(!firstName || !lastName  || !password || !date_of_birth) {
+    if(!name || !password) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -46,9 +46,9 @@ export const registerController = asyncHandler(async (req, res) => {
         return res.status(500).json({ message: 'Error hashing password' });
     }
     
-    const username = firstName == lastName ? firstName : (firstName + lastName).toLowerCase() + Math.floor(Math.random() * 1000);
+    const username = (name).toLowerCase() + Math.floor(Math.random() * 1000);
 
-    const user = new userModel({ firstName, lastName, username , email, phone, password:hashedPassword, date_of_birth });
+    const user = new userModel({username, email, phone, password:hashedPassword });
     await user.save();
 
     delete user._doc.password; // Remove password from response

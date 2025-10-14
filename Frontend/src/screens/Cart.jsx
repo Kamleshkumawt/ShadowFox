@@ -1,9 +1,40 @@
 import CartBox from '../components/Cart'
 import CartHeader from '../components/CartHeader'
 import { Link } from 'react-router-dom'
+import { useGetToCartProductMutation, useRemoveToCartProductMutation } from '../store/api/userApi';
+import { useEffect, useState } from 'react';
 
 const Cart = () => {
-  return (
+  const [cart, setCart] = useState([]);
+ 
+  const [getToCartProduct, { isLoading }] = useGetToCartProductMutation();
+  const [removeToCartProduct, {loading}] = useRemoveToCartProductMutation();
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const response = await getToCartProduct().unwrap();
+        console.log('get to cart product', response);
+        setCart(response.cart);
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+      }
+    };
+    
+    fetchCart();
+  }, []);
+
+  const removerProductHandler = async (id) => {
+    try {
+      const response = await removeToCartProduct(id).unwrap();
+
+      setCart(response.cart);
+    } catch (error) {
+      console.error('Error fetching cart:', error);
+    }
+  }
+
+  return !isLoading ? (
     <div className='w-full min-h-screen'>
     {/* <div className='w-full h-[70px] flex items-center justify-evenly px-20 py-2 border-b-2 border-gray-300'>
         <span className="text-2xl cursor-pointer">ApanaStore</span>
@@ -20,13 +51,13 @@ const Cart = () => {
   
         </div>
     </div> */}
-    <CartHeader address={1}/>
+    <CartHeader address={1} />
     <div className='w-full h-full flex flex-col sm:flex-row items-start justify-center gap-3 p-3'>
       <div className=' w-full sm:w-[60%] h-full flex flex-col items-end gap-2 sm:px-5 sm:border-r-2 sm:border-gray-200'>
         <div className='space-y-3'>
           <h1 className='text-lg font-medium text-gray-500 py-1 text-start w-full'>Product Details</h1>
-        <CartBox location={1}  />
-        <CartBox location={1}  />
+        <CartBox location={1} product={cart}  />
+        <CartBox location={1} product={cart}  />
         </div>
     </div>
     <div className='w-[40%] h-full flex flex-col items-start'>
@@ -85,7 +116,7 @@ const Cart = () => {
     )} */}
 
     </div>
-  )
+  ) : <div className='w-full h-full flex items-center justify-center text-center'><p>Loading cart...</p></div>
 }
 
 export default Cart

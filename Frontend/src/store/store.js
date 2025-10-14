@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import authSlice from "./slices/authSlice";
+import categorySlice from "./slices/categorySlice";
 import { baseApi } from "./api/baseApi";
 
 export const store = configureStore({
     reducer: {
         auth: authSlice,
+        category: categorySlice,
         [baseApi.reducerPath]: baseApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>

@@ -23,6 +23,11 @@ app.use(compression());
 
 app.use(cookieParser());
 
+// Body parsing middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -35,16 +40,16 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS configuration (allow all)
 app.use(cors({
-  origin: '*', //  Change to specific domain in production
+  origin: 'http://localhost:5173', //  Change to specific domain in production
+  credentials: true,  
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'], 
 }));
+
+// app.use(cors());
 
 
 if (process.env.NODE_ENV === 'development') {

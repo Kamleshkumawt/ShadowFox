@@ -2,12 +2,13 @@ import {Router} from 'express';
 import {loginController, logoutController, profileController, registerController, updateProfileController, updateProfilePasswordController, verifyAccount} from '../controllers/index.js'
 import { body, validationResult } from 'express-validator';
 import {protect} from '../middleware/index.js'
+import upload from '../middleware/multer.js';
 
 const router = Router();
 
 router.post('/register', [
-    body('firstName').trim().notEmpty().withMessage('firstName is required').isLength({ max: 50 }).withMessage('firstName cannot be more than 50 characters'),
-    body('lastName').trim().notEmpty().withMessage('lastName is required').isLength({ max: 50 }).withMessage('lastName cannot be more than 50 characters'),
+    // body('firstName').trim().notEmpty().withMessage('firstName is required').isLength({ max: 50 }).withMessage('firstName cannot be more than 50 characters'),
+    // body('lastName').trim().notEmpty().withMessage('lastName is required').isLength({ max: 50 }).withMessage('lastName cannot be more than 50 characters'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
 ], async (req, res) => {
     try {
@@ -83,7 +84,7 @@ router.put('/change-password', protect, [
     }
 })
 
-router.put('/update-profile', protect, async (req,res) => {
+router.put('/update-profile', protect, upload.single('profileImage'), async (req,res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -93,6 +94,8 @@ router.put('/update-profile', protect, async (req,res) => {
                 errors: errors.array()
             })
         } 
+        console.log('File info:', req.file);
+        console.log('Form data:', req.body);
 
         await updateProfileController(req, res);
     } catch (error) {
