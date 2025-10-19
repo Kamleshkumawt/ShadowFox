@@ -1,14 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Card from "../components/Card";
 import HomePageCard from "../components/HomePageCard";
 import HomePageCarouselCard from "../components/HomePageCarouselCard";
 import ManualCarousel from "../components/Carousel";
 import CategorySideBar from "../components/CategorySideBar";
 import { useGetAllProductMutation } from "../store/api/productApi";
+import Loading from "../components/Loading";
+
+
+const getUniqueCategoryProducts = (products, limit = 4) => {
+  const result = [];
+  const seenCategoryNames = new Set();
+
+  for (const product of products) {
+    const categoryName = product.categoryId?.name;
+
+    if (!categoryName) continue; // skip if category name is missing
+
+    if (!seenCategoryNames.has(categoryName)) {
+      result.push(product);
+      seenCategoryNames.add(categoryName);
+    }
+
+    if (result.length === limit) break;
+  }
+
+  return result;
+};
+
 
 const Home = () => {
   const [products, setProducts] = useState([]);
-  const [getAllProduct, { data }] = useGetAllProductMutation();
+  const [getAllProduct, { data , isLoading}] = useGetAllProductMutation();
+
+   const uniqueProducts = useMemo(() => getUniqueCategoryProducts(products), [products]);
   
   useEffect(() => {
     getAllProduct();
@@ -21,7 +46,7 @@ const Home = () => {
     }
   }, [data]);
 
-  return (
+  return !isLoading ? (
     <div className="w-full min-h-screen px-4 gap-2 bg-gray-50 pt-30">
       
       <div>
@@ -107,8 +132,8 @@ const Home = () => {
       <div className="w-full h-full flex items-center justify-center gap-3 ">
         <div className="w-[32%] flex flex-col items-center justify-center gap-3 bg-white p-2">
         <div className="flex items-center justify-between w-full"><h1 className="text-2xl font-semibold">Make Your style</h1> <span className="bg-blue-600 text-white px-2 p-1 rounded-full">{">"}</span></div>
-          <div className="w-full flex flex-wrap items-center justify-center gap-2">
-            {products.map((product) => (
+          <div className="w-full flex flex-wrap items-center justify-center px-3 gap-2">
+            {uniqueProducts.map((product) => (
           <HomePageCard key={product._id} data={product} />
         ))}
           </div>
@@ -116,14 +141,14 @@ const Home = () => {
 
       <div className="w-[32%] flex flex-col items-center justify-center gap-3 bg-white p-2">
         <div className="flex items-center justify-between w-full"><h1 className="text-2xl font-semibold">Make Your style</h1> <span className="bg-blue-600 text-white px-2 p-1 rounded-full">{">"}</span></div>
-          <div className="w-full flex flex-wrap items-center justify-center gap-2">
-            {products.map((product) => (
+          <div className="w-full flex flex-wrap items-center justify-center px-3 gap-2">
+            {uniqueProducts.map((product) => (
           <HomePageCard key={product._id} data={product} />
         ))}
           </div>
       </div>
       <div className="w-[32%] h-[38rem]">
-        <img src="https://rukminim1.flixcart.com/www/1060/1460/promos/26/09/2023/6c3c5fe2-c236-4fa2-8d97-595e1e01da01.jpg?q=60" className="object-cover w-full h-full object-fill" alt="image" />
+        <img src="https://rukminim1.flixcart.com/www/1060/1460/promos/26/09/2023/6c3c5fe2-c236-4fa2-8d97-595e1e01da01.jpg?q=60" className="object-cover w-full h-full l" alt="image" />
       </div>
       </div>
 
@@ -200,7 +225,7 @@ const Home = () => {
         <Card />
       </div> */}
     </div>
-  );
+  ) : <Loading/>
 };
 
 export default Home;

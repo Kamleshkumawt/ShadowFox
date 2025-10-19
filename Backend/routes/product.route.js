@@ -7,21 +7,22 @@ import upload from '../middleware/multer.js';
 const router = Router();
 
 
-router.post('/create', protect, 
+router.post('/create', protect,
     upload.fields([
+    { name: 'frontImage', maxCount: 1 },
     { name: 'images', maxCount: 5 }
     ]),
    [
     body('name').trim().notEmpty().withMessage('name is required').isLength({ max: 50 }).withMessage('name cannot be more than 50 characters'),
     body('description').trim().notEmpty().withMessage('description is required').isLength({ max: 1000 }).withMessage('description cannot be more than 1000 characters'),
-    body('price').isNumeric().withMessage('price must be a number'),
-    body('quantity').isNumeric().withMessage('quantity must be a number'),
+    body('price').notEmpty().withMessage('price must be a number'),
+    body('quantity').notEmpty().withMessage('quantity must be a number'),
     body('color').trim().notEmpty().withMessage('color is required').isLength({ max: 50 }).withMessage('color cannot be more than 50 characters'),
     body('brand').trim().notEmpty().withMessage('brand is required').isLength({ max: 50 }).withMessage('brand cannot be more than 50 characters'),
     body('category').trim().notEmpty().withMessage('category is required').isLength({ max: 50 }).withMessage('category cannot be more than 50 characters'),
-    body('weight').isNumeric().withMessage('weight must be a number'),
+    body('weight').notEmpty().withMessage('weight must be a number'),
     body('dimensions').trim().notEmpty().withMessage('dimensions is required').isLength({ max: 50 }).withMessage('dimensions cannot be more than 50 characters'),
-    body('status').isIn(['active', 'inactive', 'out of stock']).withMessage('status must be available, unavailable or out of stock'),
+    body('status').isIn(['Active', 'Inactive', 'Out of stock']).withMessage('status must be available, unavailable or out of stock'),
     body('tags').custom(value => {
       try {
         const parsed = JSON.parse(value);
@@ -43,9 +44,12 @@ router.post('/create', protect,
             });
         }
 
-        // At this point, req.body and req.files are populated correctly
-      req.body.tags = JSON.parse(req.body.tags); // Parse to actual array
-      req.body.dimensions = JSON.parse(req.body.dimensions); // Optional: if sent as JSON
+        // At this point, req.body and req.files are populated correctly    
+        req.body.tags = JSON.parse(req.body.tags); // Parse to actual array
+        req.body.dimensions = JSON.parse(req.body.dimensions); // Optional: if sent as JSON
+
+    //   console.log('✅ Parsed body:', req.body);
+    //   console.log('✅ Uploaded files:', req.files);
 
         // Call the controller
         await createProduct(req, res);

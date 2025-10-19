@@ -40,7 +40,26 @@ const productSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
+    size: {
+        type: String,
+        required: true
+    },
     tags: [{ type: String }],
+    frontImage: {
+        url: {
+            type: String,
+            required: true
+        },
+        publicId: String,
+        width: Number,
+        height: Number,
+        format: String,
+        bytes: Number,
+        uploadedAt: {
+            type: Date,
+            default: Date.now
+        }
+    },
     images: [{
     url: {
       type: String,
@@ -67,9 +86,29 @@ const productSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['active', 'inactive', 'out of stock'],
+        enum: ['Active', 'Inactive', 'Out of stock'],
         default: 'active'
     },
+    hsnCode: {
+        type: String,
+        required: true
+    },
+    styleCode: {
+        type: String,
+    },
+    material: {
+        type: String,
+        required: true
+    },
+    battery: {
+        type: String,
+        required: true
+    },
+    age: {
+        type: String,
+        required: true
+    },
+    isWishlist: { type: Boolean, default: false },
     reviews_count: { type: Number, default: 0 },
     rating: { type: Number, default: 0 }
 }, { timestamps: true });

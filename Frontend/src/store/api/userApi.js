@@ -117,6 +117,27 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
+    getAllCategories: builder.mutation({
+      query: () => ({
+        url: '/users/category/getAllCategories',
+        method: 'GET',
+      }),
+      invalidatesTags: ['User'],
+    }),
+    getAllCategoriesByParentId: builder.query({
+      query: (id) => ({
+        url: `/users/category/getCategoryById/${id}`,
+        method: 'GET',
+      }),
+      invalidatesTags: ['User'],
+    }),
+    getAllCategoriesById: builder.query({
+      query: (id) => ({
+        url: `/users/category/getCategorySelfById/${id}`,
+        method: 'GET',
+      }),
+      invalidatesTags: ['User'],
+    }),
   }),
 });
 
@@ -137,4 +158,7 @@ export const {
   useCreateOrderMutation,
   useGetOrderMutation,
   useGetOrderBySellerIdQuery,
+  useGetAllCategoriesMutation,
+  useGetAllCategoriesByParentIdQuery,
+  useGetAllCategoriesByIdQuery
 } = userApi;

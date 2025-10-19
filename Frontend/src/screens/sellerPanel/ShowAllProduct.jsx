@@ -3,6 +3,7 @@ import { useGetProductBySellerIdQuery } from '../../store/api/productApi';
 import { dateFormat } from '../../lib/dateFormat';
 import Title from '../../components/sellerPanel/Title';
 import { useSelector } from 'react-redux';
+import {Link} from 'react-router-dom'
 
 
 const ShowAllProduct = () => {
@@ -36,6 +37,7 @@ const ShowAllProduct = () => {
             <th className="p-2 font-medium">Weight</th>
             <th className="p-2 font-medium">Status</th>
             <th className="p-2 font-medium">Discount</th>
+            <th className="p-2 font-medium">Action</th>
           </tr>
           </thead>
           <tbody className="text-sm font-light">
@@ -62,6 +64,10 @@ const ShowAllProduct = () => {
                   <td className="p-2">{item.weight}g</td>
                   <td className="p-2 text-green-700">{item.status}</td>
                   <td className="p-2 text-green-700">{item.discount?.percentage}% off</td>
+                  <td className="p-2 text-white flex items-center gap-2">
+                    <Link to={`/seller/edit-product/${item._id}`} className='p-1 px-2 rounded-xs bg-green-500'>Edit</Link>
+                    <div className='p-1 px-2 rounded-xs bg-red-500 '>Delete</div>
+                  </td>
               </tr>
             ))}
           </tbody>

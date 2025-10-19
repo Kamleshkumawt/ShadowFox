@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAddToWishlistProductMutation } from "../store/api/userApi";
 
 const Card = ({ data }) => {
+  const [addToWishlistProduct,{isLoading}] = useAddToWishlistProductMutation();
+  const [isAddedToWishlist, setIsAddedToWishlist] = useState(false);
+
+  const handleAddToWishlist = async (productId) => {
+    try {
+      // console.log('Adding to wishlist:', productId);
+      const products = {
+        productId
+      }
+      await addToWishlistProduct(products).unwrap();
+      // console.log('Added to wishlist successfully:', response);
+      setIsAddedToWishlist(true);
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+    }
+  }
   const navigate = useNavigate();
   return (
     <div className="max-w-[15rem] min-w-[14rem] rounded-lg overflow-hidden border border-gray-200 bg-white">
@@ -19,8 +36,17 @@ const Card = ({ data }) => {
           className="object-contain h-full w-full"
         />
         {/* Wishlist Icon */}
-        <div className=" absolute top-3 right-3 flex justify-end cursor-pointer">
-          <button className="text-blue-600 hover:text-blue-800 transition">
+        {!data?.isWishlist && (
+          <div className=" absolute top-3 right-3 flex justify-end ">
+          <button onClick={(e) => {
+              e.stopPropagation(); // ✅ Prevent navigation
+              handleAddToWishlist(data?._id);
+            }} 
+            disabled={isLoading} 
+            className={`transition cursor-pointer ${
+              isAddedToWishlist || data?.isWishlist ? 'text-blue-800' : 'text-red-500 hover:text-red-500'
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5"
@@ -35,6 +61,8 @@ const Card = ({ data }) => {
             </svg>
           </button>
         </div>
+        )}
+
       </div>
 
       <div className="p-4">

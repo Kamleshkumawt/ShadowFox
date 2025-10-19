@@ -122,7 +122,7 @@ const ProfileDropdown = () => {
               <p className="text-xs text-gray-600">To access your ApanaStore account</p>
             </div>
              <div
-             onClick={() => {navigate('/signIn');scrollTo(0,0)}}
+             onClick={() => navigate('/signIn')}
               className="bg-purple-800 w-full text-center p-2 px-4 rounded-sm text-white font-medium cursor-pointer"
             //   disabled={!paymentMethod}
             >
@@ -144,6 +144,13 @@ const ProfileDropdown = () => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 11h14l-1.5 9h-11L5 11z" />
             </svg>
             <span className="text-lg font-semibold">My Orders</span>
+          </div>
+
+          <hr />
+
+          {/* My Wishlist */}
+          <div className="flex items-center gap-2 cursor-pointer hover:text-yellow-600">
+            <span onClick={() => navigate('/wishlist')} className="text-lg font-semibold">My Wishlist</span>
           </div>
 
           <hr />

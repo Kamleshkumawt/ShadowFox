@@ -3,10 +3,11 @@ import { baseApi } from './baseApi';
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createProduct: builder.mutation({
-      query: (data) => ({
+      query: (formData) => ({
         url: '/products/create',
         method: 'POST',
-        body: data,
+        body: formData,
+        formData: true, 
       }),
     }),
     getAllProduct: builder.mutation({

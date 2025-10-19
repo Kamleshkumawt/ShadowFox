@@ -6,7 +6,7 @@ const Sidebar = () => {
 
     const adminNAvlinks = [
         {name: 'Dashboard', path: '/seller', icon: LayoutDashboardIcon},
-        {name: 'Add Product', path: '/seller/add-product', icon: PlusSquareIcon},
+        {name: 'Add Product', path: '/seller/new-category-product', icon: PlusSquareIcon},
         {name: 'List Products', path: '/seller/list-products', icon: ListIcon},
         {name: 'List Pending Orders', path: '/seller/list-orders', icon: ListCollapseIcon},
         {name: 'List Delivered Orders', path: '/seller/list-del-orders', icon: ListCollapseIcon},

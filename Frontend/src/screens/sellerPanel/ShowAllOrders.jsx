@@ -36,6 +36,7 @@ const ShowAllOrders = () => {
             <th className="p-2 font-medium">Total Amount</th>
             <th className="p-2 font-medium">Status</th>
             <th className="p-2 font-medium">Payment Method</th>
+            <th className="p-2 font-medium">Action</th>
           </tr>
           </thead>
           <tbody className="text-sm font-light">
@@ -51,9 +52,14 @@ const ShowAllOrders = () => {
                 <td className="p-2 ">{item.items.map((item) => item.quantity)}</td>
                 <td className="p-2">{dateFormat(item.createdAt)}</td>
                 <td className="p-2">{formatAmount(item?.total_amount)}</td>
-                  <td className="p-2 text-green-700">{item.status}</td>
-                  <td className="p-2 text-green-700">{item.payment_method}</td>
+                <td className="p-2 text-green-700">{item.status}</td>
+                <td className="p-2 text-green-700">{item.payment_method}</td>
+                <td className="p-2 text-white flex flex-col items-center gap-2">
+                  <div className='p-1 px-2 rounded-xs bg-green-500'>Accept</div>
+                  <div className='p-1 px-2 rounded-xs bg-red-500 '>Cancel</div>
+                </td>
               </tr>
+              
             ))}
           </tbody>
         </table>

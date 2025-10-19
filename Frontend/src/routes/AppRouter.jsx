@@ -19,6 +19,9 @@ import ShowAllOrders from '../screens/sellerPanel/ShowAllOrders'
 import ShowAllDeliveredOrders from '../screens/sellerPanel/ShowAllDeliveredOrders'
 import ShowAllShippedOrders from '../screens/sellerPanel/ShowAllShippedOrders'
 import ShowAllReturnsOrders from '../screens/sellerPanel/ShowAllReturnsOrders'
+import EditProduct from '../screens/sellerPanel/EditProduct'
+import AddProductCategory from '../screens/sellerPanel/AddProductCategory'
+import Wishlist from '../screens/Wishlist'
 
 const AppRouter = () => {
    const location = useLocation();
@@ -34,6 +37,7 @@ const AppRouter = () => {
             <Route path="/signUp" element={<Register />} />
             <Route path="/about" element={<h1>About</h1>} />
             <Route path="/:categoryName" element={<CategoryProduct />} />
+            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/cart/address" element={<CartAddress />} />
             <Route path="/cart/payment" element={<CartPayment />} />
@@ -44,6 +48,8 @@ const AppRouter = () => {
             <Route path='/seller/*' element={<Layout/>} > 
                 <Route index element={<Dashboard />} />
                 <Route path="add-product" element={<AddProduct/>} />
+                <Route path="new-category-product" element={<AddProductCategory/>} />
+                <Route path="edit-product/:id" element={<EditProduct/>} />
                 <Route path="list-products" element={<ShowAllProduct/>} />
                 <Route path="list-orders" element={<ShowAllOrders/>} />
                 <Route path="list-del-orders" element={<ShowAllDeliveredOrders/>} />

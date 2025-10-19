@@ -14,6 +14,10 @@ import {
   getAllReturns,
   getAllReturnsBySellerId,
   getCartByUserId,
+  getCategories,
+  getCategoriesById,
+  getCategoriesByParentId,
+  getCategoryBySlug,
   getOrdersBySellerId,
   getOrdersByUserId,
   getReviewsByProductId,
@@ -199,5 +203,9 @@ router.get('/returns/getAllReturns', protect, getAllReturns);
 
  {/** not implementes*/}
  router.post('/category/create', protect, createCategoryController);
+ router.get('/category/getAllCategories', protect, getCategories);
+ router.get('/category/getCategory/:slug', protect, getCategoryBySlug);
+ router.get('/category/getCategoryById/:id', protect, getCategoriesByParentId);
+ router.get('/category/getCategorySelfById/:id', protect, getCategoriesById);
  
 export default router;

@@ -4,7 +4,7 @@ import {asyncHandler} from '../../middleware/errorHandler.js';
 import  uploadOnCloudinary  from '../../db/cloudinary.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, category, quantity, color, brand,discount,tags, weight,dimensions,status } = req.body;
+    const { name, price, description, category, quantity, color, brand, discount, tags, weight,dimensions,status,size,material,battery,age,hsnCode,styleCode} = req.body;
     // const sellerId = req.user._id; 
     const sellerId = "68e2a5264f4c2c3d92fbdca3"; 
 
@@ -12,7 +12,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     // console.log('req.files data',req.files);
     // console.log('req.files data length',req.files.images.length);
 
-    if (!name || !price || !description || !category || !quantity || !color || !brand  || !weight || !dimensions || !status) {
+    if (!name || !price || !description || !category || !quantity || !color || !brand  || !weight || !dimensions || !status || !size || !material || !battery || !age || !hsnCode) {
         res.status(400);
         throw new Error('Please provide all required fields');
     }
@@ -31,15 +31,42 @@ export const createProduct = asyncHandler(async (req, res) => {
         throw new Error('Quantity must be a positive number');
     }
 
-    const validCategories = await categoryModel.find().distinct('name');
-    if (!validCategories.includes(category)) {
-        res.status(400);
-        throw new Error(`Category must be one of the following: ${validCategories.join(', ')}`);
-    }
+    // const validCategories = await categoryModel.find().distinct('name');
+    // if (!validCategories.includes(category)) {
+    //     res.status(400);
+    //     throw new Error(`Category must be one of the following: ${validCategories.join(', ')}`);
+    // }
 
     
 
     const images = [];
+    const frontImage = {};
+
+    if (req.files && req.files.frontImage) {
+      // console.log('📸 Uploading frontImage to Cloudinary :', req.files.frontImage[0]);
+      const result = await uploadOnCloudinary(req.files.frontImage[0].path);
+      // console.log('frontImage result from cloudinary :',result);
+      if (result.success) {
+        frontImage.url = result.secure_url;
+        frontImage.publicId = result.public_id;
+        frontImage.width = result.width;
+        frontImage.height = result.height;
+        frontImage.format = result.format;
+        frontImage.bytes = result.bytes;
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: 'Image upload failed',
+        });
+      }
+    }
+
+    if(frontImage.length === 0) {
+     return res.status(500).json({
+      success: false,
+      message: 'frontImage upload failed',
+    });
+    }
 
   if (req.files && req.files.images.length > 0) {
     // console.log('📸 Uploading images to Cloudinary:', req.files.images.length);
@@ -104,8 +131,15 @@ export const createProduct = asyncHandler(async (req, res) => {
         discount: discount || { percentage: 0 },
         quantity,
         tags: Array.isArray(tags) ? tags.map(tag => tag.trim()).filter(tag => tag.length > 0) : typeof tags === 'string' ? tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0): [],
+        frontImage,
         images,
         weight,
+        size,
+        age,
+        material,
+        battery,
+        hsnCode,
+        styleCode,
         dimensions: {
             width: dimensions.width,
             height: dimensions.height,

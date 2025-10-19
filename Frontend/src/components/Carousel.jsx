@@ -33,14 +33,22 @@ const ManualCarousel = ({ data}) => {
         onClick={()=>{navigate('/products');scrollTo(0,0)}}
         className="flex overflow-x-auto space-x-1 snap-x snap-mandatory cursor-pointer scroll-smooth scrollbar-hide py-4 px-2"
       >
-        {[...Array(9)].map((_, idx) => (
+        {/* {[...Array(9)].map((_, idx) => (
           <div key={idx} className="min-w-[250px] snap-start">
-            {/* <HomePageCarouselCard /> */}
+            
             {data.map((product) => (
               <HomePageCarouselCard key={product._id} data={product} />
             ))}
           </div>
-        ))}
+        ))} */}
+        {[...Array(9)].map((_, idx) => {
+  const product = data[idx % data.length]; // loop over products
+  return (
+    <div key={idx} className="min-w-[250px] snap-start">
+      <HomePageCarouselCard data={product} />
+    </div>
+  );
+})}
       </div>
 
       {/* Next Button */}
