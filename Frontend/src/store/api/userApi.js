@@ -25,7 +25,7 @@ export const userApi = baseApi.injectEndpoints({
     removeToCartProduct: builder.mutation({
       query: (data) => ({
         url: '/users/cart/delete',
-        method: 'DELETE',
+        method: 'PUT',
         body: data,
       }),
     }),
@@ -124,6 +124,13 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
+    getCategories: builder.mutation({
+      query: () => ({
+        url: '/users/category/getCategories',
+        method: 'GET',
+      }),
+      invalidatesTags: ['User'],
+    }),
     getAllCategoriesByParentId: builder.query({
       query: (id) => ({
         url: `/users/category/getCategoryById/${id}`,
@@ -135,6 +142,22 @@ export const userApi = baseApi.injectEndpoints({
       query: (id) => ({
         url: `/users/category/getCategorySelfById/${id}`,
         method: 'GET',
+      }),
+      invalidatesTags: ['User'],
+    }),
+    updateAddress: builder.mutation({
+      query: (data) => ({
+        url: `/users/updatedAddressById`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    addNewAddress: builder.mutation({
+      query: (data) => ({
+        url: `/users/addNewAddress`,
+        method: 'PUT',
+        body: data,
       }),
       invalidatesTags: ['User'],
     }),
@@ -160,5 +183,8 @@ export const {
   useGetOrderBySellerIdQuery,
   useGetAllCategoriesMutation,
   useGetAllCategoriesByParentIdQuery,
-  useGetAllCategoriesByIdQuery
+  useGetAllCategoriesByIdQuery,
+  useGetCategoriesMutation,
+  useAddNewAddressMutation,
+  useUpdateAddressMutation,
 } = userApi;

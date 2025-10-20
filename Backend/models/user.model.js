@@ -55,10 +55,47 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'admin', 'seller'],
         default: 'user'
     },
-    address: {
-        type: String,
-        trim: true,
-    },
+    address: [{
+        name: {
+            type: String,
+        },
+        contact: {
+            type: String,
+        },
+        label: {
+            type: String,
+            default: 'Home'
+        },
+        street: {
+            type: String,
+        },
+        city: {
+            type: String,
+        },
+        state: {
+            type: String,
+        },
+        country: {
+            type: String,
+            default: 'India'
+        },
+        postalCode: {
+            type: String,
+        },
+        famousPlaces: {
+            type: String,
+        },
+        isDefault: {
+            type: Boolean,
+            default: false
+        },
+        latitude: {
+            type: String,
+        },
+        longitude: {
+            type: String,
+        }
+    }],
     isDisabled: {
         type: Boolean,
         default: false

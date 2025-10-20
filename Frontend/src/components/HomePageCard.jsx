@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setCategories } from '../store/slices/categorySlice';
@@ -7,7 +7,11 @@ const HomePageCard = ({data}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  dispatch(setCategories(data?.categoryId));
+   useEffect(() => {
+    if (data?.categoryId) {
+      dispatch(setCategories(data.categoryId));
+    }
+  }, [data?.categoryId, dispatch]);
 
   return (
     <div 

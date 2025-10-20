@@ -2,6 +2,7 @@ import { Router } from "express";
 import { body, validationResult } from "express-validator";
 
 import {
+  addNewAddress,
   callbackPayment,
   createCart,
   createCategoryController,
@@ -11,6 +12,7 @@ import {
   createWishlist,
   deleteCart,
   deleteWishlist,
+  getAllCategories,
   getAllReturns,
   getAllReturnsBySellerId,
   getCartByUserId,
@@ -25,6 +27,7 @@ import {
   getWishlistByUserId,
   returnsController,
   reviewsController,
+  updateAddressById,
   updateCart,
   updateSeller,
   updateWishlist,
@@ -34,6 +37,9 @@ import upload from "../middleware/multer.js";
 
 const router = Router();
 
+
+router.put("/updatedAddressById", protect, updateAddressById);
+router.put("/addNewAddress", protect, addNewAddress);
 
 router.post(
   "/seller/register",
@@ -99,7 +105,7 @@ router.get("/seller/me", protect, getSellerByUserId);
 router.post("/cart/create", protect, createCart);
 router.get("/cart/getCart", protect, getCartByUserId);
 router.put("/cart/update", protect, updateCart);
-router.delete("/cart/delete", protect, deleteCart);
+router.put("/cart/delete", protect, deleteCart);
 
 router.post(
   "/order/create",
@@ -204,6 +210,7 @@ router.get('/returns/getAllReturns', protect, getAllReturns);
  {/** not implementes*/}
  router.post('/category/create', protect, createCategoryController);
  router.get('/category/getAllCategories', protect, getCategories);
+ router.get('/category/getCategories', protect, getAllCategories);
  router.get('/category/getCategory/:slug', protect, getCategoryBySlug);
  router.get('/category/getCategoryById/:id', protect, getCategoriesByParentId);
  router.get('/category/getCategorySelfById/:id', protect, getCategoriesById);

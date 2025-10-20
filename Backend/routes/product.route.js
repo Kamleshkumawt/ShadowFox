@@ -22,7 +22,7 @@ router.post('/create', protect,
     body('category').trim().notEmpty().withMessage('category is required').isLength({ max: 50 }).withMessage('category cannot be more than 50 characters'),
     body('weight').notEmpty().withMessage('weight must be a number'),
     body('dimensions').trim().notEmpty().withMessage('dimensions is required').isLength({ max: 50 }).withMessage('dimensions cannot be more than 50 characters'),
-    body('status').isIn(['Active', 'Inactive', 'Out of stock']).withMessage('status must be available, unavailable or out of stock'),
+    // body('status').isIn(['Active', 'Inactive', 'Out of stock']).withMessage('status must be available, unavailable or out of stock'),
     body('tags').custom(value => {
       try {
         const parsed = JSON.parse(value);

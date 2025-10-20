@@ -31,8 +31,8 @@ const Card = ({ data }) => {
       >
         <img
           // src="https://rukminim2.flixcart.com/image/312/312/xif0q/air-conditioner-new/r/h/n/-original-imah8ugkn36egznd.jpeg?q=70"
-          src={data?.images[0].url}
-          alt="Samsung 2025 Model AC"
+          src={data?.frontImage.url}
+          alt="image"
           className="object-contain h-full w-full"
         />
         {/* Wishlist Icon */}
@@ -69,7 +69,7 @@ const Card = ({ data }) => {
         {/* Title */}
         <div
           onClick={() => {
-            navigate("/product/samsung-2025");
+            navigate(`/product/${data?.name}`);
             scrollTo(0, 0);
           }}
           className="text-[14px] text-gray-800 block line-clamp-2 cursor-pointer"

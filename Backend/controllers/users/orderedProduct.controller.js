@@ -4,7 +4,7 @@ export const createOrder = async (req, res) => {
     try {
         const { total_amount, shipping_address, payment_method, items,paymentId,sellerId } = req.body;
         const userId = req.user._id;
-        const newOrder = new orderModel({ userId, total_amount, shipping_address, payment_method,sellerId, items,paymentId });
+        const newOrder = new orderModel({ userId, total_amount, shipping_address, payment_method,sellerId, items, paymentId });
         await newOrder.save();
         res.status(201).json({ success: true, message: 'Order created successfully', newOrder });
     } catch (error) {

@@ -89,6 +89,10 @@ const productSchema = new mongoose.Schema({
         enum: ['Active', 'Inactive', 'Out of stock'],
         default: 'active'
     },
+    comboType: {
+        type: String,
+        default: 'single'
+    },
     hsnCode: {
         type: String,
         required: true

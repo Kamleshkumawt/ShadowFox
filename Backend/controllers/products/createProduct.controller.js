@@ -4,7 +4,7 @@ import {asyncHandler} from '../../middleware/errorHandler.js';
 import  uploadOnCloudinary  from '../../db/cloudinary.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, category, quantity, color, brand, discount, tags, weight,dimensions,status,size,material,battery,age,hsnCode,styleCode} = req.body;
+    const { name, price, description, category, quantity, color, brand, discount, tags, weight,dimensions,size,material,battery,age,hsnCode,styleCode,comboType} = req.body;
     // const sellerId = req.user._id; 
     const sellerId = "68e2a5264f4c2c3d92fbdca3"; 
 
@@ -12,7 +12,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     // console.log('req.files data',req.files);
     // console.log('req.files data length',req.files.images.length);
 
-    if (!name || !price || !description || !category || !quantity || !color || !brand  || !weight || !dimensions || !status || !size || !material || !battery || !age || !hsnCode) {
+    if (!name || !price || !description || !category || !quantity || !color || !brand  || !weight || !dimensions  || !size || !material || !battery || !age || !hsnCode || !comboType) {
         res.status(400);
         throw new Error('Please provide all required fields');
     }
@@ -145,7 +145,7 @@ export const createProduct = asyncHandler(async (req, res) => {
             height: dimensions.height,
             depth: dimensions.depth,
         },
-        status,
+        comboType,
     });
 
     res.status(201).json({ success: true, message: 'Product created successfully', product });

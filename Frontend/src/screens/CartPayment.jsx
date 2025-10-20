@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import CartHeader from "../components/CartHeader";
 import { useNavigate } from "react-router-dom";
+import CartSidebar from "../components/CartSidebar";
+import { useSelector } from "react-redux";
 
 const CartPayment = () => {
   const [paymentMethod, setPaymentMethod] = useState("cod");
+
+  const itemsAndPrice = useSelector((state) => state.filters.itemsAndPrice);
 
   const navigate = useNavigate();
 
@@ -66,7 +70,7 @@ const CartPayment = () => {
           </div>
         </div>
         <div className="w-[40%] h-full flex flex-col items-start">
-          <div className="w-xs h-full flex flex-col items-start gap-3">
+          {/* <div className="w-xs h-full flex flex-col items-start gap-3">
             <h1 className="text-lg font-medium text-gray-600 py-3">
               Price Details (3 Items)
             </h1>
@@ -105,7 +109,8 @@ const CartPayment = () => {
               src="https://images.meesho.com/images/marketing/1588578650850.webp"
               alt="img"
             />
-          </div>
+          </div> */}
+          <CartSidebar items={{length:itemsAndPrice?.items, totalPrice:itemsAndPrice?.price}} nav={'summary'} paymentMethod={paymentMethod} viewPage={3} />
         </div>
       </div>
     </div>

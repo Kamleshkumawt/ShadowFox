@@ -6,6 +6,8 @@ import ManualCarousel from "../components/Carousel";
 import CategorySideBar from "../components/CategorySideBar";
 import { useGetAllProductMutation } from "../store/api/productApi";
 import Loading from "../components/Loading";
+import {useGetCategoriesMutation } from "../store/api/userApi";
+import { useSelector } from "react-redux";
 
 
 const getUniqueCategoryProducts = (products, limit = 4) => {
@@ -32,11 +34,42 @@ const getUniqueCategoryProducts = (products, limit = 4) => {
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [getAllProduct, { data , isLoading}] = useGetAllProductMutation();
+  const [getCategories] = useGetCategoriesMutation();
+  const [categories, setCategories] = useState([]);
 
    const uniqueProducts = useMemo(() => getUniqueCategoryProducts(products), [products]);
+
+   const selectedCategories = useSelector(
+       (state) => state.filters.selectedCategories
+     );
+     const selectedColors = useSelector((state) => state.filters.selectedColors);
+     const selectedFabrics = useSelector((state) => state.filters.selectedFabrics);
+     const checkedRatings = useSelector((state) => state.filters.checkedRatings);
+     const selectedCombos = useSelector((state) => state.filters.selectedCombos);
+     const selectedGenders = useSelector((state) => state.filters.selectedGenders);
+     const selectedPrice = useSelector((state) => state.filters.selectedPrice);
+     const selectedDiscounts = useSelector(
+       (state) => state.filters.selectedDiscounts
+     );
+     const selectedSize = useSelector((state) => state.filters.selectedSize);
+   
   
   useEffect(() => {
     getAllProduct();
+  }, []);
+
+  useEffect(() => {
+    const getAllData = async () => {
+    try {
+      const res = await getCategories().unwrap();
+      // console.log('response of categories Data :',res);
+      setCategories(res.categories);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+    };
+
+    getAllData();
   }, []);
 
   useEffect(() => {
@@ -45,6 +78,98 @@ const Home = () => {
       setProducts(data.products);
     }
   }, [data]);
+
+  // const filteredProducts =
+  // selectedCategories.length === 0
+  //   ? products
+  //   : products.filter(product =>
+  //       selectedCategories.includes(product.categoryId._id)
+  // );
+
+
+  const filteredProducts = products.filter((product) => {
+  // Filter by category
+  if (
+    selectedCategories.length > 0 &&
+    !selectedCategories.includes(product.categoryId._id)
+  ) {
+    return false;
+  }
+
+  // Filter by color
+  if (
+    selectedColors.length > 0 &&
+    !selectedColors
+    .map((c) => c.toLowerCase().trim())
+    .includes(product.color.toLowerCase().trim())
+  ) {
+    return false;
+  }
+
+  // Filter by fabric
+  if (
+    selectedFabrics.length > 0 &&
+    !selectedFabrics.map((c) => c.toLowerCase().trim()).includes(product.material.toLowerCase().trim())
+  ) {
+    return false;
+  }
+
+  // Filter by rating
+  if (
+    checkedRatings.length > 0 &&
+    !checkedRatings.includes(Math.floor(product.rating)) // assuming rating is a float
+  ) {
+    return false;
+  }
+
+  // Filter by combo
+  // if (
+  //   selectedCombos.length > 0 &&
+  //   !selectedCombos.includes(product.comboType)
+  // ) {
+  //   return false;
+  // }
+
+  // Filter by gender
+  // if (
+  //   selectedGenders.length > 0 &&
+  //   !selectedGenders.includes(product.gender)
+  // ) {
+  //   return false;
+  // }
+
+  // Filter by price
+  if (selectedPrice.length > 0) {
+    const match = selectedPrice.some((priceRange) => {
+      if (priceRange === "under100") return product.price < 100;
+      if (priceRange === "100to500") return product.price >= 100 && product.price <= 500;
+      if (priceRange === "above500") return product.price > 500;
+      return false;
+    });
+    if (!match) return false;
+  }
+
+  // Filter by discounts
+  if (
+    selectedDiscounts.length > 0 &&
+    !selectedDiscounts.includes(product.discount?.percentage)
+  ) {
+    return false;
+  }
+
+  // Filter by size
+  if (
+    selectedSize.length > 0 &&
+    // !selectedSize.some((size) => product.availableSizes.includes(size))
+    !selectedSize.map((c) => c.toLowerCase().trim()).includes(product.size.toLowerCase().trim())
+  ) {
+    return false;
+  }
+
+  return true;
+});
+
+
 
   return !isLoading ? (
     <div className="w-full min-h-screen px-4 gap-2 bg-gray-50 pt-30">
@@ -211,10 +336,10 @@ const Home = () => {
     <h1 className="text-3xl my-5 px-5">Products For You</h1>
     <div className="w-full h-full flex items-start justify-center px-5">
        <div className="w-[23%] h-full flex flex-col items-start justify-start  ">
-      <CategorySideBar/>
+      <CategorySideBar categories={categories} />
        </div>
       <div className="w-[77%] h-full grid grid-cols-4 p-5 gap-3">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <Card key={product._id} data={product} />
         ))}
         </div>

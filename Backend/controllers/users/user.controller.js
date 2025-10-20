@@ -1,5 +1,6 @@
 import wishlistModel from "../../models/wishlists.model.js";
 import productModel from "../../models/products.model.js";
+import userModel from "../../models/user.model.js";
 
 export const createWishlist = async (req, res) => {
     try {
@@ -80,5 +81,27 @@ export const deleteWishlist = async (req, res) => {
         res.status(200).json({success: true, message: "Wishlist deleted successfully", wishlist});
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+}
+
+export const updateAddressById = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { address } = req.body;
+        const addressId = address._id;
+        const user = await userModel.findOneAndUpdate({ _id: userId, "address._id": addressId }, { $set: { "address.$": address } }, { new: true });
+        res.status(200).json({success: true, message: "Address updated successfully", user});
+    } catch (error) {
+        res.status(500).json({success: false, message: "Server error", error: error.message });
+    }
+}
+export const addNewAddress = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { address } = req.body;
+        const user = await userModel.findOneAndUpdate({ _id: userId }, { $push: { address: address } }, { new: true });
+        res.status(200).json({success: true, message: "Address updated successfully", user});
+    } catch (error) {
+        res.status(500).json({success: false, message: "Server error", error: error.message });
     }
 }

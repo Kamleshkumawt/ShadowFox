@@ -41,10 +41,20 @@ export const createCategoryController = async (req, res) => {
     }
 }
 
-// Get all categories
+// Get all categories bY null Id
 export const getCategories = async (req, res) => {
   try {
     const categories = await categoryModel.find({ parentId: null }); //.populate('parentId', 'name slug')
+     res.status(200).json({ success: true, message: 'Categories fetched successfully', categories });
+  } catch (err) {
+    res.status(500).json({success: false, message: "Error fetching categories", error: err.message });
+  }
+};
+
+// Get all categories 
+export const getAllCategories = async (req, res) => {
+  try {
+    const categories = await categoryModel.find(); //.populate('parentId', 'name slug')
      res.status(200).json({ success: true, message: 'Categories fetched successfully', categories });
   } catch (err) {
     res.status(500).json({success: false, message: "Error fetching categories", error: err.message });
@@ -66,7 +76,6 @@ export const getCategoriesByParentId = async (req, res) => {
     res.status(500).json({success: false, message: "Error fetching categories", error: err.message });
   }
 };
-
 
 export const getCategoriesById = async (req, res) => {
   try {

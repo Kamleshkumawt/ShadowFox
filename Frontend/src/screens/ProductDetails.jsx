@@ -2,32 +2,54 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { useAddToCartProductMutation } from "../store/api/userApi";
 import { useGetAllProductMutation } from "../store/api/productApi";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../components/Loading";
+import { formatAmount } from "../lib/formatAmount";
+
+const ratings = [
+  { label: "Excellent", count: 722 },
+  { label: "Very Good", count: 700 },
+  { label: "Good", count: 50 },
+  { label: "Average", count: 72 },
+  { label: "Poor", count: 102 },
+];
 
 const ProductDetails = () => {
   const [pincode, setPincode] = useState("");
   const [addToCartProduct, { isLoading }] = useAddToCartProductMutation();
   const [products, setProducts] = useState([]);
-  const [getAllProduct, { data }] = useGetAllProductMutation();
-    
-    useEffect(() => {
-      getAllProduct();
-    }, []);
-  
-    useEffect(() => {
-      if (data) {
-        console.log(data.products);
-        setProducts(data.products);
-      }
-    }, [data]);
-  
+  const [getAllProduct, { data, isLoading: loading }] =
+    useGetAllProductMutation();
+  const [show, setShow] = useState(false);
+  const [showSelectedImg, setShowSelectedImg] = useState(null);
 
-  const ratings = [
-    { label: "Excellent", count: 722 },
-    { label: "Very Good", count: 700 },
-    { label: "Good", count: 50 },
-    { label: "Average", count: 72 },
-    { label: "Poor", count: 102 },
-  ];
+  const { id } = useParams();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data && data.products) {
+      // Find the product with matching id
+      
+      const showData =  data.products.find(
+          (p) => p.name.toLowerCase().trim() === id.toLowerCase().trim()
+        );
+      setShow(showData);
+      setShowSelectedImg(showData?.frontImage);
+      console.log('data: for show ',showData);
+    }
+  }, [data, id]);
+
+  useEffect(() => {
+    getAllProduct();
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      // console.log(data.products);
+      setProducts(data.products);
+    }
+  }, [data]);
 
   const maxCount = Math.max(...ratings.map((r) => r.count));
 
@@ -44,17 +66,18 @@ const ProductDetails = () => {
     }
   };
 
-  const handleAddToCartProduct = async() => {
+  const handleAddToCartProduct = async () => {
     try {
-      const items = {productId : "68e3811559820adf30e7ccfb", quantity : "2"};
-      const res = await addToCartProduct({items}).unwrap();
-      console.log('create cart response successfully',res);
-    } catch(error) {
-      console.error('Add to cart error:', error);
+      const items = { productId: show?._id, quantity: show?.quantity };
+      const res = await addToCartProduct({ items }).unwrap();
+      console.log("create cart response successfully", res);
+      navigate("/cart");
+    } catch (error) {
+      console.error("Add to cart error:", error);
     }
-  }
+  };
 
-  return (
+  return !loading ? (
     <div className="flex flex-col px-16 gap-3 pt-28">
       <h1 className="font-medium text-lg mt-2">
         Home/Women/Women Ethnic/WearKurtis style list kurti with embroidered
@@ -62,38 +85,55 @@ const ProductDetails = () => {
       </h1>
       <div className=" w-full flex flex-col lg:flex-row justify-center gap-8">
         <div className="flex gap-2 w-full">
-          <div className="flex flex-col items-center gap-2 mt-2">
+          {/* <div className="flex flex-col items-center gap-2 mt-2">
             <img
-              src="https://images.unsplash.com/photo-1760126130338-4e6c9043ee2d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764"
+              src={show?.images[0].url}
               className="w-18 h-16 rounded-xs border border-purple-400 px-1"
               alt="img"
             />
             <img
-              src="https://images.unsplash.com/photo-1760126130338-4e6c9043ee2d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764"
+             src={show?.images[1].url}
               className="w-16 h-16 rounded-xs border border-purple-400 px-1"
               alt="img"
             />
             <img
-              src="https://images.unsplash.com/photo-1760126130338-4e6c9043ee2d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764"
+              src={show?.images[2].url}
               className="w-16 h-16 rounded-xs border border-purple-400 px-1"
               alt="img"
             />
             <img
-              src="https://images.unsplash.com/photo-1760126130338-4e6c9043ee2d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764"
+              src={show?.images[3].url}
               className="w-16 h-16 rounded-xs border border-purple-400 px-1"
               alt="img"
             />
+          </div> */}
+          <div className="flex flex-col items-center gap-2 mt-2">
+            {show?.images?.map((image, index) => (
+              <img
+                key={index}
+                src={image.url}
+                alt={`img-${index}`}
+                className={`rounded-xs border border-purple-400 px-1 ${
+                  index === 0 ? "w-18 h-16" : "w-16 h-16"
+                }`}
+                onClick={() => setShowSelectedImg(image)}
+              />
+            ))}
           </div>
           <div className="flex flex-col gap-3">
-            <div className="border border-gray-300 rounded-xs">
+            <div className="border border-gray-300 rounded-xs max-w-2xl">
               <img
-                src="https://images.unsplash.com/photo-1760126130338-4e6c9043ee2d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764"
+                src={showSelectedImg?.url}
                 className="w-full h-full object-cover px-6"
                 alt="img"
               />
             </div>
             <div className="flex items-center w-full gap-3 px-5">
-              <div onClick={() => handleAddToCartProduct()} disabled={!isLoading} className="border border-[#9f2089] text-[#9f2089] p-2 px-5  text-lg font-medium rounded-xs flex items-center justify-center gap-2 w-full cursor-pointer">
+              <div
+                onClick={() => handleAddToCartProduct()}
+                disabled={!isLoading}
+                className="border border-[#9f2089] text-[#9f2089] p-2 px-5  text-lg font-medium rounded-xs flex items-center justify-center gap-2 w-full cursor-pointer"
+              >
                 <svg
                   width="21"
                   height="20"
@@ -106,9 +146,7 @@ const ProductDetails = () => {
                   // iconsize="20"
                 >
                   <g
-                    clip-path="url(#go-to-cart_svg__a)"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                   
                     fill="#333"
                   >
                     <path d="M.75 1.5A.75.75 0 0 1 1.5.75h2.084a1.75 1.75 0 0 1 1.68 1.262L6.05 4.72h12.625a1.75 1.75 0 0 1 1.683 2.23L18.661 12.9a1.75 1.75 0 0 1-1.683 1.27H8.303a1.75 1.75 0 0 1-1.695-1.315l-1.845-7.19-.94-3.236a.25.25 0 0 0-.24-.18H1.5a.75.75 0 0 1-.75-.75Zm5.703 4.719 1.608 6.264a.25.25 0 0 0 .242.188h8.675a.25.25 0 0 0 .24-.181l1.698-5.952a.25.25 0 0 0-.24-.319H6.452ZM9.923 16.238a.5.5 0 0 0-.493.506.5.5 0 0 0 .493.506.5.5 0 0 0 .493-.506.5.5 0 0 0-.493-.506Zm-1.993.506a2 2 0 0 1 1.993-2.006 2 2 0 0 1 1.993 2.006 2 2 0 0 1-1.993 2.006 2 2 0 0 1-1.993-2.006ZM15.72 16.238a.5.5 0 0 0-.493.506.5.5 0 0 0 .493.506.5.5 0 0 0 .493-.506.5.5 0 0 0-.493-.506Zm-1.993.506a2 2 0 0 1 1.993-2.006 2 2 0 0 1 1.993 2.006 2 2 0 0 1-1.993 2.006 2 2 0 0 1-1.993-2.006Z"></path>
@@ -140,14 +178,10 @@ const ProductDetails = () => {
                   // iconsize="20"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
                     d="M3.927 3.28A.956.956 0 0 0 2.576 4.63l5.437 5.438-5.3 5.3a.956.956 0 1 0 1.352 1.351l5.43-5.43a1.727 1.727 0 0 0-.032-2.474L3.927 3.28Z"
                     fill="#fff"
                   ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
                     d="M11.631 3.28A.956.956 0 1 0 10.28 4.63l5.437 5.438-5.3 5.3a.956.956 0 1 0 1.352 1.351l5.43-5.43a1.727 1.727 0 0 0-.032-2.474L11.631 3.28Z"
                     fill="#fff"
                   ></path>
@@ -176,15 +210,16 @@ const ProductDetails = () => {
         <div className="w-full flex flex-col gap-3">
           <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-3">
             <h1 className="text-gray-400 text-xl font-medium max-w-[38rem]">
-              Girl's And Women's Fashionable Short Sleeves Cotton Embroidered
-              Nightdress ( Pink )
+              {show?.name?.slice(0, 70)}
             </h1>
             <div className="flex items-center gap-2 text-2xl font-medium">
-              ₹324{" "}
+              {formatAmount(show?.price)}
               <span className="text-gray-400 text-[16px] line-through">
-                ₹405
+                {formatAmount(show?.price)}
               </span>{" "}
-              <span className="text-lg text-green-500">20% off</span>
+              <span className="text-lg text-green-500">
+                {show?.discount?.percentage}% off
+              </span>
               <div className="flex items-center gap-2 text-lg text-gray-500">
                 onwards
                 <svg
@@ -196,11 +231,10 @@ const ProductDetails = () => {
                   // iconSize="20"
                   className="sc-ftTHYK kizHtP"
                 >
-                  <g clip-path="url(#info_svg__a)" fill="#666">
+                  <g  fill="#666">
                     <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0Zm0 18.44c-4.65 0-8.44-3.79-8.44-8.44 0-4.65 3.79-8.44 8.44-8.44 4.65 0 8.44 3.79 8.44 8.44 0 4.65-3.79 8.44-8.44 8.44Z"></path>
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+      
                       d="M10 4.825a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0 3.017a1 1 0 0 0-1 1v5.333a1 1 0 0 0 2 0V8.842a1 1 0 0 0-1-1Z"
                     ></path>
                   </g>
@@ -214,7 +248,7 @@ const ProductDetails = () => {
             </div>
             <div className="flex items-center gap-3 w-full">
               <div className="flex items-center text-lg gap-1 bg-green-700/70 rounded-xl text-white font-medium  px-2">
-                4.2
+                {show?.rating}
                 <svg
                   width="10"
                   height="10"
@@ -225,7 +259,7 @@ const ProductDetails = () => {
                   // iconSize="10"
                   className="sc-ftTHYK bmIaUL"
                 >
-                  <g clip-path="url(#clip0)">
+                  <g >
                     <path
                       d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z"
                       fill="#ffffff"
@@ -238,7 +272,9 @@ const ProductDetails = () => {
                   </defs>
                 </svg>
               </div>
-              <p className="text-sm text-gray-400">980 Ratings, 397 Reviews</p>
+              <p className="text-sm text-gray-400">
+                {show?.rating} Ratings, {show?.reviews_count} Reviews
+              </p>
             </div>
             <div className="text-gray-700 text-sm font-medium bg-gray-200/40 px-2 rounded-xl text-center p-1 max-w-[7rem]">
               Free Delivery
@@ -250,7 +286,7 @@ const ProductDetails = () => {
             </h1>
             <div className="flex items-center justify-start ">
               <div className="text-purple-600 font-medium bg-purple-200/40 px-2 p-1 border border-purple-500 rounded-xl text-center ">
-                Free Delivery
+                {show?.size}
               </div>
             </div>
           </div>
@@ -260,11 +296,10 @@ const ProductDetails = () => {
             </h1>
             <div className="flex flex-col items-start text-gray-500">
               <p className="flex items-center gap-1">
-                Name :{" "}
-                <span>New Traditional Pure Cotton Sambalpuri Sareees</span>
+                Name :<span>{show?.name}</span>
               </p>
               <p className="flex items-center gap-1">
-                Saree Fabric : <span>Without Blouse</span>
+                Saree Fabric : <span>{show?.material}</span>
               </p>
               <p className="flex items-center gap-1">
                 Blouse : <span> No Blouse</span>
@@ -279,10 +314,7 @@ const ProductDetails = () => {
                 Net Quantity (N) : <span> Single</span>
               </p>
               <p className="flex items-center gap-1">
-                Sizes :{" "}
-                <span>
-                  Free Size (Saree Length Size : 5.5 m, Blouse Length Size: 1 m)
-                </span>
+                Sizes :<span>{show?.size}</span>
               </p>
               <p className="flex items-center gap-1">
                 Country of Origin : <span>India</span>
@@ -303,7 +335,7 @@ const ProductDetails = () => {
                 </div>
                 <div className="flex flex-col gap-2">
                   <h1 className="text-lg text-black font-medium">
-                    VAMIKA GARMENTS
+                    {show?.brand}
                   </h1>
                   <div className="flex items-center gap-5">
                     <div className="flex flex-col gap-2 ">
@@ -319,7 +351,7 @@ const ProductDetails = () => {
                           // iconSize="10"
                           className="sc-ftTHYK bmIaUL"
                         >
-                          <g clip-path="url(#clip0)">
+                          <g >
                             <path
                               d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z"
                               fill="#5585f8"
@@ -458,7 +490,7 @@ const ProductDetails = () => {
                       // iconSize="10"
                       className="sc-ftTHYK bmIaUL"
                     >
-                      <g clip-path="url(#clip0)">
+                      <g >
                         <path
                           d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z"
                           fill="#038d63"
@@ -554,7 +586,7 @@ const ProductDetails = () => {
                       // iconSize="10"
                       className="sc-ftTHYK bmIaUL"
                     >
-                      <g clip-path="url(#clip0)">
+                      <g >
                         <path
                           d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z"
                           fill="#ffffff"
@@ -598,8 +630,6 @@ const ProductDetails = () => {
                     className="sc-ftTHYK kpbgFG cursor-pointer"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
                       d="M4.712 5.245 8.68 1.13a1.039 1.039 0 0 1 1.51-.008c.258.268.366.647.294 1.018l-.68 3.402h4.046c1.54 0 2.578 1.635 1.977 3.106L13.492 14.3c-.229.542-.745.899-1.318.899H5.73c-.788 0-1.432-.669-1.432-1.486V6.293c0-.394.15-.773.415-1.048Zm-1.847 8.471c0 .818-.645 1.486-1.433 1.486-.787 0-1.432-.668-1.432-1.486V7.773c0-.817.645-1.486 1.432-1.486.788 0 1.433.67 1.433 1.486v5.943Z"
                       fill="#666"
                     ></path>
@@ -633,7 +663,7 @@ const ProductDetails = () => {
                       // iconSize="10"
                       className="sc-ftTHYK bmIaUL"
                     >
-                      <g clip-path="url(#clip0)">
+                      <g >
                         <path
                           d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z"
                           fill="#ffffff"
@@ -677,8 +707,7 @@ const ProductDetails = () => {
                     className="sc-ftTHYK kpbgFG cursor-pointer"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      
                       d="M4.712 5.245 8.68 1.13a1.039 1.039 0 0 1 1.51-.008c.258.268.366.647.294 1.018l-.68 3.402h4.046c1.54 0 2.578 1.635 1.977 3.106L13.492 14.3c-.229.542-.745.899-1.318.899H5.73c-.788 0-1.432-.669-1.432-1.486V6.293c0-.394.15-.773.415-1.048Zm-1.847 8.471c0 .818-.645 1.486-1.433 1.486-.787 0-1.432-.668-1.432-1.486V7.773c0-.817.645-1.486 1.432-1.486.788 0 1.433.67 1.433 1.486v5.943Z"
                       fill="#666"
                     ></path>
@@ -737,13 +766,15 @@ const ProductDetails = () => {
       </div>
       <div className="flex flex-col gap-2">
         <h1 className="font-semibold text-xl">People also viewed</h1>
-        <div className="flex items-center justify-center gap-4 mt-3 mb-20">
+        <div className="flex flex-wrap items-center justify-start gap-4 mt-3 mb-20">
           {products.map((product) => (
-          <Card key={product._id} data={product} />
-        ))}
+            <Card key={product._id} data={product} />
+          ))}
         </div>
       </div>
     </div>
+  ) : (
+    <Loading />
   );
 };
 

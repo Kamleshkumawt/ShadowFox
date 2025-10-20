@@ -1,42 +1,53 @@
-import CartBox from '../components/Cart'
-import CartHeader from '../components/CartHeader'
-import { Link } from 'react-router-dom'
-import { useGetToCartProductMutation, useRemoveToCartProductMutation } from '../store/api/userApi';
-import { useEffect, useState } from 'react';
+import CartBox from "../components/Cart";
+import CartHeader from "../components/CartHeader";
+import { Link } from "react-router-dom";
+import { useGetToCartProductMutation } from "../store/api/userApi";
+import { useEffect, useState } from "react";
+import Loading from "../components/Loading";
+import { useDispatch } from "react-redux";
+import { setItemsAndPrice } from "../store/slices/productsFilterSlice";
+import CartSidebar from "../components/CartSidebar";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
- 
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const dispatch = useDispatch();
   const [getToCartProduct, { isLoading }] = useGetToCartProductMutation();
-  const [removeToCartProduct, {loading}] = useRemoveToCartProductMutation();
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
         const response = await getToCartProduct().unwrap();
-        console.log('get to cart product', response);
+        console.log("get to cart product", response);
         setCart(response.cart);
+        
+        const totalPrice =
+          (
+            (response.cart.items || [])
+              .map((item) => item.productId.price * item.quantity)
+              .reduce((acc, curr) => acc + curr, 0)
+              .toFixed(2)
+        )
+        setTotalPrice(totalPrice);
+        // setTotalPrice(
+        //   (response.cart.items || [])
+        //     .map((item) => item.productId.price * item.quantity)
+        //     .reduce((acc, curr) => acc + curr, 0)
+        // );
+
+        dispatch(setItemsAndPrice({items:response.cart?.items?.length,price:totalPrice}))
       } catch (error) {
-        console.error('Error fetching cart:', error);
+        console.error("Error fetching cart:", error);
       }
     };
-    
+
     fetchCart();
   }, []);
 
-  const removerProductHandler = async (id) => {
-    try {
-      const response = await removeToCartProduct(id).unwrap();
-
-      setCart(response.cart);
-    } catch (error) {
-      console.error('Error fetching cart:', error);
-    }
-  }
-
   return !isLoading ? (
-    <div className='w-full min-h-screen'>
-    {/* <div className='w-full h-[70px] flex items-center justify-evenly px-20 py-2 border-b-2 border-gray-300'>
+    <div className="w-full min-h-screen">
+      {/* <div className='w-full h-[70px] flex items-center justify-evenly px-20 py-2 border-b-2 border-gray-300'>
         <span className="text-2xl cursor-pointer">ApanaStore</span>
         <div>
           <div className='hidden sm:flex  items-center justify-center font-medium text-gray-300'>
@@ -51,31 +62,63 @@ const Cart = () => {
   
         </div>
     </div> */}
-    <CartHeader address={1} />
-    <div className='w-full h-full flex flex-col sm:flex-row items-start justify-center gap-3 p-3'>
-      <div className=' w-full sm:w-[60%] h-full flex flex-col items-end gap-2 sm:px-5 sm:border-r-2 sm:border-gray-200'>
-        <div className='space-y-3'>
-          <h1 className='text-lg font-medium text-gray-500 py-1 text-start w-full'>Product Details</h1>
-        <CartBox location={1} product={cart}  />
-        <CartBox location={1} product={cart}  />
+      <CartHeader address={1} />
+      <div className="w-full h-full flex flex-col sm:flex-row items-start justify-center gap-3 p-3">
+        <div className=" w-full sm:w-[60%] h-full flex flex-col items-end gap-2 sm:px-5 sm:border-r-2 sm:border-gray-200">
+          <div className="space-y-3">
+            <h1 className="text-lg font-medium text-gray-500 py-1 text-start w-full">
+              Product Details
+            </h1>
+            {cart?.items?.map((item) => (
+              <CartBox key={item._id} location={1} product={item} />
+            ))}
+          </div>
         </div>
-    </div>
-    <div className='w-[40%] h-full flex flex-col items-start'>
-      <div className='w-xs h-full flex flex-col items-start gap-3'>
-        <h1 className='text-lg font-medium text-gray-600 py-3'>Price Details (3 Items)</h1>
-      <p className='flex items-center w-full justify-between '><span className='border-b-2 border-gray-700 border-dotted font-medium text-gray-500'>Total Product Price </span>+ 3602</p>
-      <div className='text-green-700 font-medium w-full flex items-center justify-between'><span className='border-b-2 border-gray-700 border-dotted '>Total Product Price </span> <span>- 81</span></div>
-      <span className='block w-full border-b-2 border-gray-300'></span>
-      <h1 className='text-xl w-full font-medium flex items-center justify-between'> Order Total <span>3521</span></h1>
-      <div className='bg-green-300/30 w-full text-center p-2 px-4 rounded-sm mt-3 text-green-600'>Yay! Your total discount is 81</div>
-      <p className='text-xs text-gray-900 font-medium w-full text-center mt-3 -mb-1'>Clicking on'Continue'will not deduct any money</p>
-      <Link to="/cart/address" className='bg-purple-800 w-full text-center p-2 px-4 rounded-sm text-white font-medium'>Continue</Link>
-      <img className='w-full h-full object-cover' src="https://images.meesho.com/images/marketing/1588578650850.webp" alt="img" />
+        <div className="w-[40%] h-full flex flex-col items-start">
+          {/* <div className="w-xs h-full flex flex-col items-start gap-3">
+            <h1 className="text-lg font-medium text-gray-600 py-3">
+              Price Details ({cart?.items?.length} Items)
+            </h1>
+            <p className="flex items-center w-full justify-between ">
+              <span className="border-b-2 border-gray-700 border-dotted font-medium text-gray-500">
+                Total Product Price{" "}
+              </span>
+              +{formatAmount(totalPrice)}
+            </p>
+            <div className="text-green-700 font-medium w-full flex items-center justify-between">
+              <span className="border-b-2 border-gray-700 border-dotted ">
+                Total Product Price{" "}
+              </span>{" "}
+              <span>- {discount}</span>
+            </div>
+            <span className="block w-full border-b-2 border-gray-300"></span>
+            <h1 className="text-xl w-full font-medium flex items-center justify-between">
+              {" "}
+              Order Total <span>{formatAmount(totalPrice - discount)}</span>
+            </h1>
+            <div className="bg-green-300/30 w-full text-center p-2 px-4 rounded-sm mt-3 text-green-600">
+              Yay! Your total discount is {discount}
+            </div>
+            <p className="text-xs text-gray-900 font-medium w-full text-center mt-3 -mb-1">
+              Clicking on'Continue'will not deduct any money
+            </p>
+            <Link
+              to="/cart/address"
+              className="bg-purple-800 w-full text-center p-2 px-4 rounded-sm text-white font-medium"
+            >
+              Continue
+            </Link>
+            <img
+              className="w-full h-full object-cover"
+              src="https://images.meesho.com/images/marketing/1588578650850.webp"
+              alt="img"
+            />
+          </div> */}
+          <CartSidebar items={{length:cart?.items?.length, totalPrice}} nav={'address'} viewPage={1} />
+        </div>
       </div>
-    </div>
-    </div>
 
-    {/* {openSideBar && (
+      {/* {openSideBar && (
         <div className='w-full h-full absolute top-0 z-50 flex items-center justify-end bg-gray-900/80'>
           <div className='top-0 right-0 z-50 flex flex-col items-start w-[33%] h-full bg-white'>
           <div className='w-full p-6 font-medium flex items-center justify-between'>EDIT ITEM 
@@ -114,9 +157,10 @@ const Cart = () => {
         </div>
         </div>
     )} */}
-
     </div>
-  ) : <div className='w-full h-full flex items-center justify-center text-center'><p>Loading cart...</p></div>
-}
+  ) : (
+    <Loading />
+  );
+};
 
-export default Cart
+export default Cart;
