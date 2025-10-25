@@ -30,6 +30,7 @@ import PickupAddress from '../screens/sellerPanel/auth/PickupAddress'
 import SellerDetails from '../screens/sellerPanel/auth/SellerDetails'
 import BankDetails from '../screens/sellerPanel/auth/BankDetails'
 import SellerSettings from '../screens/sellerPanel/SellerSettings'
+import SearchCategoryRoutes from '../screens/SearchCategoryRoutes'
 
 const AppRouter = () => {
    const location = useLocation();
@@ -45,6 +46,7 @@ const AppRouter = () => {
             <Route path="/signUp" element={<Register />} />
             <Route path="/about" element={<h1>About</h1>} />
             <Route path="/:categoryName" element={<CategoryProduct />} />
+            <Route path="/products/search" element={<SearchCategoryRoutes />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/cart/address" element={<CartAddress />} />

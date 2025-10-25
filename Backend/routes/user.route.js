@@ -25,12 +25,14 @@ import {
   getReviewsByProductId,
   getSellerByUserId,
   getWishlistByUserId,
+  logoutSellerController,
   returnsController,
   reviewsController,
   sellerLoginController,
   updateAddressById,
   updateCart,
   updateSeller,
+  updateSellerPassController,
   updateWishlist,
 } from "../controllers/index.js";
 import { protect } from "../middleware/index.js";
@@ -113,6 +115,8 @@ router.put("/seller/update", upload.single("store_image"), protect, async (req, 
 });
 
 router.get("/seller/me", protect, getSellerByUserId);
+router.put("/seller/update-pass", protect, updateSellerPassController);
+router.get("/seller/logout", protect, logoutSellerController);
 
 router.post("/cart/create", protect, createCart);
 router.get("/cart/getCart", protect, getCartByUserId);

@@ -11,6 +11,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useGetProductByStatusMutation } from "../../store/api/productApi";
 
 const Dashboard = () => {
   const seller = useSelector((state) => state.auth.seller);
@@ -18,9 +19,11 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   const [getProfileSeller, { data, isLoading }] = useGetProfileSellerMutation();
+  const [getProductByStatus, { data:PTRs, loading }] = useGetProductByStatusMutation();
 
   useEffect(() => {
     getProfileSeller();
+    getProductByStatus();
   }, []);
 
   useEffect(() => {
@@ -29,6 +32,12 @@ const Dashboard = () => {
       dispatch(setSellerUser(data.seller));
     }
   }, [data, dispatch]);
+
+  useEffect(() => {
+    if (PTRs) {
+      console.log('data : ',PTRs);
+    }
+  }, [PTRs, dispatch]);
 
   const chartData = [
     { month: "January", desktop: 186, mobile: 80 },

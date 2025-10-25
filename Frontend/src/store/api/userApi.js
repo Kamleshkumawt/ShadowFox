@@ -138,6 +138,13 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
+    getAllCategoriesBySlug: builder.query({
+      query: (slug) => ({
+        url: `/users/category/getCategory/${slug}`,
+        method: 'GET',
+      }),
+      invalidatesTags: ['User'],
+    }),
     getAllCategoriesById: builder.query({
       query: (id) => ({
         url: `/users/category/getCategorySelfById/${id}`,
@@ -187,4 +194,5 @@ export const {
   useGetCategoriesMutation,
   useAddNewAddressMutation,
   useUpdateAddressMutation,
+  useGetAllCategoriesBySlugQuery,
 } = userApi;

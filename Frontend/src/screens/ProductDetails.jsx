@@ -78,36 +78,14 @@ const ProductDetails = () => {
   };
 
   return !loading ? (
-    <div className="flex flex-col px-16 gap-3 pt-28">
+    <div className="flex flex-col px-5 sm:px-16 gap-3 pt-28">
       <h1 className="font-medium text-lg mt-2">
         Home/Women/Women Ethnic/WearKurtis style list kurti with embroidered
         work
       </h1>
       <div className=" w-full flex flex-col lg:flex-row justify-center gap-8">
         <div className="flex gap-2 w-full">
-          {/* <div className="flex flex-col items-center gap-2 mt-2">
-            <img
-              src={show?.images[0].url}
-              className="w-18 h-16 rounded-xs border border-purple-400 px-1"
-              alt="img"
-            />
-            <img
-             src={show?.images[1].url}
-              className="w-16 h-16 rounded-xs border border-purple-400 px-1"
-              alt="img"
-            />
-            <img
-              src={show?.images[2].url}
-              className="w-16 h-16 rounded-xs border border-purple-400 px-1"
-              alt="img"
-            />
-            <img
-              src={show?.images[3].url}
-              className="w-16 h-16 rounded-xs border border-purple-400 px-1"
-              alt="img"
-            />
-          </div> */}
-          <div className="flex flex-col items-center gap-2 mt-2">
+          <div className="flex flex-col items-center gap-2 mt-2 min-w-[3rem]">
             {show?.images?.map((image, index) => (
               <img
                 key={index}
@@ -121,29 +99,24 @@ const ProductDetails = () => {
             ))}
           </div>
           <div className="flex flex-col gap-3">
-            <div className="border border-gray-300 rounded-xs max-w-2xl">
+            <div className="border border-gray-300 rounded-xs max-w-[16rem] sm:max-w-2xl">
               <img
                 src={showSelectedImg?.url}
                 className="w-full h-full object-cover px-6"
                 alt="img"
               />
             </div>
-            <div className="flex items-center w-full gap-3 px-5">
+            <div className="flex flex-col sm:flex-row items-center w-full gap-3 px-5">
               <div
                 onClick={() => handleAddToCartProduct()}
                 disabled={!isLoading}
-                className="border border-[#9f2089] text-[#9f2089] p-2 px-5  text-lg font-medium rounded-xs flex items-center justify-center gap-2 w-full cursor-pointer"
+                className="border border-[#9f2089] text-[#9f2089] p-2 sm:px-5 text-sm sm:text-lg font-medium rounded-xs flex items-center justify-center gap-2 w-full cursor-pointer"
               >
                 <svg
-                  width="21"
-                  height="20"
                   fill="#9F2089"
                   xmlns="http://www.w3.org/2000/svg"
-                  // stroke="transparent"
-                  // btntype="ghost"
-                  // icon="[object Object]"
-                  className="sc-ftTHYK fmsjQr ProductCard__GhostButtonBigStyled-sc-camkhj-2 Uqksj"
-                  // iconsize="20"
+                  className="w-5 h-5 sm:w-6 sm:h-6"
+    
                 >
                   <g
                    
@@ -166,7 +139,7 @@ const ProductDetails = () => {
               <div 
               onClick={() => handleAddToCartProduct()}
               disabled={!isLoading}
-              className="border border-[#9f2089] text-[#fff] bg-[#9f2089] p-2 px-5  text-lg font-medium  rounded-xs flex items-center justify-center gap-2  w-full cursor-pointer">
+              className="border border-[#9f2089] text-[#fff] bg-[#9f2089] p-2 px-1 sm:px-5  text-sm sm:text-lg font-medium  rounded-xs flex items-center justify-center gap-2   w-full cursor-pointer">
                 <svg
                   width="20"
                   height="20"
@@ -192,7 +165,7 @@ const ProductDetails = () => {
                 Buy Now
               </div>
             </div>
-            <span className="border-b border-gray-400 block min-w-xs"></span>
+            <span className="border-b border-gray-400 block min-w-[10rem] sm:min-w-xs"></span>
             <div className="flex flex-col gap-2">
               <h1 className="text-lg font-semibold ">1 Similar Products</h1>
               <div className="flex items-center gap-3">
@@ -223,7 +196,7 @@ const ProductDetails = () => {
               <span className="text-lg text-green-500">
                 {show?.discount?.percentage}% off
               </span>
-              <div className="flex items-center gap-2 text-lg text-gray-500">
+              <div className=" hidden sm:flex items-center gap-2 text-lg text-gray-500">
                 onwards
                 <svg
                   viewBox="0 0 20 20"
@@ -324,7 +297,7 @@ const ProductDetails = () => {
               </p>
             </div>
           </div>
-          <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-4 ">
+          {/* <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-4 ">
             <h1 className="text-gray-800 text-xl font-semibold  ">Sold By</h1>
             <div className="flex items-start justify-around gap-5 text-gray-500">
               <div className="flex items-start gap-5">
@@ -392,7 +365,7 @@ const ProductDetails = () => {
                 View Shop
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-4 ">
             <h1 className="text-gray-800 text-xl font-semibold  ">
               Check Delivery Date
@@ -481,7 +454,7 @@ const ProductDetails = () => {
             <div className="flex flex-col  gap-5 w-full">
               <div className=" flex items-center gap-2">
                 <div className="text-gray-400 text-sm flex flex-col">
-                  <div className="flex items-center text-5xl gap-1 text-[#038d63] font-bold  px-2">
+                  <div className="flex items-center text-xl sm:text-5xl gap-1 text-[#038d63] font-bold  px-2">
                     4.2
                     <svg
                       width="18"
@@ -525,10 +498,10 @@ const ProductDetails = () => {
                     return (
                       <div
                         key={item.label}
-                        className="flex items-center gap-4 w-full"
+                        className="flex items-center gap-1 sm:gap-4 w-full"
                       >
                         {/* Label */}
-                        <span className="w-24">{item.label}</span>
+                        <span className="sm:w-24">{item.label}</span>
 
                         {/* Bar container */}
                         <div className="flex-1 bg-gray-200 h-2 rounded overflow-hidden">
@@ -547,7 +520,7 @@ const ProductDetails = () => {
                   })}
                 </div>
               </div>
-              <span className="border-b border-gray-400 block min-w-xs"></span>
+              <span className="border-b border-gray-400 block min-w-[10rem] sm:min-w-xs"></span>
               <div className="font-semibold ">
                 Real Images and videos from customers
               </div>
@@ -563,7 +536,7 @@ const ProductDetails = () => {
                   alt="img"
                 />
               </div>
-              <span className="border-b border-gray-400 block min-w-xs"></span>
+              <span className="border-b border-gray-400 block min-w-[10rem] sm:min-w-xs"></span>
               {/* user review */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2 font-medium text-lg text-gray-600">
@@ -640,7 +613,7 @@ const ProductDetails = () => {
                   Helpful <span>(9)</span>
                 </div>
               </div>
-              <span className="border-b border-gray-400 block min-w-xs"></span>
+              <span className="border-b border-gray-400 block min-w-[10rem] sm:min-w-xs"></span>
               {/* user review */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2 font-medium text-lg text-gray-600">
@@ -718,7 +691,7 @@ const ProductDetails = () => {
                   Helpful <span>(9)</span>
                 </div>
               </div>
-              <span className="border-b border-gray-400 block min-w-xs"></span>
+              <span className="border-b border-gray-400 block min-w-[10rem] sm:min-w-xs"></span>
               <div className="text-[#9f2089] font-bold flex items-center gap-1 cursor-pointer">
                 VIEW ALL REVIEWS
                 <svg
@@ -769,7 +742,7 @@ const ProductDetails = () => {
       </div>
       <div className="flex flex-col gap-2">
         <h1 className="font-semibold text-xl">People also viewed</h1>
-        <div className="flex flex-wrap items-center justify-start gap-4 mt-3 mb-20">
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-3 mb-20">
           {products.map((product) => (
             <Card key={product._id} data={product} />
           ))}

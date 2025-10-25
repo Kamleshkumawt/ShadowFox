@@ -114,7 +114,7 @@ sellerSchema.methods.isValidPassword = async function(password) {
 
 sellerSchema.methods.generateJWT = function() {
     return jwt.sign(
-        { id: this._id, role: 'seller' },
+        { _id: this._id, role: 'seller' },
         process.env.JWT_SECRET,
         { expiresIn: '50d' }
     );

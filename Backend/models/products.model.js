@@ -89,6 +89,11 @@ const productSchema = new mongoose.Schema({
         enum: ['Active', 'Inactive', 'Out of stock'],
         default: 'Active'
     },
+    orderStatus:{
+        type:String,
+        enum:['Pending','Shipped','Delivered','Cancelled'],
+        default:'Pending'
+    },
     comboType: {
         type: String,
         default: 'single'

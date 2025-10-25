@@ -25,9 +25,9 @@ export const sellerAuthApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
-    changePassword: builder.mutation({
+    changeSellerPassword: builder.mutation({
       query: (data) => ({
-        url: '/auth/change-password',
+        url: '/users/seller/update-pass',
         method: 'PUT',
         body: data,
       }),
@@ -38,6 +38,12 @@ export const sellerAuthApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
+    sellerLogout: builder.mutation({
+      query: () => ({
+        url: '/users/seller/logout',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -45,6 +51,7 @@ export const {
   useCreateSellerAccountMutation,
   useSellerLoginMutation,
   useUpdateSellerMutation,
-  useChangePasswordMutation,
-  useGetProfileSellerMutation
+  useGetProfileSellerMutation,
+  useChangeSellerPasswordMutation,
+  useSellerLogoutMutation,
 } = sellerAuthApi;

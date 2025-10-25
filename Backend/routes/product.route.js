@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { createProduct, deleteProduct, getProductById, getProducts, getProductsByCategory, getProductsBySeller, getProductsBySellerId, updateProduct } from '../controllers/index.js';
+import { createProduct, deleteProduct, getProductById, getProducts, getProductsByCategory, getProductsBySeller, getProductsBySellerId, getProductsByStatusForSeller, searchProducts, updateProduct } from '../controllers/index.js';
 import {body, validationResult} from 'express-validator';
 import { protect} from '../middleware/index.js';
 import upload from '../middleware/multer.js';
@@ -79,6 +79,10 @@ router.get('/:id',protect, getProductById);
 router.get('/category/:id',protect, getProductsByCategory);
 
 router.get('/seller/:id', protect,getProductsBySellerId);
+
+router.get('/seller/search/:id', protect,searchProducts);
+
+router.get('/seller/getAll', protect,getProductsByStatusForSeller);
 
 router.get('/sellerId', protect,getProductsBySeller); //not hit route
 

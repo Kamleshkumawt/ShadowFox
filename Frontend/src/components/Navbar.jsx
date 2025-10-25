@@ -1,39 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import ProfileDropdown from "./ProfileDropdown";
+import { useGetProductBySearchQuery } from "../store/api/productApi";
+import Loading from "./Loading";
 
 const popularSearches = [
   "saree",
@@ -63,6 +41,13 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
+ const [searchTrigger, setSearchTrigger] = useState(""); // trigger RTK Query manually
+
+  // RTK Query
+  const { data, isLoading } = useGetProductBySearchQuery(searchTrigger, {
+    skip: searchTrigger.length < 1
+  });
+
   // Load from localStorage
   useEffect(() => {
     const stored = localStorage.getItem("recentSearches");
@@ -70,6 +55,14 @@ const Navbar = () => {
       setRecentSearches(JSON.parse(stored));
     }
   }, []);
+
+  useEffect(() => {
+    if (data?.success) {
+      // console.log("Search Results:", data.products);
+      // Navigate to search results page with query param
+      navigate(`/products/search?query=${encodeURIComponent(searchTrigger)}`);
+    }
+  }, [data, navigate, searchTrigger]);
 
   // Close dropdown when clicked outside
   useEffect(() => {
@@ -94,6 +87,9 @@ const Navbar = () => {
     const limited = updated.slice(0, 5);
     setRecentSearches(limited);
     localStorage.setItem("recentSearches", JSON.stringify(limited));
+
+    setSearchTrigger(trimmed);
+
     setQuery(trimmed);
     setShowDropdown(false);
     console.log("Search:", trimmed);
@@ -113,7 +109,8 @@ const Navbar = () => {
     item.toLowerCase().includes(query.toLowerCase())
   );
 
-  return (
+
+  return !isLoading ? (
     <div className="fixed bg-white w-full z-50">
       <div className=" w-full h-[70px] flex items-center justify-between px-20 py-2 border-b-2 border-gray-300 z-50">
         <span onClick={()=>{navigate("/");scrollTo(0,0);}} className="text-2xl cursor-pointer">ApanaStore</span>
@@ -604,7 +601,7 @@ const Navbar = () => {
         </NavigationMenu>
       </div>
     </div>
-  );
+  ) : <Loading/>
 };
 
 export default Navbar;

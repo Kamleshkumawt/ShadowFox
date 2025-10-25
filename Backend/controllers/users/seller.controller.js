@@ -85,7 +85,7 @@ export const sellerLoginController = asyncHandler(async (req, res) => {
     });
   }
 
-  await seller.findByIdAndUpdate(seller._id, { lastActive: Date.now() });
+  await sellerModel.findByIdAndUpdate(seller._id, { lastActive: Date.now() });
 
   const token = seller.generateJWT();
 
@@ -123,7 +123,7 @@ export const getSellerByUserId = async (req, res) => {
 export const updateSeller = async (req, res) => {
   try {
     const userId = req.user._id;
-    
+
     const {
       store_name,
       store_description,
@@ -131,8 +131,10 @@ export const updateSeller = async (req, res) => {
       gst_number,
       bank_details,
       policies,
-      mangerName
+      mangerName,
     } = req.body;
+
+    // console.log('req body', req.body)
 
     if (
       !store_name &&
@@ -156,7 +158,7 @@ export const updateSeller = async (req, res) => {
     if (req.file && req.file.path) {
       try {
         const result = await uploadOnCloudinary(req.file.path);
-        console.log('result : ',result)
+        // console.log('result : ',result)
         if (result.success) {
           store_image.url = result.secure_url;
           store_image.publicId = result.public_id;
@@ -176,18 +178,36 @@ export const updateSeller = async (req, res) => {
 
     // console.log('store:',store_image)
 
+    const updatedFields = {};
+    if (store_name) updatedFields.store_name = store_name;
+    if (store_description) updatedFields.store_description = store_description;
+    if (store_address) updatedFields.store_address = store_address;
+    if (gst_number) updatedFields.gst_number = gst_number;
+    if (bank_details) updatedFields.bank_details = bank_details;
+    if (policies) updatedFields.policies = policies;
+    if (store_image) updatedFields.store_image = store_image;
+    if (mangerName) updatedFields.mangerName = mangerName;
+
+    // console.log("updatedFields before cleanup:", updatedFields);
+
+   
+    Object.keys(updatedFields).forEach((key) => {
+      const value = updatedFields[key];
+
+      if (value === undefined) delete updatedFields[key];
+      else if (typeof value === "object" && Object.keys(value).length === 0) {
+        delete updatedFields[key];
+      }
+      else if (typeof value === "string" && value.trim() === "") {
+        delete updatedFields[key];
+      }
+    });
+
+    // console.log("updatedFields after cleanup:", updatedFields);
+
     const seller = await sellerModel.findOneAndUpdate(
       { userId },
-      {
-        store_name,
-        store_description,
-        store_address,
-        gst_number,
-        bank_details,
-        policies,
-        store_image,
-        mangerName
-      },
+      updatedFields,
       { new: true }
     );
 
@@ -198,5 +218,74 @@ export const updateSeller = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+export const logoutSellerController = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+
+    const seller = await sellerModel.findById(userId);
+    if (!seller) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    seller.lastActive = Date.now();
+    await seller.save();
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.status(200).json({ success: true, message: "Logout successful" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Server error during logout",
+        errors: error.message,
+      });
+  }
+};
+
+export const updateSellerPassController = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    const userId = req.user?._id;
+
+    const seller = await sellerModel.findById(userId).select("+password");
+    if (!seller) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const isMatch = await seller.isValidPassword(oldPassword);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Old password is incorrect" });
+    }
+
+    const hashedPassword = await sellerModel.hashPassword(newPassword);
+    if (!hashedPassword) {
+      return res.status(500).json({ message: "Error hashing password" });
+    }
+    seller.password = hashedPassword;
+
+    await seller.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    console.error("Update password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating password",
+      errors: error.message,
+    });
   }
 };

@@ -13,7 +13,7 @@ const LoginSeller = () => {
 
   const handleLogin = async() => {
     try{       
-       const response = await sellerLogin({ phone:contact, email:contact, password }).unwrap();
+       const response = await sellerLogin({ store_phone:contact, password }).unwrap();
       //  console.log("Logged in user:", response);
        dispatch(setSellerUser(response.seller));
        navigate("/seller");
@@ -61,7 +61,7 @@ const LoginSeller = () => {
                   }
                   peer-focus:top-1 peer-focus:text-xs peer-focus:text-purple-600`}
               >
-              Email Id/Mobile Number
+              Enter Mobile Number
               </label>
             </div>
           </div>
