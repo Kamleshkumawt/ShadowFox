@@ -2,11 +2,12 @@ import productModel from '../../models/products.model.js';
 import categoryModel from '../../models/categories.model.js';
 import {asyncHandler} from '../../middleware/errorHandler.js';
 import  uploadOnCloudinary  from '../../db/cloudinary.js';
+import sellerModel from '../../models/sellers.model.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
     const { name, price, description, category, quantity, color, brand, discount, tags, weight,dimensions,size,material,battery,age,hsnCode,styleCode,comboType} = req.body;
-    // const sellerId = req.user._id; 
-    const sellerId = "68e2a5264f4c2c3d92fbdca3"; 
+    const sellerId = req.user._id; 
+    // const sellerId = "68e2a5264f4c2c3d92fbdca3"; 
 
     // console.log('req.body data',req.body);
     // console.log('req.files data',req.files);
@@ -37,6 +38,17 @@ export const createProduct = asyncHandler(async (req, res) => {
     //     throw new Error(`Category must be one of the following: ${validCategories.join(', ')}`);
     // }
 
+    const store = await sellerModel.findOne({userId:sellerId});
+    if (!store) {
+        res.status(400);
+        throw new Error(`Seller not found`);
+    }
+
+    if((store.store_name).trim() !== brand.trim()) {
+      res.status(400);
+      throw new Error('brand not found please Enter correct brand name')
+    }
+   
     
 
     const images = [];

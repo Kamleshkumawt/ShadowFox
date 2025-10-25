@@ -868,7 +868,7 @@ const AddProduct = () => {
       </div>
 
       <div className="w-full h-16 bg-white fixed bottom-0 right-0 flex items-center justify-between px-10">
-        <div className="border border-purple-600 max-w-xs p-2 px-4 text-center rounded-sm font-medium text-purple-600 text-lg cursor-pointer">
+        <div onClick={() => {navigate('/seller'); scrollTo(0,0);}} className="border border-purple-600 max-w-xs p-2 px-4 text-center rounded-sm font-medium text-purple-600 text-lg cursor-pointer">
           Cancel
         </div>
         <button

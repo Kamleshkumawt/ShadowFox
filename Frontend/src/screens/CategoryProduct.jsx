@@ -101,7 +101,8 @@ const CategoryProduct = () => {
   
     useEffect(() => {
       if (data) {
-        console.log('products : ',data.products);
+        // console.log('products : ',data.products);
+        // console.log('category data API se  : ',categories);
         setProducts(data.products);
       }
     }, [data]);

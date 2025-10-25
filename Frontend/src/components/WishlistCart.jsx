@@ -14,7 +14,7 @@ const WishlistCart = ({product }) => {
             productId: id
         }
       await updateToWishlistProduct(products).unwrap();
-
+        window.location.reload();
     } catch (error) {
       console.error('Error fetching cart:', error);
     }
@@ -24,7 +24,7 @@ const WishlistCart = ({product }) => {
     <div className="border border-gray-300 rounded-sm">
       <div className="flex items-start gap-2 p-3">
         <div>
-        <img className="w-20" src="https://th.bing.com/th/id/OIP.57Qww9KxzowAzHAiP_5sjgHaHa?o=7&cb=12rm=3&rs=1&pid=ImgDetMain&o=7&rm=3"  alt="img" />
+        <img className="w-20" src={product?.productId?.frontImage.url}  alt="img" />
       </div>
       <div className="flex flex-col gap-2">
         <h1 className="text-lg flex items-center gap-2">
@@ -97,7 +97,7 @@ const WishlistCart = ({product }) => {
               CANCEL
             </button>
             <button
-              onClick={() => removerProductHandler(product._id) && setOpenRemoveProduct(false)}
+              onClick={() => removerProductHandler(product?.productId?._id) && setOpenRemoveProduct(false)}
               disabled={isLoading}
               className="px-4 py-2 font-medium text-purple-500 cursor-pointer"
             >

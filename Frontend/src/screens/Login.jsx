@@ -11,20 +11,34 @@ const Login = () => {
   const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useDispatch();
 
-  const handleLogin = async() => {
-    try{       
-       const response = await login({ phone:contact, email:contact, password }).unwrap();
-      //  console.log("Logged in user:", response);
-       dispatch(setUser(response.user));
-       navigate("/");
+  const handleLogin = async () => {
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+    const isPhone = /^[0-9]{10}$/.test(contact);
 
-    }catch(err){
+    const payload = {
+      password,
+    };
+
+    if (isEmail) {
+      payload.email = contact;
+    } else if (isPhone) {
+      payload.phone = contact;
+    } else {
+      // Handle error before even sending the request
+      console.error("Invalid contact input");
+      return;
+    }
+    
+    try {
+      const response = await login(payload).unwrap();
+      //  console.log("Logged in user:", response);
+      dispatch(setUser(response.user));
+      navigate("/");
+    } catch (err) {
       console.error("Login error:", err);
     }
   };
 
-  
-  
   return (
     <div className="h-[110vh] w-full flex flex-col items-center justify-center bg-[#fdecef]">
       <div className=" w-full max-w-md bg-white rounded-sm overflow-hidden flex flex-col  gap-5 mt-30">
@@ -68,7 +82,7 @@ const Login = () => {
             </div>
           </div> */}
 
-           <div className="flex items-center gap-2 w-full">
+          <div className="flex items-center gap-2 w-full">
             <div className="relative mb-5 w-full">
               <input
                 type="text"
@@ -119,15 +133,31 @@ const Login = () => {
               Password
             </label>
           </div>
-          {error && <p>Error: {error.data?.message || "Registration failed"}</p>}
+          {error && (
+            <p>Error: {error.data?.message || "Registration failed"}</p>
+          )}
           <div
-             onClick={() => {handleLogin();scrollTo(0,0)}}
+            onClick={() => {
+              handleLogin();
+              scrollTo(0, 0);
+            }}
             className="bg-purple-800 w-full text-center p-2 px-4 rounded-sm text-white font-medium cursor-pointer"
-              disabled={isLoading}
+            disabled={isLoading}
           >
             Continue
           </div>
-         <div className="text-xs text-center text-gray-400 font-medium">Don't have an account? <span onClick={()=>{navigate('/SignUp');scrollTo(0,0)}} className="text-purple-400 cursor-pointer">Register</span></div>
+          <div className="text-xs text-center text-gray-400 font-medium">
+            Don't have an account?{" "}
+            <span
+              onClick={() => {
+                navigate("/SignUp");
+                scrollTo(0, 0);
+              }}
+              className="text-purple-400 cursor-pointer"
+            >
+              Register
+            </span>
+          </div>
         </div>
         <div className="text-gray-400 font-medium text-xs flex flex-col items-center mt-20 mb-5 ">
           By continuing, you agree to ApanaStore's
@@ -142,7 +172,6 @@ const Login = () => {
           </p>
         </div>
       </div>
-
     </div>
   );
 };

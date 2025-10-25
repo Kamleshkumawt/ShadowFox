@@ -163,7 +163,10 @@ const ProductDetails = () => {
                 </svg>
                 Add to Cart
               </div>
-              <div className="border border-[#9f2089] text-[#fff] bg-[#9f2089] p-2 px-5  text-lg font-medium  rounded-xs flex items-center justify-center gap-2  w-full">
+              <div 
+              onClick={() => handleAddToCartProduct()}
+              disabled={!isLoading}
+              className="border border-[#9f2089] text-[#fff] bg-[#9f2089] p-2 px-5  text-lg font-medium  rounded-xs flex items-center justify-center gap-2  w-full cursor-pointer">
                 <svg
                   width="20"
                   height="20"

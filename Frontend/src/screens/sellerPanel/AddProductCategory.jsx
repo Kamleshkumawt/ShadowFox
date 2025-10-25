@@ -131,7 +131,7 @@ if (!categoryTree || Object.keys(categoryTree).length === 0) return <Loading/>
 
   return (
     <>
-      <Title text1="Add" text2="Product" />
+      <Title text1="Add" text2="Category" />
 
       {/* Search Bar */}
       <div className="w-full border border-gray-400 rounded-sm flex items-center gap-2 shadow-sm shadow-gray-300 p-[10px] bg-white mt-3">
@@ -181,9 +181,9 @@ if (!categoryTree || Object.keys(categoryTree).length === 0) return <Loading/>
           </svg>
         )}
       </div>
-      <div className="w-full flex gap-5  mt-4">
+      <div className="w-full flex flex-col sm:flex-row  gap-5  mt-4">
         <div className="max-w-6xl">
-          <div className="w-full flex gap-5 overflow-x-auto">
+          <div className="w-full flex flex-col sm:flex-row gap-5 overflow-x-auto">
             {Object.entries(categoryTree).filter(([level]) => Number(level) < 4).map(([level, categories]) => (
               <div
                 key={level}

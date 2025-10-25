@@ -19,7 +19,7 @@ const Cart = () => {
     const fetchCart = async () => {
       try {
         const response = await getToCartProduct().unwrap();
-        console.log("get to cart product", response);
+        // console.log("get to cart product", response);
         setCart(response.cart);
         
         const totalPrice =
@@ -63,7 +63,7 @@ const Cart = () => {
         </div>
     </div> */}
       <CartHeader address={1} />
-      <div className="w-full h-full flex flex-col sm:flex-row items-start justify-center gap-3 p-3">
+     {cart?.items?.length > 0 ? <div className="w-full h-full flex flex-col sm:flex-row items-start justify-center gap-3 p-3">
         <div className=" w-full sm:w-[60%] h-full flex flex-col items-end gap-2 sm:px-5 sm:border-r-2 sm:border-gray-200">
           <div className="space-y-3">
             <h1 className="text-lg font-medium text-gray-500 py-1 text-start w-full">
@@ -116,7 +116,12 @@ const Cart = () => {
           </div> */}
           <CartSidebar items={{length:cart?.items?.length, totalPrice}} nav={'address'} viewPage={1} />
         </div>
-      </div>
+      </div> : (
+        <div className="w-full h-[70vh] flex flex-col items-center justify-center gap-6">
+          <h1 className="text-2xl font-medium text-gray-600">Your cart is empty</h1>
+          <Link to='/' className="bg-purple-800 text-white font-medium px-4 py-2 rounded-sm">Shop Now</Link>
+        </div>
+      )}
 
       {/* {openSideBar && (
         <div className='w-full h-full absolute top-0 z-50 flex items-center justify-end bg-gray-900/80'>

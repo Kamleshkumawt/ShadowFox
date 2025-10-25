@@ -27,6 +27,7 @@ import {
   getWishlistByUserId,
   returnsController,
   reviewsController,
+  sellerLoginController,
   updateAddressById,
   updateCart,
   updateSeller,
@@ -44,18 +45,6 @@ router.put("/addNewAddress", protect, addNewAddress);
 router.post(
   "/seller/register",
   protect,
-  upload.single("store_image"),
-  [
-    body("store_name").notEmpty().withMessage("Store name is required"),
-    body("store_description")
-      .notEmpty()
-      .withMessage("Store description is required"),
-    body("store_address").notEmpty().withMessage("Store address is required"),
-    body("store_phone").notEmpty().withMessage("Store phone is required"),
-    body("gst_number").notEmpty().withMessage("GST number is required"),
-    body("bank_details").notEmpty().withMessage("Bank details are required"),
-    body("policies").notEmpty().withMessage("Policies are required"),
-  ],
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -80,7 +69,30 @@ router.post(
 );
 
 
-router.put("/seller/update", protect, async (req, res) => {
+router.post('/seller/login', [
+    body('password').notEmpty().withMessage('Password is required')
+],async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                success: false,
+                message: 'Validation errors',
+                errors: errors.array()
+            });
+        }
+        // Call the controller
+        await sellerLoginController(req, res);
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error during login'
+        });
+    }
+});
+
+router.put("/seller/update", upload.single("store_image"), protect, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

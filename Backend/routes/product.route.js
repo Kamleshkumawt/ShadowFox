@@ -13,7 +13,7 @@ router.post('/create', protect,
     { name: 'images', maxCount: 5 }
     ]),
    [
-    body('name').trim().notEmpty().withMessage('name is required').isLength({ max: 50 }).withMessage('name cannot be more than 50 characters'),
+    body('name').trim().notEmpty().withMessage('name is required').isLength({ max: 100 }).withMessage('name cannot be more than 100 characters'),
     body('description').trim().notEmpty().withMessage('description is required').isLength({ max: 1000 }).withMessage('description cannot be more than 1000 characters'),
     body('price').notEmpty().withMessage('price must be a number'),
     body('quantity').notEmpty().withMessage('quantity must be a number'),

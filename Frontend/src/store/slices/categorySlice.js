@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const categorySlice = createSlice({
   name: 'category',
   initialState: {
-    list: [], // all categories
+    list: {}, // all categories
     selectedCategories: [],
     category: null,
   },

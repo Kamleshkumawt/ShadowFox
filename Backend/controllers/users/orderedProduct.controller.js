@@ -1,11 +1,16 @@
 import orderModel from '../../models/order.model.js';
+import cartModel from "../../models/carts.model.js";
 
 export const createOrder = async (req, res) => {
     try {
-        const { total_amount, shipping_address, payment_method, items,paymentId,sellerId } = req.body;
+        const { total_amount, shipping_address, payment_method, items,paymentId } = req.body;
+        console.log('req.body',req.body)
+
         const userId = req.user._id;
-        const newOrder = new orderModel({ userId, total_amount, shipping_address, payment_method,sellerId, items, paymentId });
+        const newOrder = new orderModel({ userId, total_amount, shipping_address, payment_method, items, paymentId });
         await newOrder.save();
+        await cartModel.findOneAndDelete({ userId });
+        // console.log('cart after order', cart);
         res.status(201).json({ success: true, message: 'Order created successfully', newOrder });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server error', error: error.message });
@@ -15,7 +20,7 @@ export const createOrder = async (req, res) => {
 export const getOrdersByUserId = async (req, res) => {
     try {
         const userId = req.user._id;
-        const orders = await orderModel.find({ userId });
+        const orders = await orderModel.find({ userId }).populate('userId').populate('items.productId');
         res.status(200).json({ success: true, message: 'Orders fetched successfully', orders });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server error', error: error.message });

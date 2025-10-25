@@ -22,6 +22,14 @@ import ShowAllReturnsOrders from '../screens/sellerPanel/ShowAllReturnsOrders'
 import EditProduct from '../screens/sellerPanel/EditProduct'
 import AddProductCategory from '../screens/sellerPanel/AddProductCategory'
 import Wishlist from '../screens/Wishlist'
+import Order from '../screens/Order'
+import CreateSellerAccount from '../screens/sellerPanel/auth/CreateSellerAccount'
+import LoginSeller from '../screens/sellerPanel/auth/LoginSeller'
+import BusinessDetails from '../screens/sellerPanel/auth/BusinessDetails'
+import PickupAddress from '../screens/sellerPanel/auth/PickupAddress'
+import SellerDetails from '../screens/sellerPanel/auth/SellerDetails'
+import BankDetails from '../screens/sellerPanel/auth/BankDetails'
+import SellerSettings from '../screens/sellerPanel/SellerSettings'
 
 const AppRouter = () => {
    const location = useLocation();
@@ -45,6 +53,13 @@ const AppRouter = () => {
             <Route path="/cart/summary" element={<CartSummary />} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/account/delete" element={<DeleteAccount />} />
+            <Route path="/user/orders" element={<Order />} />
+            <Route path="/sellerSignUp" element={<CreateSellerAccount />} />
+            <Route path="/sellerSignIn" element={<LoginSeller />} />
+            <Route path="/sellerSignUp/business" element={<BusinessDetails />} />
+            <Route path="/sellerSignUp/address" element={<PickupAddress />} />
+            <Route path="/sellerSignUp/bank-details" element={<BankDetails />} />
+            <Route path="/sellerSignUp/details" element={<SellerDetails />} />
             <Route path='/seller/*' element={<Layout/>} > 
                 <Route index element={<Dashboard />} />
                 <Route path="add-product" element={<AddProduct/>} />
@@ -55,6 +70,7 @@ const AppRouter = () => {
                 <Route path="list-del-orders" element={<ShowAllDeliveredOrders/>} />
                 <Route path="list-ship-orders" element={<ShowAllShippedOrders/>} />
                 <Route path="list-ret-orders" element={<ShowAllReturnsOrders/>} />
+                <Route path="list-ret-stting" element={<SellerSettings/>} />
             </Route>
            
         </Routes>

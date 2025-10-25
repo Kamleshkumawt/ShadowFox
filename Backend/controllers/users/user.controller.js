@@ -56,12 +56,14 @@ export const getWishlistByUserId = async (req, res) => {
 export const updateWishlist = async (req, res) => {
     try {
         const { productId } = req.body;
+        // console.log('productId to remove :', productId);
         const userId = req.user._id;
         const wishlist = await wishlistModel.findOneAndRemove({ userId }, { products : [{ productId }]}, { new: true });
          const product = await productModel.findOne({ _id: productId });
+        //  console.log('product :', product);
           product.isWishlist = false;
           await product.save();
-        console.log('response wishlist :', wishlist);
+        // console.log('response wishlist :', wishlist);
         res.status(200).json({ success: true, message: "Wishlist updated successfully", wishlist});
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -72,7 +74,7 @@ export const deleteWishlist = async (req, res) => {
     try {
         const userId = req.user._id;
         const wishlist = await wishlistModel.findOneAndDelete({ userId });
-        console.log('response wishlist :', wishlist);
+        // console.log('response wishlist :', wishlist);
         //all product isWishlist false
         await productModel.updateMany(
             { userId },

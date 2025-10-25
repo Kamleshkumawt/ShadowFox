@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setCategories } from '../store/slices/categorySlice';
@@ -7,18 +7,27 @@ const HomePageCard = ({data}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-   useEffect(() => {
-    if (data?.categoryId) {
-      dispatch(setCategories(data.categoryId));
-    }
-  }, [data?.categoryId, dispatch]);
+  //  useEffect(() => {
+  //   if (data?.categoryId) {
+  //     console.log('categoryId in HomePageCard : ',data.categoryId);
+  //     dispatch(setCategories(data.categoryId));
+  //   }
+  // }, [data?.categoryId, dispatch]);
 
   return (
     <div 
     onClick={() => {
-      navigate(`/${data?.categoryId.name}`);
-      scrollTo(0, 0);
-    }} 
+        const category = data?.categoryId;
+        const categoryName = category?.name;
+
+        if (categoryName) {
+          dispatch(setCategories(category));  // ✅ Dispatch on click
+          navigate(`/${categoryName}`);
+          window.scrollTo(0, 0);
+        } else {
+          console.warn('Category name is missing');
+        }
+      }}
     className="max-w-[14rem] rounded-xs overflow-hidden  border border-gray-200 p-3 space-y-2 cursor-pointer bg-white">
 
   {/* Image container */}

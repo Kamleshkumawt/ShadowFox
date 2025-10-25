@@ -15,9 +15,46 @@ const orderSchema = new mongoose.Schema({
         enum:['Pending','Shipped','Delivered','Cancelled'],
         default:'Pending'
     },
-    shipping_address:{
-        type:String,
-        required:true
+    shipping_address: {
+        name: {
+            type: String,
+        },
+        contact: {
+            type: String,
+        },
+        label: {
+            type: String,
+            default: 'Home'
+        },
+        street: {
+            type: String,
+        },
+        city: {
+            type: String,
+        },
+        state: {
+            type: String,
+        },
+        country: {
+            type: String,
+            default: 'India'
+        },
+        postalCode: {
+            type: String,
+        },
+        famousPlaces: {
+            type: String,
+        },
+        isDefault: {
+            type: Boolean,
+            default: false
+        },
+        latitude: {
+            type: String,
+        },
+        longitude: {
+            type: String,
+        }
     },
     payment_method:{
         type:String,
@@ -28,11 +65,6 @@ const orderSchema = new mongoose.Schema({
         type:String,
         unique:true,
         sparse:true
-    },
-    sellerId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'seller',
-        required:true
     },
     items:[{
         productId:{

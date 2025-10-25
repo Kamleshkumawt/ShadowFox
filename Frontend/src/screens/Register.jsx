@@ -20,6 +20,9 @@ const Register = () => {
       return;
     }
 
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+    const isPhone = /^[0-9]{10}$/.test(contact);
+
   //  // Check if input is a 10-digit number
   // if (contact.length !== 10 || !/^\d{10}$/.test(contact)) {
   //   setError("Please enter a valid 10-digit phone number.");
@@ -31,13 +34,26 @@ const Register = () => {
   //   setError("Please enter a valid email address.");
   //   return;
   // }
+const payload = {
+    name,
+    password
+};
 
+if (isEmail) {
+    payload.email = contact;
+} else if (isPhone) {
+    payload.phone = contact;
+} else {
+    // Handle error before even sending the request
+    console.error("Invalid contact input");
+    return;
+}
 
    try {
-      const response = await register({ phone:contact, email:contact, password, name }).unwrap();
+      const response = await register(payload).unwrap();
       // console.log("Registered user:", response);
       dispatch(setUser(response.user));
-    //   navigate('/');
+      navigate('/');
 
     } catch (err) {
       console.error("Registration error:", err);

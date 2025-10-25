@@ -8,10 +8,10 @@ import {Link} from 'react-router-dom'
 
 const ShowAllProduct = () => {
   const [products, setProducts] = useState([]);
-  const user = useSelector((state) => state.auth.user);
-  console.log("user :", user);
+  const seller = useSelector((state) => state.auth.seller);
+  console.log("user :", seller);
 
-  const {data, isLoading} = useGetProductBySellerIdQuery('68e2a5264f4c2c3d92fbdca3');
+  const {data, isLoading} = useGetProductBySellerIdQuery(seller._id);
 
   useEffect(() => {
     if(data) {

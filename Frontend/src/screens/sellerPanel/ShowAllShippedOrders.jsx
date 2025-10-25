@@ -7,10 +7,10 @@ import { formatAmount } from '../../lib/formatAmount';
 
 const ShowAllShippedOrders = () => {
    const [orders, setOrders] = useState([]);
-    const user = useSelector((state) => state.auth.user);
-    console.log("user :", user);
-  
-    const {data, isLoading} = useGetOrderBySellerIdQuery('68e3811559820adf30e7ccfb');
+   const seller = useSelector((state) => state.auth.seller);
+     console.log("seller :", seller);
+   
+    const {data, isLoading} = useGetOrderBySellerIdQuery(seller._id);
   
     useEffect(() => {
       if(data) {
@@ -19,6 +19,7 @@ const ShowAllShippedOrders = () => {
         setOrders(filteredOrders);
       }
     }, [data]);
+    
 
   return !isLoading && (
     <>

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   user: null,
+  seller: null,
   token: localStorage.getItem('token'),
   refreshToken: localStorage.getItem('refreshToken'),
   isAuthenticated: !!localStorage.getItem('token'), // Set to true if token exists
@@ -63,8 +64,12 @@ const authSlice = createSlice({
           state.user = null;
           state.isLoading = false;
         },
+        setSellerUser: (state, action) => {
+          state.seller = action.payload;
+          state.isLoading = false;
+        }
     },
 });
 
-export const { login, logout,setCredentials, updateUser, setLoading, setError, setUser,clearUser } = authSlice.actions;
+export const { login, logout,setCredentials, updateUser, setLoading, setError, setUser,clearUser ,setSellerUser} = authSlice.actions;
 export default authSlice.reducer;

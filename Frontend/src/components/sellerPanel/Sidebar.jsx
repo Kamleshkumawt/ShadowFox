@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon } from 'lucide-react'
+import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon, Settings } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 
@@ -12,6 +12,7 @@ const Sidebar = () => {
         {name: 'List Delivered Orders', path: '/seller/list-del-orders', icon: ListCollapseIcon},
         {name: 'List Shipped Orders', path: '/seller/list-ship-orders', icon: ListCollapseIcon},
         {name: 'List Returned Orders', path: '/seller/list-ret-orders', icon: ListCollapseIcon},
+        {name: 'Settings', path: '/seller/list-ret-stting', icon: Settings},
     ]
 
 

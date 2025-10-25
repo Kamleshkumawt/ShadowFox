@@ -10,7 +10,7 @@ const ProfileDropdown = () => {
   const [showEditModalPass, setShowEditModalPass] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const [logout,  {isLoading}] = useLogoutMutation();
-  const [profileImage, setProfileImage] = useState("https://tse3.mm.bing.net/th/id/OIP.Ip2y_2_KabgvNaHIZhYoJgHaHa?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3");
+  const [profileImage, setProfileImage] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [phone, setPhone] = useState('');
@@ -36,12 +36,12 @@ const ProfileDropdown = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setProfileImage(file);
-    console.log(file);
+    // console.log(file);
 
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
-      console.log(imageUrl);
+      // console.log(imageUrl);
     }
   };
 
@@ -53,9 +53,9 @@ const ProfileDropdown = () => {
     formData.append('email', email);
     formData.append('phone', phone);
 
-   formData.forEach((value, key) => {
-  console.log(key + ':', value);
-});
+//    formData.forEach((value, key) => {
+//   console.log(key + ':', value);
+// });
     
       const response = await updateUser(formData).unwrap();
       // console.log('Profile updated successfully:', response);
@@ -106,7 +106,7 @@ const ProfileDropdown = () => {
           {user && <div className="flex items-center gap-3">
             <img
               // src="https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2"
-              src={user?.profile_picture}
+              src={user?.profile_picture.url}
               className="h-10 w-10 rounded-full object-cover"
               alt="Profile"
             />
@@ -143,7 +143,7 @@ const ProfileDropdown = () => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 11h14l-1.5 9h-11L5 11z" />
             </svg>
-            <span className="text-lg font-semibold">My Orders</span>
+            <span onClick={() => navigate('/user/orders')} className="text-lg font-semibold">My Orders</span>
           </div>
 
           <hr />

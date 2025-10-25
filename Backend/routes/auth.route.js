@@ -93,9 +93,7 @@ router.put('/update-profile', protect, upload.single('profileImage'), async (req
                 message: 'Validation errors',
                 errors: errors.array()
             })
-        } 
-        console.log('File info:', req.file);
-        console.log('Form data:', req.body);
+        }
 
         await updateProfileController(req, res);
     } catch (error) {

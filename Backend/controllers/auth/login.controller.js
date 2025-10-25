@@ -65,7 +65,7 @@ export const loginController = asyncHandler(async (req, res) => {
     });
 
     if(user.role === 'seller'){
-        const seller = await sellerModel.findById(user._id);
+        const seller = await sellerModel.findOne({userId: user._id});
         if(!seller) {
             return res.status(401).json({
                 success: false,

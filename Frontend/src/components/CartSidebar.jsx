@@ -1,28 +1,18 @@
 import React from "react";
 import { formatAmount } from "../lib/formatAmount";
 import { Link, useNavigate } from "react-router-dom";
-import { useCreateOrderMutation } from "../store/api/userApi";
 
-const CartSidebar = ({ items, nav, viewPage, paymentMethod }) => {
+const CartSidebar = ({ items, nav, viewPage, paymentMethod, isClick,
+  isLoading, }) => {
   const discount = 81;
   const navigate = useNavigate();
 
-  const [createOrder,{isLoading}] = useCreateOrderMutation();
+  
 
   const handlePayment = () => {
     // Handle payment logic here
     console.log("Payment method:", paymentMethod);
   };
-
-  const handleCreateOrder = async () => {
-    try {
-      const res = await createOrder({items ,paymentMethod }).unwrap();
-      console.log("Order created successfully:", res);
-      // navigate("/order-success");
-    } catch(error) {
-      console.error("Error creating order:", error);
-    }
-  }
 
   return (
     <div className="w-xs h-full flex flex-col items-start gap-3">
@@ -71,7 +61,7 @@ const CartSidebar = ({ items, nav, viewPage, paymentMethod }) => {
       {viewPage === 4 && (
          <button
             // to={`/cart/${nav}`}
-            onClick={() => handleCreateOrder()}
+            onClick={isClick}
             disabled={isLoading}
             className="bg-purple-800 w-full text-center p-2 px-4 rounded-sm text-white font-medium cursor-pointer"
           >

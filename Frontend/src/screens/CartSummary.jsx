@@ -2,28 +2,47 @@ import React, { useEffect, useState } from 'react'
 import CartBox from '../components/Cart'
 import CartHeader from '../components/CartHeader'
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetToCartProductMutation } from '../store/api/userApi';
-import { setItemsAndPrice } from '../store/slices/productsFilterSlice';
+import { useCreateOrderMutation, useGetToCartProductMutation } from '../store/api/userApi';
+import { setAddress, setItemsAndPrice } from '../store/slices/productsFilterSlice';
 import CartSidebar from '../components/CartSidebar';
 import Loading from '../components/Loading';
 import { useNavigate } from 'react-router-dom';
+import CartAddressSummary from '../components/CartAddressSummary';
 
 const CartSummary = () => {
   const [cart, setCart] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-    const [address, setAddress] = useState();
+    const [address, setAddr] = useState();
+      const [openSideBarUpdated, setOpenSideBarUpdated] = useState(false);
   
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [getToCartProduct, { isLoading }] = useGetToCartProductMutation();
 
+    const [createOrder,{loading}] = useCreateOrderMutation();
+
     const user = useSelector((state) => state.auth.user);
+    const addr = useSelector((state) => state.filters.address);
   
+  const handleCreateOrder = async () => {
+    try {
+      const items = cart.items.map(item => ({
+        productId: item.productId._id,
+        quantity: item.quantity
+      }));
+      await createOrder({ total_amount:totalPrice, shipping_address:address, payment_method:"cash_on_delivery", items}).unwrap();
+      // console.log("Order created successfully:", res);
+      navigate("/user/orders");
+    } catch(error) {
+      console.error("Error creating order:", error);
+    }
+  }
+
     useEffect(() => {
       const fetchCart = async () => {
         try {
           const response = await getToCartProduct().unwrap();
-          console.log("get to cart product", response);
+          // console.log("get to cart product", response);
           setCart(response.cart);
           
           const totalPrice =
@@ -52,13 +71,22 @@ const CartSummary = () => {
       useEffect(() => {
       if (user?.address) {
         const selectedAddress = user.address.find(addr => addr._id === JSON.parse(localStorage.getItem('selAdd')));
-        console.log("Selected address:", selectedAddress);
-        setAddress(selectedAddress);
+        // console.log("Selected address:", selectedAddress);
+        setAddr(selectedAddress);
+        dispatch(setAddress(user.address));
         // console.log("User address:", user.address);
         // setAddress(user.address.filter(addr => addr._id === JSON.parse(localStorage.getItem('selAdd'))));
         // console.log("User address:", user.address);
       }
     }, [user]);
+
+  useEffect(() => {
+    if(addr?.length > 0){
+        const selectedAddress = addr?.find(addr => addr._id === JSON.parse(localStorage.getItem('selAdd')));
+        setAddr(selectedAddress || addr[0]);
+        // console.log("Address in summary:", selectedAddress);
+      }
+  }, [addr]);
     
 
   return !isLoading ? (
@@ -74,11 +102,12 @@ const CartSummary = () => {
           ))}
         {/* <CartBox location={2}/> */}
           <h1 className='text-lg font-medium text-gray-500 py-1 text-start w-full'>Delivery Address</h1>
-          <div className='w-full flex flex-col items-start gap-3 border border-gray-300 rounded-sm p-3'>
+          {/* <div className='w-full flex flex-col items-start gap-3 border border-gray-300 rounded-sm p-3'>
             <h1 className='w-full flex items-center justify-between text-lg font-medium'> {address?.name}<span className='text-purple-900/70'>EDIT</span></h1>
             <p className='w-[30rem] '> {address?.label} {address?.street} {address?.city} {address?.state} - {address?.postalCode}</p>
             <p> {address?.contact}</p>
-          </div>
+          </div> */}
+          <CartAddressSummary addr={address} openSideBarUpdated={openSideBarUpdated} setOpenSideBarUpdated={setOpenSideBarUpdated}/>
           <h1 className='text-lg font-medium text-gray-500 py-1 text-start w-full'>Payment Mode</h1>
           <div className='w-full flex flex-col items-center border border-gray-300 rounded-sm p-3'>
             <h1 className='w-full flex items-center justify-between font-medium'> Cash on Delivery <span onClick={()=> navigate('/cart/payment')} className='text-purple-900/70 cursor-pointer focus:scale-95'>EDIT</span></h1>
@@ -97,7 +126,7 @@ const CartSummary = () => {
       <button  className='bg-purple-800 w-full text-center p-2 px-4 rounded-sm text-white font-medium cursor-pointer'>Place Order</button>
       
       </div> */}
-       <CartSidebar items={{length:cart?.items?.length, totalPrice}} nav={'address'} viewPage={4} />
+       <CartSidebar items={{length:cart?.items?.length, totalPrice}} nav={'address'} viewPage={4} isLoading={loading} isClick={() => handleCreateOrder()} />
     </div>
     </div>
 

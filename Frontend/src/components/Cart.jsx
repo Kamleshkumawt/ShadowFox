@@ -23,8 +23,8 @@ const Cart = ({ location, product }) => {
         quantity: quantity,
         // size: selectedSize,
       };
-      await updateToCartProduct({items}).unwrap();
-       window.location.reload();
+      await updateToCartProduct({ items }).unwrap();
+      window.location.reload();
     } catch (err) {
       console.log("update cart error :", err);
     }
@@ -38,7 +38,6 @@ const Cart = ({ location, product }) => {
       console.log("deleted cart error :", err);
     }
   };
-  
 
   return (
     <>
@@ -86,7 +85,6 @@ const Cart = ({ location, product }) => {
               <div
                 className="flex items-center cursor-pointer w-[6rem]"
                 onClick={() => setOpenRemoveProduct(true)} // your function
-                
               >
                 <span>
                   <svg
@@ -222,7 +220,6 @@ const Cart = ({ location, product }) => {
                         <input
                           type="number"
                           min={1}
-                          defaultValue={1}
                           value={quantity}
                           onChange={(e) => {
                             const val = Math.max(1, Number(e.target.value));

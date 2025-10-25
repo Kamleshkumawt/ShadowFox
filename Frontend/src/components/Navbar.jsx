@@ -232,7 +232,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center justify-between gap-7">
-          <span className="text-[16px] cursor-pointer">Become a Supplier</span>
+          <span onClick={()=> {navigate('/sellerSignUp');scrollTo(0,0)}} className="text-[16px] cursor-pointer">Become a Supplier</span>
           <span className="w-[2px] h-9 bg-gray-300"></span>
           <span className="text-[16px] cursor-pointer">Investor Relations</span>
           <span className="w-[2px] h-9 bg-gray-300"></span>

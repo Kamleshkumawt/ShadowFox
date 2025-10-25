@@ -8,16 +8,25 @@ export const registerController = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-        return res.status(400).json({ message: 'Please provide a valid email address' });
+    // Require at least email or phone
+    if (!email && !phone) {
+        return res.status(400).json({ message: 'Either email or phone is required' });
     }
-
-    // Validate phone format
-    const phoneRegex = /^[0-9]{10}$/;
-    if (!phone || !phoneRegex.test(phone)) {
-        return res.status(400).json({ message: 'Please provide a valid 10-digit phone number' });
+    
+    // Validate email if provided
+    if (email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: 'Please provide a valid email address' });
+        }
+    }
+    
+    // Validate phone if provided
+    if (phone) {
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(phone)) {
+            return res.status(400).json({ message: 'Please provide a valid 10-digit phone number' });
+        }
     }
 
     // Validate password length

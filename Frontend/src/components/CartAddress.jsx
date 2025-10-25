@@ -81,10 +81,10 @@ const CartAddress = ({
       longitude: location?.longitude,
       _id: id,
     };
-    console.log("address to save :", address);
+    // console.log("address to save :", address);
     try {
       const response = await updateAddress({ address }).unwrap();
-      console.log("Address saved successfully:", response.user.address);
+      // console.log("Address saved successfully:", response.user.address);
       dispatch(setAddress(response.user?.address));
       setOpenSideBar(false);
       setOpenSideBarUpdated(false);
@@ -108,7 +108,7 @@ const CartAddress = ({
     // console.log('address to save :', address);
     try {
       const response = await addNewAddress({ address }).unwrap();
-      console.log("Address saved successfully:", response.user.address);
+      // console.log("Address saved successfully:", response.user.address);
       dispatch(setAddress(response.user?.address));
       setOpenSideBar(false);
       setOpenSideBarUpdated(false);
@@ -529,15 +529,15 @@ const CartAddress = ({
                         ></path>
                         <path
                           fill="#3A66CF"
-                          fill-rule="evenodd"
+                         
                           d="M9.397.482a.517.517 0 0 1 .56-.47c.848.073 1.682.26 2.48.557a10.73 10.73 0 0 1 7.115 8.517q.054.271.074.547a.517.517 0 1 1-1.032.075 4 4 0 0 0-.062-.455 9.7 9.7 0 0 0-6.438-7.708l-.012-.004a8.4 8.4 0 0 0-2.214-.499.517.517 0 0 1-.47-.56"
-                          clip-rule="evenodd"
+                       
                         ></path>
                         <path
                           fill="#3A66CF"
-                          fill-rule="evenodd"
+                        
                           d="M9.484 4.14a.517.517 0 0 1 .599-.42 7.21 7.21 0 0 1 5.84 5.82.517.517 0 1 1-1.017.183A6.18 6.18 0 0 0 9.903 4.74a.517.517 0 0 1-.42-.6"
-                          clip-rule="evenodd"
+                         
                         ></path>
                       </g>
                       <defs>
@@ -655,8 +655,6 @@ const CartAddress = ({
                     width="20"
                     height="20"
                     fill="none"
-                    iconSize="20"
-                    class="sc-dlfmHC bFsYwH"
                   >
                     <path fill="#fff" d="M0 0h20v20H0z"></path>
                     <path
