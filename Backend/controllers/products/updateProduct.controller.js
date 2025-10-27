@@ -4,7 +4,7 @@ import  uploadOnCloudinary  from '../../db/cloudinary.js';
 import { asyncHandler } from '../../middleware/errorHandler.js';
 
 export const updateProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, category, quantity, color, brand,discount,tags, weight,dimensions,status } = req.body;
+    const { name, description, quantity, color, tags, weight, dimensions } = req.body;
     const productId = req.params.id;
     const sellerId = req.user.id; 
 
@@ -12,32 +12,6 @@ export const updateProduct = asyncHandler(async (req, res) => {
     //     res.status(400);
     //     throw new Error('Please provide all required fields');
     // }
-
-    // if (name.length < 3 || name.length > 100) {
-    //     res.status(400);
-    //     throw new Error('Name must be between 3 and 100 characters');
-    // }
-
-    // if (description.length < 10 || description.length > 1000) {
-    //     res.status(400);
-    //     throw new Error('Description must be between 10 and 1000 characters');
-    // }
-
-    // if (price <= 0) {
-    //     res.status(400);
-    //     throw new Error('Price must be a positive number');
-    // }
-
-    // if (quantity <= 0) {
-    //     res.status(400);
-    //     throw new Error('Quantity must be a positive number');
-    // }
-
-    const validCategories = await categoryModel.find().distinct('name');
-    if (!validCategories.includes(category)) {
-        res.status(400);
-        throw new Error(`Category must be one of the following: ${validCategories.join(', ')}`);
-    }
 
     const product = await productModel.findById(productId);
     if (!product) {
@@ -78,19 +52,15 @@ export const updateProduct = asyncHandler(async (req, res) => {
         });
     }
 
+    console.log('images',images);
+
    if(name) product.name = name;
-   if(price) product.price = price;
    if(description) product.description = description;
-   if(category) product.categoryId = await categoryModel.findOne({ name: category }).then(cat => cat ? cat._id : null);
    if(quantity) product.quantity = quantity;
    if(color) product.color = color;
-   if(brand) product.brand = brand;
-   if(discount) product.discount = discount;
    if(tags) product.tags = tags;
    if(weight) product.weight = weight;
    if(dimensions) product.dimensions = dimensions;
-   if(status) product.status = status;
-   if(images) product.images = images;
 
     const updatedProduct = await product.save();
     res.status(200).json({ success: true, message: 'Product updated successfully', product: updatedProduct });

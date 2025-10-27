@@ -74,15 +74,13 @@ router.get('/getAll', protect, async (req, res) => {
     }
 });
 
+router.get('/seller/getAll', protect,getProductsByStatusForSeller);
+router.get('/seller/search/:id', protect,searchProducts);
+router.get('/seller/:id', protect,getProductsBySellerId);
+router.get('/category/:id',protect, getProductsByCategory);
 router.get('/:id',protect, getProductById);
 
-router.get('/category/:id',protect, getProductsByCategory);
 
-router.get('/seller/:id', protect,getProductsBySellerId);
-
-router.get('/seller/search/:id', protect,searchProducts);
-
-router.get('/seller/getAll', protect,getProductsByStatusForSeller);
 
 router.get('/sellerId', protect,getProductsBySeller); //not hit route
 

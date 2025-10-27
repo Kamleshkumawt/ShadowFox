@@ -28,12 +28,6 @@ export const productApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getProductByStatus: builder.mutation({
-      query: () => ({
-        url: `/products/seller/getAll`,
-        method: 'GET',
-      }),
-    }),
     getProductBySellerId: builder.query({
       query: (id) => ({
         url: `/products/seller/${id}`,
@@ -70,6 +64,5 @@ export const {
   useGetProductBySellerIdQuery,
   useUpdateProductMutation,
   useDeleteProductByIdQuery,
-  useGetProductByStatusMutation,
   useGetProductBySearchQuery,
 } = productApi;

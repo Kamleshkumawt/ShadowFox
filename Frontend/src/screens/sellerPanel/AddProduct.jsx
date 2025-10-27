@@ -121,7 +121,7 @@ const AddProduct = () => {
         "category",
         subCategoriesData?.categories?.name || "Smartphone"
       );
-      formData.append("gst", gst);
+      formData.append("gst_number", gst);
       formData.append("hsnCode", hsn);
       formData.append("styleCode", styleCode);
       formData.append("size", size);

@@ -102,6 +102,18 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
+    getProductByStatus: builder.mutation({
+      query: () => ({
+        url: `/users/order/getAll`,
+        method: 'GET',
+      }),
+    }),
+    getIncomeBySellerId: builder.mutation({
+      query: () => ({
+        url: `/users/order/getAllIncome`,
+        method: 'GET',
+      }),
+    }),
     getOrderBySellerId: builder.query({
       query: (id) => ({
         url: `/users/order/getSeller/${id}`,
@@ -195,4 +207,6 @@ export const {
   useAddNewAddressMutation,
   useUpdateAddressMutation,
   useGetAllCategoriesBySlugQuery,
+  useGetProductByStatusMutation,
+  useGetIncomeBySellerIdMutation,
 } = userApi;

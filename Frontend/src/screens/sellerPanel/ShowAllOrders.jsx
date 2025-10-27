@@ -8,7 +8,7 @@ import { formatAmount } from '../../lib/formatAmount';
 const ShowAllOrders = () => {
    const [orders, setOrders] = useState([]);
     const seller = useSelector((state) => state.auth.seller);
-    console.log("seller :", seller);
+    // console.log("seller :", seller);
   
     const {data, isLoading} = useGetOrderBySellerIdQuery(seller._id);
   

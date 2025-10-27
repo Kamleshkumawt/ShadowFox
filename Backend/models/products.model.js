@@ -89,11 +89,6 @@ const productSchema = new mongoose.Schema({
         enum: ['Active', 'Inactive', 'Out of stock'],
         default: 'Active'
     },
-    orderStatus:{
-        type:String,
-        enum:['Pending','Shipped','Delivered','Cancelled'],
-        default:'Pending'
-    },
     comboType: {
         type: String,
         default: 'single'
@@ -121,6 +116,8 @@ const productSchema = new mongoose.Schema({
     reviews_count: { type: Number, default: 0 },
     rating: { type: Number, default: 0 }
 }, { timestamps: true });
+
+productSchema.index({ sellerId: 1 });
 
 const Product = mongoose.model('product', productSchema);
 

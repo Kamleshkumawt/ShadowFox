@@ -5,9 +5,10 @@ import  uploadOnCloudinary  from '../../db/cloudinary.js';
 import sellerModel from '../../models/sellers.model.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, category, quantity, color, brand, discount, tags, weight,dimensions,size,material,battery,age,hsnCode,styleCode,comboType} = req.body;
+    const { name, price, description, category, quantity, color, brand, discount, tags, weight,dimensions,size,material,battery,age,hsnCode,styleCode,comboType,gst_number} = req.body;
     const sellerId = req.user._id; 
-    // const sellerId = "68e2a5264f4c2c3d92fbdca3"; 
+    
+    // console.log('Seller ID from req.user:', sellerId);
 
     // console.log('req.body data',req.body);
     // console.log('req.files data',req.files);
@@ -38,7 +39,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     //     throw new Error(`Category must be one of the following: ${validCategories.join(', ')}`);
     // }
 
-    const store = await sellerModel.findOne({userId:sellerId});
+    const store = await sellerModel.findOne({_id:sellerId});
     if (!store) {
         res.status(400);
         throw new Error(`Seller not found`);
@@ -47,6 +48,11 @@ export const createProduct = asyncHandler(async (req, res) => {
     if((store.store_name).trim() !== brand.trim()) {
       res.status(400);
       throw new Error('brand not found please Enter correct brand name')
+    }
+
+    if((store.gst_number).trim() !== gst_number.trim()) {
+      res.status(400);
+      throw new Error('gst not found please Enter correct gst number')
     }
    
     

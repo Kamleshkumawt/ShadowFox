@@ -109,7 +109,8 @@ export const sellerLoginController = asyncHandler(async (req, res) => {
 export const getSellerByUserId = async (req, res) => {
   try {
     const userId = req.user._id;
-    const seller = await sellerModel.findOne({ userId });
+
+    const seller = await sellerModel.findOne({ _id:userId });
     res
       .status(200)
       .json({ success: true, message: "Seller fetched successfully", seller });

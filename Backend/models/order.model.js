@@ -84,6 +84,10 @@ const orderSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
+orderSchema.index({ "items.productId": 1 });
+orderSchema.index({ status: 1, createdAt: 1 });
+
+
 const Order = mongoose.model('order',orderSchema);
 
 export default Order;

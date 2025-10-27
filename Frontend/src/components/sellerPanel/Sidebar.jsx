@@ -1,10 +1,28 @@
 import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon, Settings } from 'lucide-react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useSellerLogoutMutation } from '../../store/api/sellerAuthApi';
+import { clearSellerUser } from '../../store/slices/authSlice';
+import { useDispatch } from 'react-redux';
 
 
 const Sidebar = () => {
 
-    const adminNAvlinks = [
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const [sellerLogout,  {isLoading}] = useSellerLogoutMutation();
+
+    const logoutHandler = async () => {
+    try {
+      await sellerLogout().unwrap();
+       dispatch(clearSellerUser()); 
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  const adminNAvlinks = [
         {name: 'Dashboard', path: '/seller', icon: LayoutDashboardIcon},
         {name: 'Add Product', path: '/seller/new-category-product', icon: PlusSquareIcon},
         {name: 'List Products', path: '/seller/list-products', icon: ListIcon},
@@ -32,6 +50,7 @@ const Sidebar = () => {
                     )}
                 </NavLink>
             ))}
+            <span className=' cursor-pointer min-md:ml-10 ml-5 text-gray-400 flex items-center gap-2' disabled={isLoading} onClick={()=> {logoutHandler();scrollTo(0,0);}} ><img src="https://cdn-icons-png.flaticon.com/128/1286/1286853.png" className='w-5 h-5 object-cover opacity-30' alt="icon" /> <span className='max-md:hidden'>{'LogOut'}</span></span>
         </div>
     </div>
   )

@@ -147,7 +147,7 @@ export const getProductsByStatusForSeller = async (req, res) => {
       productModel.countDocuments({ sellerId, status: "Cancelled" }),
     ]);
 
-    console.log("Pending Products: ", pending);
+    // console.log("Pending Products: ", pending);
 
     res.status(200).json({
       success: true,

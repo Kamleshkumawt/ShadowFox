@@ -20,10 +20,12 @@ import {
   getCategoriesById,
   getCategoriesByParentId,
   getCategoryBySlug,
+  getIncomeBySellerId,
   getOrdersBySellerId,
   getOrdersByUserId,
   getReviewsByProductId,
   getSellerByUserId,
+  getSellerOrderStats,
   getWishlistByUserId,
   logoutSellerController,
   returnsController,
@@ -159,6 +161,8 @@ router.post(
 );
 
 router.get("/order/getUser", protect, getOrdersByUserId);
+router.get('/order/getAll', protect, getSellerOrderStats);
+router.get('/order/getAllIncome', protect, getIncomeBySellerId);
 
 router.get("/order/getSeller/:id", protect, getOrdersBySellerId);
 
