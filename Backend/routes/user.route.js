@@ -5,7 +5,6 @@ import {
   addNewAddress,
   callbackPayment,
   createCart,
-  createCategoryController,
   createOrder,
   createPayment,
   createSeller,
@@ -228,7 +227,7 @@ router.get('/returns/getAllReturns', protect, getAllReturns);
  router.delete('/wishlist/delete', protect, deleteWishlist);
 
  {/** not implementes*/}
- router.post('/category/create', protect, createCategoryController);
+
  router.get('/category/getAllCategories', protect, getCategories);
  router.get('/category/getCategories', protect, getAllCategories);
  router.get('/category/getCategory/:slug', protect, getCategoryBySlug);

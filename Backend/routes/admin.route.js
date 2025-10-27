@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { createAdmin, getAdmin, loginAdmin, logoutAdmin, updateAdmin, updateAdminPassword } from '../controllers/index.js';
+import { createAdmin, createCategoryController, deleteCategory, getAdmin, getAllSeller, getAllUsers, getCategories, loginAdmin, logoutAdmin, updateAdmin, updateAdminPassword, updateCategory } from '../controllers/index.js';
 import { protect } from '../middleware/auth.middleware.js';
 import { body, validationResult } from 'express-validator';
 import upload from '../middleware/multer.js';
@@ -63,5 +63,14 @@ router.get('/user/me', protect, getAdmin);
 router.get('/user/logout', protect, logoutAdmin);
 router.put('/user/update-details', protect, upload.single('profileImage'), updateAdmin);
 router.put('/user/change', protect, updateAdminPassword);
+
+ router.post('/category/create', protect, createCategoryController);
+ router.get('/category/getCategories', protect, getCategories);
+ router.put('/category/update/:id', protect, updateCategory);
+ router.delete('/category/delete/:id', protect, deleteCategory);
+//  router.get('/category/getCategoryById/:id', protect, getCategoriesByParentId);
+
+router.get('/user/getAll', protect, getAllUsers);
+router.get('/seller/getAll', protect, getAllSeller);
 
 export default router;
