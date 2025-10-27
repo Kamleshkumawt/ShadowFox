@@ -51,7 +51,7 @@ export const createCategoryController = async (req, res) => {
 };
 
 // Get all categories bY null Id
-export const getCategories = async (req, res) => {
+export const getAllAdminCategories = async (req, res) => {
   try {
     const categories = await categoryModel.find({ parentId: null }); //.populate('parentId', 'name slug')
     res.status(200).json({

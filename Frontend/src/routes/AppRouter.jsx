@@ -36,6 +36,11 @@ import AdminRegister from '../screens/adminPanel/auth/AdminRegister'
 import AdminLayout from '../screens/adminPanel/Layout'
 import AdminDashboard from '../screens/adminPanel/AdminDashboard'
 import AdminUpdate from '../screens/adminPanel/AdminUpdate'
+import ShowAllUsers from '../screens/adminPanel/ShowAllUsers'
+import ShowAllSellers from '../screens/adminPanel/ShowAllSellers'
+import ShowAllProducts from '../screens/adminPanel/ShowAllProducts'
+import ShowAllCategories from '../screens/adminPanel/ShowAllCategories'
+import EditProductByAdmin from '../screens/adminPanel/EditProductByAdmin'
 
 
 const AppRouter = () => {
@@ -85,6 +90,12 @@ const AppRouter = () => {
             <Route path='/admin/*' element={<AdminLayout/>} > 
                 <Route index element={<AdminDashboard />} />  
                 <Route path="ret-stting" element={<AdminUpdate />} />
+                <Route path="ret-edit/:id" element={<EditProductByAdmin />} />
+                <Route path="show/all-user" element={<ShowAllUsers />} />
+                <Route path="show/all-seller" element={<ShowAllSellers />} />
+                <Route path="show/all-products" element={<ShowAllProducts />} />
+                <Route path="show/all-orders" element={<ShowAllOrders />} />
+                <Route path="show/all-categories" element={<ShowAllCategories />} />
             </Route>
         </Routes>
 
