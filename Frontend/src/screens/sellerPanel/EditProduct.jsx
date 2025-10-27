@@ -51,13 +51,7 @@ const EditProduct = () => {
   const [frontImage, setFrontImage] = useState(null);
   const [material, setMaterial] = useState("");
   const [age, setAge] = useState("");
-  const [manufacturerName, setManufacturerName] = useState("");
-  const [manufacturerAdd, setManufacturerAdd] = useState("");
-  const [manufacturerPin, setManufacturerPin] = useState("");
-  const [packerName, setPackerName] = useState("");
-  const [packerAdd, setPackerAdd] = useState("");
-  const [packerPin, setPackerPin] = useState("");
-  // const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState(null);
 
   const navigate = useNavigate();
 
@@ -120,7 +114,7 @@ const EditProduct = () => {
   // ----------- category handlers --------------
 
   // ---------- Form Submit ----------
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (id) => {
     try {
       const formData = new FormData();
       formData.append("name", name);
@@ -134,13 +128,8 @@ const EditProduct = () => {
       formData.append("size", size);
       formData.append("material", material);
       formData.append("age", age);
-      formData.append("manufacturerName", manufacturerName);
-      formData.append("manufacturerAdd", manufacturerAdd);
-      formData.append("manufacturerPin", manufacturerPin);
-      formData.append("packerName", packerName);
-      formData.append("packerAdd", packerAdd);
-      formData.append("packerPin", packerPin);
       formData.append("comboType", comboType);
+      formData.append("productId", id);
 
       const dimensions = {
         width,
@@ -155,9 +144,9 @@ const EditProduct = () => {
         formData.append("images", file);
       });
 
-      const response = await updateProduct(formData).unwrap();
-      console.log("Product created:", response);
-      navigate("/seller/new-category-product");
+      await updateProduct(formData).unwrap();
+      // console.log("Product created:", response);
+      navigate("/seller/list-products");
     } catch (error) {
       console.error("Error creating product:", error);
     }
@@ -165,12 +154,13 @@ const EditProduct = () => {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
 
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setFrontImage(file);
-      setShowImage(imageUrl);
-    }
+    setFrontImage(file);
+
+    // Create preview URL
+    const imageUrl = URL.createObjectURL(file);
+    setShowImage(imageUrl);
   };
 
   useEffect(() => {
@@ -182,11 +172,12 @@ const EditProduct = () => {
   useEffect(() => {
     if (data) {
       console.log("data", data);
-      // setProduct(data.product);
+      setProduct(data.product);
       setHsn(data.product.hsnCode);
       setStyleCode(data.product.styleCode);
       setSize(data.product.size);
-      setShowImage(data.product.frontImage);
+      setShowImage(data.product.frontImage.url);
+      setFrontImage(data.product.frontImage);
       setName(data.product.name);
       setQuantity(data.product.quantity);
       setColor(data.product.color);
@@ -430,117 +421,6 @@ const EditProduct = () => {
                 ))}
               </select>
             </div>
-
-            {/* Manufacturer Name Field */}
-            <div className="relative mt-2">
-              <input
-                type="text"
-                id="manufacturerName"
-                name="manufacturerName"
-                value={manufacturerName}
-                onChange={(e) => setManufacturerName(e.target.value)}
-                placeholder=" "
-                required
-                className={inputClass}
-              />
-              <label
-                htmlFor="manufacturerName"
-                className={labelClass(manufacturerName)}
-              >
-                Manufacturer Name
-              </label>
-            </div>
-
-            {/* Manufacturer Address Field */}
-            <div className="relative mt-2">
-              <input
-                type="text"
-                id="manufacturerAdd"
-                name="manufacturerAdd"
-                value={manufacturerAdd}
-                onChange={(e) => setManufacturerAdd(e.target.value)}
-                placeholder=" "
-                required
-                className={inputClass}
-              />
-              <label
-                htmlFor="manufacturerAdd"
-                className={labelClass(manufacturerAdd)}
-              >
-                Manufacturer Address
-              </label>
-            </div>
-
-            {/* Manufacturer Pincode Field */}
-            <div className="relative mt-2">
-              <input
-                type="text"
-                id="manufacturerPin"
-                name="manufacturerPin"
-                value={manufacturerPin}
-                onChange={(e) => setManufacturerPin(e.target.value)}
-                placeholder=" "
-                required
-                className={inputClass}
-              />
-              <label
-                htmlFor="manufacturerPin"
-                className={labelClass(manufacturerPin)}
-              >
-                Manufacturer PinCode
-              </label>
-            </div>
-
-            {/* Packer Name Field */}
-            <div className="relative mt-2">
-              <input
-                type="text"
-                id="packerName"
-                name="packerName"
-                value={packerName}
-                onChange={(e) => setPackerName(e.target.value)}
-                placeholder=" "
-                required
-                className={inputClass}
-              />
-              <label htmlFor="packerName" className={labelClass(packerName)}>
-                Packer Name
-              </label>
-            </div>
-
-            {/* Packer Address Field */}
-            <div className="relative mt-2">
-              <input
-                type="text"
-                id="packerAdd"
-                name="packerAdd"
-                value={packerAdd}
-                onChange={(e) => setPackerAdd(e.target.value)}
-                placeholder=" "
-                required
-                className={inputClass}
-              />
-              <label htmlFor="packerAdd" className={labelClass(packerAdd)}>
-                Packer Address
-              </label>
-            </div>
-
-            {/* Packer Pincode Field */}
-            <div className="relative mt-2">
-              <input
-                type="text"
-                id="packerPin"
-                name="packerPin"
-                value={packerPin}
-                onChange={(e) => setPackerPin(e.target.value)}
-                placeholder=" "
-                required
-                className={inputClass}
-              />
-              <label htmlFor="packerPin" className={labelClass(packerPin)}>
-                Packer PinCode
-              </label>
-            </div>
           </div>
           <h1 className="text-lg font-medium  text-gray-600 py-3 mt-5 border-b border-gray-400/30 w-full">
             Other Attributes
@@ -635,12 +515,13 @@ const EditProduct = () => {
             <div className="flex flex-wrap items-start gap-2">
               <div className="flex flex-col items-center">
                 <div className="relative w-28 h-28 border border-gray-300 rounded-md overflow-hidden group">
-                  {/* Image Preview */}
-                  <img
-                    src={showImage?.url || showImage}
-                    alt="Preview"
-                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-50"
-                  />
+                  {showImage && (
+                    <img
+                      src={showImage}
+                      alt="Preview"
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-50"
+                    />
+                  )}
                   <input
                     type="file"
                     accept="image/*"
@@ -716,7 +597,7 @@ const EditProduct = () => {
           Cancel
         </div>
         <button
-          onClick={() => handleFormSubmit()}
+          onClick={() => handleFormSubmit(product._id)}
           className=" px-4 py-2 text-white font-medium bg-purple-600 rounded-md hover:bg-purple-700 cursor-pointer"
         >
           Add Product

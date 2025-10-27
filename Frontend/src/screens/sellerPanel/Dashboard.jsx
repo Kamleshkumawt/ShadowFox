@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useGetProfileSellerMutation } from "../../store/api/sellerAuthApi";
 import { setSellerUser } from "../../store/slices/authSlice";
 import Loading from "../../components/Loading";
@@ -17,9 +17,7 @@ import {
 } from "../../store/api/userApi";
 
 const Dashboard = () => {
-  const seller = useSelector((state) => state.auth.seller);
   const [products, setProducts] = useState("");
-  const [chart, setChart] = useState("");
   const [orderChartData, setOrderChartData] = useState("");
   const [chartData, setIncomeChartData] = useState("");
   const [totalIncome, setTotalIncome] = useState(0);
@@ -30,7 +28,7 @@ const Dashboard = () => {
   const [getProfileSeller, { data, isLoading }] = useGetProfileSellerMutation();
   const [getIncomeBySellerId, { data: idData }] =
     useGetIncomeBySellerIdMutation();
-  const [getProductByStatus, { data: PTRs, loading }] =
+  const [getProductByStatus, { data: PTRs }] =
     useGetProductByStatusMutation();
 
   useEffect(() => {
@@ -63,13 +61,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (idData) {
-      console.log("data for income  : ", idData.stats);
+      // console.log("data for income  : ", idData.stats);
 
       const statsFromDB = idData?.stats[0]; // example: Delivered status
-      console.log("totalAmount : ", idData?.stats[0].totalIncome);
-      console.log("totalAmount : ", idData?.stats[0].totalSales);
-      setTotalIncome(idData?.stats[0].totalIncome);
-      setTotalSales(idData?.stats[0].totalSales);
+      // console.log("totalAmount : ", idData?.stats[0].totalIncome);
+      // console.log("totalAmount : ", idData?.stats[0].totalSales);
+      setTotalIncome(Number(idData?.stats[0].totalIncome));
+      setTotalSales(Number(idData?.stats[0].totalSales));
 
       // Initialize chart data with 0s
       const baseChartData = months.map((month) => ({
@@ -85,7 +83,7 @@ const Dashboard = () => {
         baseChartData[index].sales = m.sales;
       });
 
-      console.log("for income : ", baseChartData);
+      // console.log("for income : ", baseChartData);
       setIncomeChartData(baseChartData);
     }
   }, [idData, dispatch]);
@@ -94,8 +92,6 @@ const Dashboard = () => {
     if (PTRs) {
       // console.log("data : ", PTRs?.data);
       setProducts(PTRs?.data.products);
-      setChart(PTRs?.data.response);
-
       const orderChartData = months.map((month, index) => {
         const monthNumber = index + 1;
         const getCount = (key) => {

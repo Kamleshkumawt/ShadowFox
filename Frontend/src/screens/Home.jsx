@@ -10,7 +10,7 @@ import {useGetCategoriesMutation } from "../store/api/userApi";
 import { useSelector } from "react-redux";
 
 
-const getUniqueCategoryProducts = (products, limit = 4) => {
+const getUniqueCategoryProducts = (products, limit = 8) => {
   const result = [];
   const seenCategoryNames = new Set();
 
@@ -169,6 +169,15 @@ const Home = () => {
   return true;
 });
 
+const mid = Math.ceil(uniqueProducts.length / 2);
+
+const firstHalf = uniqueProducts.slice(0, mid);
+const secondHalf = uniqueProducts.slice(mid);
+
+
+const topDeals = products.slice(0, 9);       // first 5 products
+const moreDeals = products.slice(9, 18);     // next 5 products
+
 
 
   return !isLoading ? (
@@ -180,71 +189,9 @@ const Home = () => {
           alt="image"
         />
       </div>
-      <div>
-        <img
-          src="https://rukminim2.flixcart.com/fk-p-flap/2000/2000/image/ce7d2d27900bfa3a.jpg?q=50"
-          alt="image"
-        />
-      </div>
-      <div className="flex items-center justify-center w-full">
-      <div className="w-[85%] px-2 bg-white">
-        <h1 className="text-2xl font-semibold">Best deals on smartphones</h1>
-        <ManualCarousel data={products}/>
-      </div>
-      <div className="w-48 h-full ">
-        <img src="https://rukminim1.flixcart.com/fk-p-flap/1060/1620/image/0cc12d558f0730bb.jpeg?q=60" alt="img" className="object-contain" />
-      </div>
-      </div>
-
-      {/*image*/}
-      <div className="w-full h-full flex flex-wrap gap-2">
-      <div className="w-[30rem] h-full">
-        <img
-        className="object-cover w-full h-full"
-          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
-          alt="image"
-        />
-      </div>
-      <div className="w-[30rem] h-full">
-        <img
-        className="object-cover w-full h-full"
-          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
-          alt="image"
-        />
-      </div>
-      <div className="w-[30rem] h-full">
-        <img
-        className="object-cover w-full h-full"
-          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
-          alt="image"
-        />
-      </div>
-      <div className="w-[30rem] h-full">
-        <img
-        className="object-cover w-full h-full"
-          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
-          alt="image"
-        />
-      </div>
-      <div className="w-[30rem] h-full">
-        <img
-        className="object-cover w-full h-full"
-          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
-          alt="image"
-        />
-      </div>
-      <div className="w-[30rem] h-full">
-        <img
-        className="object-cover w-full h-full"
-          src="https://rukminim2.flixcart.com/fk-p-flap/960/960/image/17ec19e239278232.jpg?q=50"
-          alt="image"
-        />
-      </div>
-      </div>
-     
       <div className="w-full px-2 bg-white">
         <h1 className="text-2xl font-semibold">Top Deals Product</h1>
-        <ManualCarousel data={products}/>
+        <ManualCarousel data={moreDeals}/>
       </div>
 
       <div className="w-full h-full flex items-center justify-center ">
@@ -258,7 +205,7 @@ const Home = () => {
         <div className="w-[32%] flex flex-col items-center justify-center gap-3 bg-white p-2">
         <div className="flex items-center justify-between w-full"><h1 className="text-2xl font-semibold">Make Your style</h1> <span className="bg-blue-600 text-white px-2 p-1 rounded-full">{">"}</span></div>
           <div className="w-full flex flex-wrap items-center justify-center px-3 gap-2">
-            {uniqueProducts.map((product) => (
+            {firstHalf.map((product) => (
           <HomePageCard key={product._id} data={product} />
         ))}
           </div>
@@ -267,7 +214,7 @@ const Home = () => {
       <div className="w-[32%] flex flex-col items-center justify-center gap-3 bg-white p-2">
         <div className="flex items-center justify-between w-full"><h1 className="text-2xl font-semibold">Make Your style</h1> <span className="bg-blue-600 text-white px-2 p-1 rounded-full">{">"}</span></div>
           <div className="w-full flex flex-wrap items-center justify-center px-3 gap-2">
-            {uniqueProducts.map((product) => (
+            {secondHalf.map((product) => (
           <HomePageCard key={product._id} data={product} />
         ))}
           </div>
@@ -330,7 +277,7 @@ const Home = () => {
     
       <div className="w-full px-2 bg-white">
         <h1 className="text-2xl font-semibold">Top Deals Product</h1>
-  <ManualCarousel data={products} />
+  <ManualCarousel data={topDeals} />
 </div>
 
     <h1 className="text-3xl my-5 px-5">Products For You</h1>

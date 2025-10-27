@@ -1,20 +1,43 @@
-import React from 'react'
-import { assets } from '../../assets/assets'
-import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon } from 'lucide-react'
-import { NavLink } from 'react-router-dom'
+import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon, Settings } from 'lucide-react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useSignOutAdminAccountMutation } from '../../store/api/adminAuthApi'
+import { useDispatch } from 'react-redux'
+import { clearAdminUser } from '../../store/slices/authSlice'
+import logo from '../../assets/profile.png'
 
 const AdminSidebar = () => {
+
+    // const admin = useSelector((state) => state.auth.admin);
+    
     const user = {
         firstName: 'Admin',
         lastName: 'User',
-        imageUrl: assets.profile,
+        imageUrl: logo,
     }
+
+    
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const [signOutAdminAccount,  {isLoading}] = useSignOutAdminAccountMutation();
+    
+        const logoutHandler = async () => {
+        try {
+          await signOutAdminAccount().unwrap();
+           dispatch(clearAdminUser()); 
+          navigate('/');
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      };
 
     const adminNAvlinks = [
         {name: 'Dashboard', path: '/admin', icon: LayoutDashboardIcon},
         {name: 'Add Shows', path: '/admin/add-show', icon: PlusSquareIcon},
         {name: 'List Shows', path: '/admin/list-shows', icon: ListIcon},
         {name: 'List Bookings', path: '/admin/list-bookings', icon: ListCollapseIcon},
+         {name: 'Settings', path: '/admin/ret-stting', icon: Settings},
     ]
 
   return (
@@ -33,6 +56,7 @@ const AdminSidebar = () => {
                     )}
                 </NavLink>
             ))}
+            <span className=' cursor-pointer min-md:ml-10 ml-5 text-gray-400 flex items-center gap-2' disabled={isLoading} onClick={()=> {logoutHandler();scrollTo(0,0);}} ><img src="https://cdn-icons-png.flaticon.com/128/1286/1286853.png" className='w-5 h-5 object-cover opacity-30' alt="icon" /> <span className='max-md:hidden'>{'SignOut'}</span></span>
         </div>
     </div>
   )

@@ -24,7 +24,7 @@ export const profileController = async (req, res) => {
   }
 };
 
-//not work currently
+
 export const updateProfileController = async (req, res) => {
   try {
     const { username, email, phone } = req.body;

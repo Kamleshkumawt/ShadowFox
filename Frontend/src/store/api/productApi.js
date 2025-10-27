@@ -1,56 +1,55 @@
-import { baseApi } from './baseApi';
+import { baseApi } from "./baseApi";
 
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createProduct: builder.mutation({
       query: (formData) => ({
-        url: '/products/create',
-        method: 'POST',
+        url: "/products/create",
+        method: "POST",
         body: formData,
-        formData: true, 
       }),
     }),
     getAllProduct: builder.mutation({
       query: () => ({
-        url: '/products/getAll',
-        method: 'Get',
+        url: "/products/getAll",
+        method: "Get",
       }),
     }),
     getProductById: builder.query({
       query: (id) => ({
         url: `/products/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     getProductByCategory: builder.query({
       query: (id) => ({
         url: `/products/category/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     getProductBySellerId: builder.query({
       query: (id) => ({
         url: `/products/seller/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     getProductBySearch: builder.query({
       query: (id) => ({
         url: `/products/seller/search/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     updateProduct: builder.mutation({
       query: (data) => ({
         url: '/products/update',
-        method: 'PUT',
-        body: data,
+        method: "PUT",
+        body:data
       }),
     }),
-    deleteProductById: builder.query({
+    deleteProductById: builder.mutation({
       query: (id) => ({
         url: `/products/delete/${id}`,
-        method: 'POST',
+        method: "POST",
       }),
     }),
   }),
@@ -63,6 +62,6 @@ export const {
   useGetProductByCategoryQuery,
   useGetProductBySellerIdQuery,
   useUpdateProductMutation,
-  useDeleteProductByIdQuery,
+  useDeleteProductByIdMutation,
   useGetProductBySearchQuery,
 } = productApi;

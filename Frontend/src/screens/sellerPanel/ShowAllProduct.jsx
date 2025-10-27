@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDeleteProductByIdQuery, useGetProductBySellerIdQuery } from '../../store/api/productApi';
+import { useDeleteProductByIdMutation, useGetProductBySellerIdQuery } from '../../store/api/productApi';
 import { dateFormat } from '../../lib/dateFormat';
 import Title from '../../components/sellerPanel/Title';
 import { useSelector } from 'react-redux';
@@ -13,12 +13,16 @@ const ShowAllProduct = () => {
 
   const {data, isLoading} = useGetProductBySellerIdQuery(seller._id);
 
-  const { data: dataById, isLoading } = useDeleteProductByIdQuery(id, {
-      skip: !id,
-    });
+  const [deleteProductById,{ loading }] = useDeleteProductByIdMutation();
   
-  const handleDelete = (id) => {
-    console.log(id);
+  const handleDelete = async (id) => {
+    try {
+    console.log('Deleting product with ID:', id);
+    await deleteProductById(id).unwrap(); // unwrap() throws if the mutation fails
+    console.log('Deleted successfully');
+  } catch (error) {
+    console.error('Delete failed:', error);
+  }
   }
 
   useEffect(() => {
@@ -74,7 +78,7 @@ const ShowAllProduct = () => {
                   <td className="p-2 text-green-700">{item.discount?.percentage}% off</td>
                   <td className="p-2 text-white flex items-center gap-2">
                     <Link to={`/seller/edit-product/${item._id}`} className='p-1 px-2 rounded-xs bg-green-500'>Edit</Link>
-                    <div onClick={()=> handleDelete(item._id)} className='p-1 px-2 rounded-xs bg-red-500 '>Delete</div>
+                    <div disabled={loading}  onClick={()=> handleDelete(item._id)} className='p-1 px-2 rounded-xs bg-red-500 '>Delete</div>
                   </td>
               </tr>
             ))}

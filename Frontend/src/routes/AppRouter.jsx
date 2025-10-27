@@ -31,6 +31,12 @@ import SellerDetails from '../screens/sellerPanel/auth/SellerDetails'
 import BankDetails from '../screens/sellerPanel/auth/BankDetails'
 import SellerSettings from '../screens/sellerPanel/SellerSettings'
 import SearchCategoryRoutes from '../screens/SearchCategoryRoutes'
+import AdminLogin from '../screens/adminPanel/auth/AdminLogin'
+import AdminRegister from '../screens/adminPanel/auth/AdminRegister'
+import AdminLayout from '../screens/adminPanel/Layout'
+import AdminDashboard from '../screens/adminPanel/AdminDashboard'
+import AdminUpdate from '../screens/adminPanel/AdminUpdate'
+
 
 const AppRouter = () => {
    const location = useLocation();
@@ -62,6 +68,8 @@ const AppRouter = () => {
             <Route path="/sellerSignUp/address" element={<PickupAddress />} />
             <Route path="/sellerSignUp/bank-details" element={<BankDetails />} />
             <Route path="/sellerSignUp/details" element={<SellerDetails />} />
+            <Route path="/admin/selector/login" element={<AdminLogin />} />
+            <Route path="/admin/selector/register" element={<AdminRegister />} />
             <Route path='/seller/*' element={<Layout/>} > 
                 <Route index element={<Dashboard />} />
                 <Route path="add-product" element={<AddProduct/>} />
@@ -74,7 +82,10 @@ const AppRouter = () => {
                 <Route path="list-ret-orders" element={<ShowAllReturnsOrders/>} />
                 <Route path="list-ret-stting" element={<SellerSettings/>} />
             </Route>
-           
+            <Route path='/admin/*' element={<AdminLayout/>} > 
+                <Route index element={<AdminDashboard />} />  
+                <Route path="ret-stting" element={<AdminUpdate />} />
+            </Route>
         </Routes>
 
         {!isCartRoute && !isSellerRoute && !isAdminRoute && <Footer />}

@@ -5,7 +5,7 @@ import  uploadOnCloudinary  from '../../db/cloudinary.js';
 import sellerModel from '../../models/sellers.model.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, category, quantity, color, brand, discount, tags, weight,dimensions,size,material,battery,age,hsnCode,styleCode,comboType,gst_number} = req.body;
+    const { name, price, description, category, quantity, color, brand, discount, tags, weight,dimensions,size,material,battery,age,hsnCode,styleCode,comboType,gst_number,manufacturerAddr,packerAddr} = req.body;
     const sellerId = req.user._id; 
     
     // console.log('Seller ID from req.user:', sellerId);
@@ -14,7 +14,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     // console.log('req.files data',req.files);
     // console.log('req.files data length',req.files.images.length);
 
-    if (!name || !price || !description || !category || !quantity || !color || !brand  || !weight || !dimensions  || !size || !material || !battery || !age || !hsnCode || !comboType) {
+    if (!name || !price || !description || !category || !quantity || !color || !brand  || !weight || !dimensions  || !size || !material || !battery || !age || !hsnCode || !comboType || !manufacturerAddr || !packerAddr) {
         res.status(400);
         throw new Error('Please provide all required fields');
     }
@@ -158,6 +158,8 @@ export const createProduct = asyncHandler(async (req, res) => {
         battery,
         hsnCode,
         styleCode,
+        manufacturerAddr,
+        packerAddr,
         dimensions: {
             width: dimensions.width,
             height: dimensions.height,

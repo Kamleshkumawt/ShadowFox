@@ -93,6 +93,28 @@ const productSchema = new mongoose.Schema({
         type: String,
         default: 'single'
     },
+    manufacturerAddr: {
+        name: {
+            type: String,
+        },
+        street: {
+            type: String,
+        },
+        postalCode: {
+            type: String,
+        },
+    },
+    packerAddr: {
+        name: {
+            type: String,
+        },
+        street: {
+            type: String,
+        },
+        postalCode: {
+            type: String,
+        },
+    },
     hsnCode: {
         type: String,
         required: true

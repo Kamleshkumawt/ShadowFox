@@ -74,17 +74,12 @@ router.get('/getAll', protect, async (req, res) => {
     }
 });
 
-router.get('/seller/getAll', protect,getProductsByStatusForSeller);
-router.get('/seller/search/:id', protect,searchProducts);
-router.get('/seller/:id', protect,getProductsBySellerId);
-router.get('/category/:id',protect, getProductsByCategory);
-router.get('/:id',protect, getProductById);
-
-
-
-router.get('/sellerId', protect,getProductsBySeller); //not hit route
-
-router.put('/update', protect, async (req, res) => {
+router.put('/update', protect,
+     upload.fields([
+    { name: 'frontImage', maxCount: 1 },
+    { name: 'images', maxCount: 5 }
+    ]),
+    async (req, res) => {
     try {
         const errors = validationResult(req);
         if(!errors.isEmpty()){
@@ -94,6 +89,10 @@ router.put('/update', protect, async (req, res) => {
                 errors: errors.array()
             });
         }
+
+        req.body.tags = JSON.parse(req.body.tags); // Parse to actual array
+        req.body.dimensions = JSON.parse(req.body.dimensions); // Optional: if sent as JSON
+        
         await updateProduct(req, res);
     } catch (error) {
         console.error('Product update error:', error);
@@ -103,6 +102,18 @@ router.put('/update', protect, async (req, res) => {
         });
     }
 });
+
+router.get('/seller/getAll', protect,getProductsByStatusForSeller);
+router.get('/seller/search/:id', protect,searchProducts);
+router.get('/seller/:id', protect,getProductsBySellerId);
+router.get('/category/:id',protect, getProductsByCategory);
+
+router.get('/:id',protect, getProductById);
+
+
+
+router.get('/sellerId', protect,getProductsBySeller); //not hit route
+
 
 router.delete('/delete/:id',protect, deleteProduct);
 

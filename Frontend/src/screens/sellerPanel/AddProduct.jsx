@@ -135,6 +135,7 @@ const AddProduct = () => {
       formData.append("packerAdd", packerAdd);
       formData.append("packerPin", packerPin);
       formData.append("comboType", comboType);
+     
 
       const dimensions = {
         width,
@@ -142,6 +143,20 @@ const AddProduct = () => {
         depth: length,
       };
 
+      const manufacturerAddr = {
+        name: manufacturerName,
+        street: manufacturerAdd,
+        postalCode: manufacturerPin,
+      };
+
+      const packerAddr = {
+        name: packerName,
+        street: packerAdd,
+        postalCode: packerPin,
+      };
+
+      formData.append("manufacturerAddr", manufacturerAddr);
+      formData.append("packerAddr", packerAddr);
       formData.append("dimensions", JSON.stringify(dimensions));
       formData.append("tags", JSON.stringify(tags));
 

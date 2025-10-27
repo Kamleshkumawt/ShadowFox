@@ -1,25 +1,25 @@
 import { useEffect } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar'
 import { Outlet } from 'react-router-dom'
-import { setSellerUser } from '../../store/slices/authSlice';
-import { useGetProfileSellerMutation } from '../../store/api/sellerAuthApi';
+import { setAdminUser } from '../../store/slices/authSlice';
 import { useDispatch } from 'react-redux';
 import Loading from '../../components/Loading';
 import AdminNavbar from '../../components/admin/AdminNavbar';
+import { useGetAdminProfileAccountMutation } from '../../store/api/adminAuthApi';
 
 const Layout = () => {
   const dispatch = useDispatch();
 
-    const [getProfileSeller,{data, isLoading}] = useGetProfileSellerMutation();
+    const [getAdminProfileAccount, {data, isLoading}] = useGetAdminProfileAccountMutation();
 
   useEffect(() => {
-      getProfileSeller();
-  },[getProfileSeller]);
+      getAdminProfileAccount();
+  },[getAdminProfileAccount]);
 
   useEffect(() => {
       if(data){
           // console.log('data : ',data);
-          dispatch(setSellerUser(data.seller));
+          dispatch(setAdminUser(data.admin));
       }
   },[data, dispatch]);
 

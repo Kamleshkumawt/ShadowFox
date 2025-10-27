@@ -2,6 +2,7 @@ import {Router} from 'express';
 import authRouter from './auth.route.js';
 import productRoute from './product.route.js';
 import userRoute from './user.route.js';
+import adminRoute from './admin.route.js';
 
 const router = Router();
 
@@ -9,6 +10,7 @@ const router = Router();
 router.use('/auth', authRouter);
 router.use('/products', productRoute);
 router.use('/users', userRoute);
+router.use('/admin', adminRoute);
 
 
 // Health check endpoint

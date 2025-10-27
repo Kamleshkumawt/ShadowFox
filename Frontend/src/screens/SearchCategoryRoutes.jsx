@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
-// import { Link, useParams } from "react-router-dom";
 import { useGetProductByCategoryQuery } from "../store/api/productApi";
-import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { useGetAllCategoriesBySlugQuery } from "../store/api/userApi";
 
@@ -82,9 +80,6 @@ const SearchCategoryRoutes = () => {
   const visibleFabrics = showAllFabrics ? fabricOptions : fabricOptions.slice(0, 12);
   const [products, setProducts] = useState([]);
   // const [getAllProduct, { data }] = useGetAllProductMutation();
-  
-  const categories = useSelector((state) => state.category.list);
-
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
 
@@ -104,7 +99,7 @@ const SearchCategoryRoutes = () => {
   
     useEffect(() => {
       if (data) {
-        // console.log('products : ',data.products);
+        // console.log('products : ',data);
         // console.log('category data API se  : ',categories);
         setProducts(data.products);
       }

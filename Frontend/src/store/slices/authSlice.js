@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: null,
   seller: null,
+  admin: null,
   token: localStorage.getItem('token'),
   refreshToken: localStorage.getItem('refreshToken'),
   isAuthenticated: !!localStorage.getItem('token'), // Set to true if token exists
@@ -71,9 +72,17 @@ const authSlice = createSlice({
         clearSellerUser: (state) => {
           state.seller = null;
           state.isLoading = false;
+        },
+        setAdminUser: (state, action) => {
+          state.admin = action.payload;
+          state.isLoading = false;
+        },
+        clearAdminUser: (state) => {
+          state.admin = null;
+          state.isLoading = false;
         }
     },
 });
 
-export const { login, logout,setCredentials, updateUser, setLoading, setError, setUser,clearUser ,setSellerUser ,clearSellerUser } = authSlice.actions;
+export const { login, logout,setCredentials, updateUser, setLoading, setError, setUser,clearUser ,setSellerUser ,clearSellerUser,setAdminUser,clearAdminUser } = authSlice.actions;
 export default authSlice.reducer;
