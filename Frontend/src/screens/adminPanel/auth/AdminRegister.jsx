@@ -16,6 +16,7 @@ const AdminRegister = () => {
     try{       
        const response = await createAdminAccount({ phone:contact, username, password }).unwrap();
       //  console.log("Logged in user:", response);
+      localStorage.setItem("token", response.token);
        dispatch(setAdminUser(response.seller));
        navigate("/admin");
 

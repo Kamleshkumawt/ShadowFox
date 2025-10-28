@@ -27,6 +27,7 @@ const ProfileDropdown = () => {
     try {
       await logout().unwrap();
        dispatch(clearUser()); 
+       localStorage.removeItem('token');
       navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
@@ -106,7 +107,7 @@ const ProfileDropdown = () => {
           {user && <div className="flex items-center gap-3">
             <img
               // src="https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2"
-              src={user?.profile_picture.url}
+              src={user?.profile_picture.url ?? ''}
               className="h-10 w-10 rounded-full object-cover"
               alt="Profile"
             />

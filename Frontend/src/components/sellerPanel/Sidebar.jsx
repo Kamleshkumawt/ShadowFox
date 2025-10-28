@@ -16,6 +16,7 @@ const Sidebar = () => {
     try {
       await sellerLogout().unwrap();
        dispatch(clearSellerUser()); 
+       localStorage.removeItem('token');
       navigate('/');
     } catch (error) {
       console.error('Logout error:', error);

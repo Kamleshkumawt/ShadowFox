@@ -29,6 +29,7 @@ const CreateSellerAccount = () => {
     try {
       const response = await createSellerAccount({store_phone: contact, password}).unwrap();
       console.log("Registered user:", response);
+      localStorage.setItem("token", response.token);
       dispatch(setSellerUser(response.seller));
        navigate("/sellerSignUp/business");
     } catch (err) {

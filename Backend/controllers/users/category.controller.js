@@ -97,12 +97,22 @@ export const getCategoryBySlug = async (req, res) => {
         .json({ success: false, message: "Query required" });
     }
 
+    // const category = await categoryModel
+    //   .findOne({
+    //     slug: { $regex: searchTerm, $options: "i" }, // i = case-insensitive
+    //   })
+    //   .populate("parentId", "name slug");
+
     const category = await categoryModel
       .findOne({
-        slug: { $regex: searchTerm, $options: "i" }, // i = case-insensitive
+        $or: [
+          { slug: { $regex: searchTerm, $options: "i" } },
+          { name: { $regex: searchTerm, $options: "i" } },
+        ],
       })
       .populate("parentId", "name slug");
 
+      
 
     if (!category)
       return res.status(404).json({ message: "Category not found" });
@@ -111,7 +121,6 @@ export const getCategoryBySlug = async (req, res) => {
       message: "Categories fetched successfully",
       category,
     });
-    
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -120,5 +129,3 @@ export const getCategoryBySlug = async (req, res) => {
     });
   }
 };
-
-

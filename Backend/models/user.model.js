@@ -131,7 +131,7 @@ userSchema.methods.isValidPassword = async function (password) {
 
 userSchema.methods.generateJWT = function () {
   return jwt.sign(
-    { _id: this._id, isAdmin: this.isAdmin },
+    { _id: this._id, role: 'user', isAdmin: this.isAdmin },
     process.env.JWT_SECRET,
     { expiresIn: "7d" }
   );

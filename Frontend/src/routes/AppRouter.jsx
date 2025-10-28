@@ -47,6 +47,9 @@ import ShowAllBlockedUser from '../screens/adminPanel/ShowAllBlockedUser'
 import ShowAllBlockedSeller from '../screens/adminPanel/ShowAllBlockedSeller'
 import EditUserByAdmin from '../screens/adminPanel/EditUserByAdmin'
 import EditSellerByAdmin from '../screens/adminPanel/EditSellerByAdmin'
+import AuthUser from '../middleware/AuthUser'
+import NotFound from '../screens/NotFound'
+
 
 
 const AppRouter = () => {
@@ -62,26 +65,27 @@ const AppRouter = () => {
             <Route path="/signIn" element={<Login />} />
             <Route path="/signUp" element={<Register />} />
             <Route path="/about" element={<h1>About</h1>} />
-            <Route path="/:categoryName" element={<CategoryProduct />} />
+            <Route path="/category/search/:categoryName" element={<CategoryProduct />} />
             <Route path="/products/search" element={<SearchCategoryRoutes />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/cart/address" element={<CartAddress />} />
-            <Route path="/cart/payment" element={<CartPayment />} />
-            <Route path="/cart/payment" element={<CartPayment />} />
-            <Route path="/cart/summary" element={<CartSummary />} />
+            <Route path="/wishlist" element={<AuthUser allowedRoles={['user']}><Wishlist /></AuthUser>} />
+            <Route path="/cart" element={<AuthUser allowedRoles={['user']}><Cart /></AuthUser>} />
+            <Route path="/cart/address" element={<AuthUser allowedRoles={['user']}><CartAddress /></AuthUser>} />
+            <Route path="/cart/payment" element={<AuthUser allowedRoles={['user']}><CartPayment /></AuthUser>} />
+            <Route path="/cart/payment" element={<AuthUser allowedRoles={['user']}><CartPayment /></AuthUser>} />
+            <Route path="/cart/summary" element={<AuthUser allowedRoles={['user']}><CartSummary /></AuthUser>} />
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/account/delete" element={<DeleteAccount />} />
-            <Route path="/user/orders" element={<Order />} />
+            <Route path="/user/orders" element={<AuthUser allowedRoles={['user']}><Order /></AuthUser>} />
             <Route path="/sellerSignUp" element={<CreateSellerAccount />} />
             <Route path="/sellerSignIn" element={<LoginSeller />} />
-            <Route path="/sellerSignUp/business" element={<BusinessDetails />} />
-            <Route path="/sellerSignUp/address" element={<PickupAddress />} />
-            <Route path="/sellerSignUp/bank-details" element={<BankDetails />} />
-            <Route path="/sellerSignUp/details" element={<SellerDetails />} />
+            <Route path="/sellerSignUp/business" element={<AuthUser allowedRoles={['seller']}><BusinessDetails /></AuthUser>} />
+            <Route path="/sellerSignUp/address" element={<AuthUser allowedRoles={['seller']}><PickupAddress /></AuthUser>} />
+            <Route path="/sellerSignUp/bank-details" element={<AuthUser allowedRoles={['seller']}><BankDetails /></AuthUser>} />
+            <Route path="/sellerSignUp/details" element={<AuthUser allowedRoles={['seller']}><SellerDetails /></AuthUser>} />
             <Route path="/admin/selector/login" element={<AdminLogin />} />
             <Route path="/admin/selector/register" element={<AdminRegister />} />
-            <Route path='/seller/*' element={<Layout/>} > 
+            
+            <Route path='/seller/*' element={<AuthUser allowedRoles={['seller']}><Layout/></AuthUser>} > 
                 <Route index element={<Dashboard />} />
                 <Route path="add-product" element={<AddProduct/>} />
                 <Route path="new-category-product" element={<AddProductCategory/>} />
@@ -93,7 +97,8 @@ const AppRouter = () => {
                 <Route path="list-ret-orders" element={<ShowAllReturnsOrders/>} />
                 <Route path="list-ret-stting" element={<SellerSettings/>} />
             </Route>
-            <Route path='/admin/*' element={<AdminLayout/>} > 
+
+            <Route path='/admin/*' element={<AuthUser allowedRoles={['admin']}><AdminLayout/></AuthUser>} > 
                 <Route index element={<AdminDashboard />} />  
                 <Route path="ret-stting" element={<AdminUpdate />} />
                 <Route path="ret-edit/:id" element={<EditProductByAdmin />} />
@@ -108,6 +113,9 @@ const AppRouter = () => {
                 <Route path="show/all-blocked-user" element={<ShowAllBlockedUser />} />
                 <Route path="show/all-blocked-seller" element={<ShowAllBlockedSeller />} />
             </Route>
+
+            <Route path="*" element={<NotFound />} />
+
         </Routes>
 
         {!isCartRoute && !isSellerRoute && !isAdminRoute && <Footer />}

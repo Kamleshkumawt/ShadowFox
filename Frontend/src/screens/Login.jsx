@@ -32,6 +32,7 @@ const Login = () => {
     try {
       const response = await login(payload).unwrap();
       //  console.log("Logged in user:", response);
+      localStorage.setItem("token", response.token);
       dispatch(setUser(response.user));
       navigate("/");
     } catch (err) {

@@ -15,6 +15,7 @@ const LoginSeller = () => {
     try{       
        const response = await sellerLogin({ store_phone:contact, password }).unwrap();
       //  console.log("Logged in user:", response);
+      localStorage.setItem("token", response.token);
        dispatch(setSellerUser(response.seller));
        navigate("/seller");
 

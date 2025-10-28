@@ -15,6 +15,7 @@ const AdminLogin = () => {
     try{       
        const response = await AdminLoginAccount({ phone:contact, password }).unwrap();
       //  console.log("Logged in user:", response);
+      localStorage.setItem("token", response.token);
        dispatch(setAdminUser(response.seller));
        navigate("/admin");
 

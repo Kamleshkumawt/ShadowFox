@@ -31,10 +31,23 @@ export const createSeller = asyncHandler(async (req, res) => {
     password: hashedPassword,
   });
 
+  const token = seller.generateJWT();
+  if (!token) {
+    return res.status(500).json({ error: "Error generating token" });
+  }
+
   await userModel.findByIdAndUpdate(userId, { role: "seller" });
+  
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 50 * 24 * 60 * 60 * 1000, // 50 days
+  });
+
   res
     .status(201)
-    .json({ success: true, message: "Seller created successfully", seller });
+    .json({ success: true, message: "Seller created successfully", seller, token });
 });
 
 export const sellerLoginController = asyncHandler(async (req, res) => {

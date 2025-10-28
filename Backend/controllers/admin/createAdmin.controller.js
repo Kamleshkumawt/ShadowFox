@@ -38,7 +38,7 @@ export const createAdmin = async (req, res) => {
     delete admin._doc.password; // Remove password from response
     res
       .status(200)
-      .json({ success: true, message: "Admin created successfully", admin });
+      .json({ success: true, message: "Admin created successfully", admin, token });
   } catch (error) {
     res
       .status(500)

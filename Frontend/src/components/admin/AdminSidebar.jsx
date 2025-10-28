@@ -26,6 +26,7 @@ const AdminSidebar = () => {
         try {
           await signOutAdminAccount().unwrap();
            dispatch(clearAdminUser()); 
+           localStorage.removeItem('token');
           navigate('/');
         } catch (error) {
           console.error('Logout error:', error);

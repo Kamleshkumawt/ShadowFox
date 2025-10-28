@@ -52,6 +52,7 @@ if (isEmail) {
    try {
       const response = await register(payload).unwrap();
       // console.log("Registered user:", response);
+      localStorage.setItem("token", response.token);
       dispatch(setUser(response.user));
       navigate('/');
 

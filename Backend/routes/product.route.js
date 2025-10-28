@@ -62,7 +62,7 @@ router.post('/create', protect,
     }
 });
 
-router.get('/getAll', protect, async (req, res) => {
+router.get('/getAll', async (req, res) => {
     try {
         await getProducts(req, res);
     } catch (error) {
@@ -104,9 +104,9 @@ router.put('/update', protect,
 });
 
 router.get('/seller/getAll', protect,getProductsByStatusForSeller);
-router.get('/seller/search/:id', protect,searchProducts);
+router.get('/seller/search/:id',searchProducts);
 router.get('/seller/:id', protect,getProductsBySellerId);
-router.get('/category/:id',protect, getProductsByCategory);
+router.get('/category/:id', getProductsByCategory);
 
 router.get('/:id',protect, getProductById);
 

@@ -229,8 +229,8 @@ router.get('/returns/getAllReturns', protect, getAllReturns);
  {/** not implementes*/}
 
  router.get('/category/getAllCategories', protect, getCategories);
- router.get('/category/getCategories', protect, getAllCategories);
- router.get('/category/getCategory/:slug', protect, getCategoryBySlug);
+ router.get('/category/getCategories', getAllCategories);
+ router.get('/category/getCategory/:slug', getCategoryBySlug);
  router.get('/category/getCategoryById/:id', protect, getCategoriesByParentId);
  router.get('/category/getCategorySelfById/:id', protect, getCategoriesById);
  

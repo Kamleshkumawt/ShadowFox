@@ -15,7 +15,7 @@ const HomePageCarouselCard = ({ data }) => {
 
         if (categoryName) {
           dispatch(setCategories(category)); // ✅ Dispatch on click
-          navigate(`/${categoryName}`);
+          navigate(`/category/search/${categoryName}`);
           window.scrollTo(0, 0);
         } else {
           console.warn("Category name is missing");
