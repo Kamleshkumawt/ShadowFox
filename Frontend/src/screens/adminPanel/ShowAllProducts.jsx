@@ -27,7 +27,7 @@ const ShowAllProducts = () => {
 
   useEffect(() => {
     if(data) {
-      console.log('data is fetched : ', data);
+      // console.log('data is fetched : ', data);
       setProducts(data.products);
     }
   }, [data]);

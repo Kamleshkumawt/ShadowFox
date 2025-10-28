@@ -64,22 +64,22 @@ export const loginController = asyncHandler(async (req, res) => {
         maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days
     });
 
-    if(user.role === 'seller'){
-        const seller = await sellerModel.findOne({userId: user._id});
-        if(!seller) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid credentials'
-            });
-        }
+    // if(user.role === 'seller'){
+    //     const seller = await sellerModel.findOne({userId: user._id});
+    //     if(!seller) {
+    //         return res.status(401).json({
+    //             success: false,
+    //             message: 'Invalid credentials'
+    //         });
+    //     }
 
-        return res.status(200).json({
-            success: true,
-            message: 'Login successful',
-            seller,
-            token
-        });
-    }
+    //     return res.status(200).json({
+    //         success: true,
+    //         message: 'Login successful',
+    //         seller,
+    //         token
+    //     });
+    // }
 
     res.status(200).json({
         success: true,

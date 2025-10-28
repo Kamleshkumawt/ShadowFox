@@ -109,6 +109,17 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+
+userSchema.pre('save', function (next) {
+  if (typeof this.profile_picture === 'string') {
+    this.profile_picture = {
+      url: this.profile_picture,
+      uploadedAt: new Date(),
+    };
+  }
+  next();
+});
+
 userSchema.statics.hashPassword = async function (password) {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);

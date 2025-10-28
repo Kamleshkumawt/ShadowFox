@@ -1,5 +1,7 @@
 import { Router } from "express";
 import {
+  blockSellerByAdmin,
+  blockUserByAdmin,
   createAdmin,
   createCategoryController,
   deleteCategory,
@@ -10,12 +12,19 @@ import {
   getAllProducts,
   getAllSeller,
   getAllUsers,
+  getOrdersById,
+  getSellerByIdAdmin,
+  getUserByIdAdmin,
   loginAdmin,
   logoutAdmin,
   updateAdmin,
   updateAdminPassword,
   updateCategory,
   updateOrderStatusByAdmin,
+  updateSellerByAdmin,
+  updateSellerPassByAdmin,
+  updateUserPasswordByAdmin,
+  updateUserProfileByAdmin,
 } from "../controllers/index.js";
 import { protect } from "../middleware/auth.middleware.js";
 import { body, validationResult } from "express-validator";
@@ -108,8 +117,24 @@ router.put("/category/update/:id", protect, updateCategory);
 router.delete("/category/delete/:id", protect, deleteCategory);
 //  router.get('/category/getCategoryById/:id', protect, getCategoriesByParentId);
 
-router.get("/orders/update/:id", protect, updateOrderStatusByAdmin);
-router.get("/products/delete/:id", protect, deleteProductByAdmin);
+router.put("/orders/update", protect, updateOrderStatusByAdmin);
+
+
+router.put("/user/update-profile", protect, updateUserProfileByAdmin);
+router.put("/user/update-pass", protect, updateUserPasswordByAdmin);
+router.put("/seller/update-profile", protect, updateSellerByAdmin);
+router.put("/seller/update-pass", protect, updateSellerPassByAdmin);
+
+router.get("/user/getUserById/:id", protect, getUserByIdAdmin);
+router.get("/seller/getSellerById/:id", protect, getSellerByIdAdmin);
+
+router.get("/orders/getById/:id", protect, getOrdersById);
+router.put("/user/blocked/:id", protect, blockUserByAdmin);
+router.put("/seller/blocked/:id", protect, blockSellerByAdmin);
+router.delete("/products/delete/:id", protect, deleteProductByAdmin);
+
+
+
 router.get("/user/getAll", protect, getAllUsers);
 router.get("/seller/getAll", protect, getAllSeller);
 router.get("/orders/getAll", protect, getAllOrders);

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { dateFormat } from '../../lib/dateFormat';
 import Title from '../../components/sellerPanel/Title';
-import {Link} from 'react-router-dom'
 import { useBlockedUserByAdminMutation, useGetAllUsersByAdminMutation } from '../../store/api/adminApi';
 
 
-const ShowAllUsers = () => {
+const ShowAllBlockedUser = () => {
   const [users, setUsers] = useState([]);
 
   const [getAllUsersByAdmin,{data, isLoading}] = useGetAllUsersByAdminMutation();
@@ -19,7 +18,7 @@ const ShowAllUsers = () => {
   useEffect(() => {
     if(data) {
       // console.log('data is fetched : ', data);
-      const filteredUsers = data.users.filter((user) => user.isDisabled === false);
+       const filteredUsers = data.users.filter((user) => user.isDisabled === true);
       setUsers(filteredUsers);
     }
   }, [data]);
@@ -29,7 +28,7 @@ const ShowAllUsers = () => {
       // console.log("Deleting product with ID:", id);
       await blockedUserByAdmin(id).unwrap(); // unwrap() throws if the mutation fails
       setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
-      // console.log("Deleted successfully");
+      // console.log(" successfully");
     } catch (error) {
       console.error("Delete failed:", error);
     }
@@ -62,13 +61,12 @@ const ShowAllUsers = () => {
                 <td className="p-2">{dateFormat(item.createdAt)}</td>
                 <td className="p-2">{item.role}</td>
                   <td className="p-2 text-white flex items-center gap-2">
-                    <Link to={`/admin/user/details/${item._id}`} className='p-1 px-2 rounded-xs bg-green-500'>Edit</Link>
                     <div
                       disabled={loading}
                       onClick={() => handleBlocked(item._id)}
-                      className="p-1 px-2 rounded-xs bg-red-500 cursor-pointer"
+                      className="p-1 px-2 rounded-xs bg-yellow-500 cursor-pointer"
                     >
-                      Blocked
+                      Unblocked
                     </div>
                   </td>
               </tr>
@@ -80,4 +78,4 @@ const ShowAllUsers = () => {
   )
 }
 
-export default ShowAllUsers
+export default ShowAllBlockedUser

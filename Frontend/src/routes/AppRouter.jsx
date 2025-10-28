@@ -41,6 +41,12 @@ import ShowAllSellers from '../screens/adminPanel/ShowAllSellers'
 import ShowAllProducts from '../screens/adminPanel/ShowAllProducts'
 import ShowAllCategories from '../screens/adminPanel/ShowAllCategories'
 import EditProductByAdmin from '../screens/adminPanel/EditProductByAdmin'
+import ShowAllOrdersAdmin from '../screens/adminPanel/ShowAllOrders'
+import EditOrderDetails from '../screens/adminPanel/EditOrderDetails'
+import ShowAllBlockedUser from '../screens/adminPanel/ShowAllBlockedUser'
+import ShowAllBlockedSeller from '../screens/adminPanel/ShowAllBlockedSeller'
+import EditUserByAdmin from '../screens/adminPanel/EditUserByAdmin'
+import EditSellerByAdmin from '../screens/adminPanel/EditSellerByAdmin'
 
 
 const AppRouter = () => {
@@ -94,8 +100,13 @@ const AppRouter = () => {
                 <Route path="show/all-user" element={<ShowAllUsers />} />
                 <Route path="show/all-seller" element={<ShowAllSellers />} />
                 <Route path="show/all-products" element={<ShowAllProducts />} />
-                <Route path="show/all-orders" element={<ShowAllOrders />} />
+                <Route path="show/all-orders" element={<ShowAllOrdersAdmin />} />
                 <Route path="show/all-categories" element={<ShowAllCategories />} />
+                <Route path="order/details/:id" element={<EditOrderDetails />} />
+                <Route path="user/details/:id" element={<EditUserByAdmin />} />
+                <Route path="seller/details/:id" element={<EditSellerByAdmin />} />
+                <Route path="show/all-blocked-user" element={<ShowAllBlockedUser />} />
+                <Route path="show/all-blocked-seller" element={<ShowAllBlockedSeller />} />
             </Route>
         </Routes>
 

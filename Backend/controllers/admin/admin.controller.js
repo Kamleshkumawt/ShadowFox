@@ -3,6 +3,7 @@ import userModel from "../../models/user.model.js";
 import categoryModel from "../../models/categories.model.js";
 import slugify from "slugify";
 import productModel from "../../models/products.model.js";
+import orderModel from "../../models/order.model.js";
 
 export const createCategoryController = async (req, res) => {
   try {
@@ -113,7 +114,6 @@ export const getAllSeller = async (req, res) => {
 export const getAllUsers = async (req, res) => {
     try {
         const users = await userModel.find();
-        console.log('users', users);
         res.status(200).json({ success: true, message: "All users fetched successfully", users });
     } catch (error) {
         res.status(500).json({ success: false, message: "Server error", error: error.message });
@@ -140,8 +140,9 @@ export const getAllOrders = async (req, res) => {
 
 export const updateOrderStatusByAdmin = async (req, res) => {
   try {
-    const orderId = req.params.id;
-    const { status } = req.body;
+
+    const { status, orderId } = req.body;
+
     const updatedOrder = await orderModel.findByIdAndUpdate(
       orderId,
       { status },
@@ -166,6 +167,23 @@ export const updateOrderStatusByAdmin = async (req, res) => {
   }
 };
 
+export const getOrdersById = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const orders = await orderModel
+      .findById(orderId);
+
+    res
+      .status(200)
+      .json({ success: true, message: "Orders fetched successfully", orders });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+
 export const deleteProductByAdmin = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -182,5 +200,259 @@ export const deleteProductByAdmin = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Server Error", errors: error.message });
+  }
+};
+
+export const blockUserByAdmin = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    user.isDisabled = !user.isDisabled;
+    await user.save();
+    res
+      .status(200)
+      .json({ success: true, message: "User update successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", errors: error.message });
+  }
+};
+
+export const blockSellerByAdmin = async (req, res) => {
+  try {
+    const sellerId = req.params.id;
+    const seller = await sellerModel.findById(sellerId);
+    if (!seller) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Seller not found" });
+    }
+    seller.isDisabled = !seller.isDisabled;
+    await seller.save();
+    res
+      .status(200)
+      .json({ success: true, message: "Seller update successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", errors: error.message });
+  }
+};
+
+export const updateUserProfileByAdmin = async (req, res) => {
+  try {
+    const { username, email, phone,userId } = req.body;
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Update fields
+    if (username) user.username = username;
+    if (email) user.email = email;
+    if (phone) user.phone = phone;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user,
+    });
+  } catch (error) {
+    console.error("Update profile error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating profile",
+      errors: error.message,
+    });
+  }
+};
+
+export const getUserByIdAdmin = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    res
+      .status(200)
+      .json({ success: true, message: "User fetched successfully", user });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", errors: error.message });
+  }
+};
+
+export const updateUserPasswordByAdmin = async (req, res) => {
+  try {
+    const { oldPassword, newPassword, userId } = req.body;
+
+    const user = await userModel.findById(userId).select("+password");
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const isMatch = await user.isValidPassword(oldPassword);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Old password is incorrect" });
+    }
+
+    const hashedPassword = await userModel.hashPassword(newPassword);
+    if (!hashedPassword) {
+      return res.status(500).json({ message: "Error hashing password" });
+    }
+    user.password = hashedPassword;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    console.error("Update password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating password",
+      errors: error.message,
+    });
+  }
+};
+
+export const updateSellerByAdmin = async (req, res) => {
+  try {
+    const {
+      store_name,
+      store_description,
+      store_address,
+      gst_number,
+      bank_details,
+      policies,
+      mangerName,
+      sellerId,
+    } = req.body;
+
+    // console.log('req body', req.body)
+
+    if (
+      !store_name &&
+      !store_description &&
+      !store_address &&
+      !gst_number &&
+      !bank_details &&
+      !policies
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "all fields are required",
+      });
+    }
+
+    const updatedFields = {};
+    if (store_name) updatedFields.store_name = store_name;
+    if (store_description) updatedFields.store_description = store_description;
+    if (store_address) updatedFields.store_address = store_address;
+    if (gst_number) updatedFields.gst_number = gst_number;
+    if (bank_details) updatedFields.bank_details = bank_details;
+    if (policies) updatedFields.policies = policies;
+    if (mangerName) updatedFields.mangerName = mangerName;
+
+    // console.log("updatedFields before cleanup:", updatedFields);
+
+   
+    Object.keys(updatedFields).forEach((key) => {
+      const value = updatedFields[key];
+
+      if (value === undefined) delete updatedFields[key];
+      else if (typeof value === "object" && Object.keys(value).length === 0) {
+        delete updatedFields[key];
+      }
+      else if (typeof value === "string" && value.trim() === "") {
+        delete updatedFields[key];
+      }
+    });
+
+    // console.log("updatedFields after cleanup:", updatedFields);
+
+    const seller = await sellerModel.findOneAndUpdate(
+      { sellerId },
+      updatedFields,
+      { new: true }
+    );
+
+    res
+      .status(200)
+      .json({ success: true, message: "Seller updated successfully", seller });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+export const getSellerByIdAdmin = async (req, res) => {
+  try {
+    const sellerId = req.params.id;
+    const seller = await sellerModel.findById(sellerId);
+    if (!seller) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Seller not found" });
+    }
+    res
+      .status(200)
+      .json({ success: true, message: "Seller fetched successfully", seller });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Server Error", errors: error.message });
+  }
+};
+
+export const updateSellerPassByAdmin = async (req, res) => {
+  try {
+    const { oldPassword, newPassword, sellerId } = req.body;
+
+    const seller = await sellerModel.findById(sellerId).select("+password");
+    if (!seller) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const isMatch = await seller.isValidPassword(oldPassword);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Old password is incorrect" });
+    }
+
+    const hashedPassword = await sellerModel.hashPassword(newPassword);
+    if (!hashedPassword) {
+      return res.status(500).json({ message: "Error hashing password" });
+    }
+    seller.password = hashedPassword;
+
+    await seller.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    console.error("Update password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating password",
+      errors: error.message,
+    });
   }
 };

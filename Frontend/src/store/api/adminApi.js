@@ -47,10 +47,29 @@ export const adminApi = baseApi.injectEndpoints({
         method: 'GET',
       }),
     }),
-    updateOrdersByAdmin: builder.query({
+    getOrdersById: builder.query({
       query: (id) => ({
-        url: `/admin/orders/update/${id}`,
+        url: `/admin/orders/getById/${id}`,
+        method: 'GET',
+      }),
+    }),
+    getUserById: builder.query({
+      query: (id) => ({
+        url: `/admin/user/getUserById/${id}`,
+        method: 'GET',
+      }),
+    }),
+    getSellerById: builder.query({
+      query: (id) => ({
+        url: `/admin/seller/getSellerById/${id}`,
+        method: 'GET',
+      }),
+    }),
+    updateOrdersByAdmin: builder.mutation({
+      query: (data) => ({
+        url: `/admin/orders/update`,
         method: 'PUT',
+        body: data,
       }),
     }),
     getAllProductsByAdmin: builder.mutation({
@@ -61,8 +80,48 @@ export const adminApi = baseApi.injectEndpoints({
     }),
     deleteProductByAdmin: builder.mutation({
       query: (id) => ({
-        url: `/products/delete/${id}`,
-        method: "POST",
+        url: `/admin/products/delete/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    blockedUserByAdmin: builder.mutation({
+      query: (id) => ({
+        url: `/admin/user/blocked/${id}`,
+        method: "PUT",
+      }),
+    }),
+    blockedSellerByAdmin: builder.mutation({
+      query: (id) => ({
+        url: `/admin/seller/blocked/${id}`,
+        method: "PUT",
+      }),
+    }),
+    updateUserProfileByAdmin: builder.mutation({
+      query: (data) => ({
+        url: '/admin/user/update-profile',
+        method: 'PUT',
+        body: data,
+      }),
+    }),
+    updateSellerProfileByAdmin: builder.mutation({
+      query: (data) => ({
+        url: '/admin/seller/update-profile',
+        method: 'PUT',
+        body: data,
+      }),
+    }),
+    updateUserPassByAdmin: builder.mutation({
+      query: (data) => ({
+        url: '/admin/user/update-pass',
+        method: 'PUT',
+        body: data,
+      }),
+    }),
+     updateSellerPassByAdmin: builder.mutation({
+      query: (data) => ({
+        url: '/admin/seller/update-pass',
+        method: 'PUT',
+        body: data,
       }),
     }),
   }),
@@ -76,7 +135,16 @@ export const {
   useGetAllUsersByAdminMutation,
   useGetAllSellerByAdminMutation,
   useGetAllOrdersByAdminMutation,
-  useUpdateOrdersByAdminQuery,
+  useUpdateOrdersByAdminMutation,
   useGetAllProductsByAdminMutation,
-  useDeleteProductByAdminMutation
+  useDeleteProductByAdminMutation,
+  useGetOrdersByIdQuery,
+  useBlockedUserByAdminMutation,
+  useBlockedSellerByAdminMutation,
+  useGetUserByIdQuery,
+  useGetSellerByIdQuery,
+  useUpdateUserProfileByAdminMutation,
+  useUpdateSellerProfileByAdminMutation,
+  useUpdateUserPassByAdminMutation,
+  useUpdateSellerPassByAdminMutation
 } = adminApi;

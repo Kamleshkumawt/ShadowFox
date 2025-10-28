@@ -35,7 +35,9 @@ const AdminSidebar = () => {
     const adminNAvlinks = [
         {name: 'Dashboard', path: '/admin', icon: LayoutDashboardIcon},
         {name: 'List Users', path: '/admin/show/all-user', icon: ListCollapseIcon},
+        {name: 'List Blocked Users', path: '/admin/show/all-blocked-user', icon: ListCollapseIcon},
         {name: 'List Seller', path: '/admin/show/all-seller', icon: ListCollapseIcon},
+        {name: 'List Blocked Sellers', path: '/admin/show/all-blocked-seller', icon: ListCollapseIcon},
         {name: 'List Products', path: '/admin/show/all-products', icon: ListCollapseIcon},
         {name: 'List Orders', path: '/admin/show/all-orders', icon: ListCollapseIcon},
         {name: 'List categories', path: '/admin/show/all-categories', icon: ListCollapseIcon},

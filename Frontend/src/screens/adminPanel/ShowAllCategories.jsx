@@ -13,9 +13,10 @@ const ShowAllCategories = () => {
 
   const handleDelete = async (id) => {
     try {
-      console.log("Deleting product with ID:", id);
+      // console.log("Deleting product with ID:", id);
       await deleteCategoryByAdmin(id).unwrap(); // unwrap() throws if the mutation fails
-      console.log("Deleted successfully");
+       setCategories((prevUsers) => prevUsers.filter((user) => user._id !== id));
+      // console.log("Deleted successfully");
     } catch (error) {
       console.error("Delete failed:", error);
     }
@@ -27,7 +28,7 @@ const ShowAllCategories = () => {
 
   useEffect(() => {
     if (data) {
-      console.log("data is fetched : ", data);
+      // console.log("data is fetched : ", data);
       setCategories(data.categories);
     }
   }, [data]);
@@ -35,7 +36,7 @@ const ShowAllCategories = () => {
   return (
     !isLoading && (
       <>
-        <Title text1="Products" text2="List" />
+        <Title text1="Categories" text2="List" />
         <div className="max-w-7xl mt-6 overflow-x-auto">
           <table className="w-full border-collapse rounded-md overflow-hidden text-nowrap">
             <thead className="bg-primary/20 text-left text-white">

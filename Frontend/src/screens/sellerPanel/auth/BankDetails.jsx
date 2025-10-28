@@ -71,7 +71,7 @@ const BankDetails = () => {
 
         <div className="w-full max-w-xs py-1 flex flex-col gap-2">
            
-           <div className="relative">
+          <div className="relative">
             <input
               type="text"
               id="accountHolderName"
