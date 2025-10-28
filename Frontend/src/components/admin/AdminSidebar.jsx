@@ -34,14 +34,11 @@ const AdminSidebar = () => {
 
     const adminNAvlinks = [
         {name: 'Dashboard', path: '/admin', icon: LayoutDashboardIcon},
-        {name: 'Add Shows', path: '/admin/add-show', icon: PlusSquareIcon},
-        {name: 'List Shows', path: '/admin/list-shows', icon: ListIcon},
-        {name: 'List Bookings', path: '/admin/list-bookings', icon: ListCollapseIcon},
-        {name: 'List Bookings', path: '/admin/show/all-user', icon: ListCollapseIcon},
-        {name: 'List Bookings', path: '/admin/show/all-seller', icon: ListCollapseIcon},
-        {name: 'List Bookings', path: '/admin/show/all-products', icon: ListCollapseIcon},
-        {name: 'List Bookings', path: '/admin/show/all-orders', icon: ListCollapseIcon},
-        {name: 'List Bookings', path: '/admin/show/all-categories', icon: ListCollapseIcon},
+        {name: 'List Users', path: '/admin/show/all-user', icon: ListCollapseIcon},
+        {name: 'List Seller', path: '/admin/show/all-seller', icon: ListCollapseIcon},
+        {name: 'List Products', path: '/admin/show/all-products', icon: ListCollapseIcon},
+        {name: 'List Orders', path: '/admin/show/all-orders', icon: ListCollapseIcon},
+        {name: 'List categories', path: '/admin/show/all-categories', icon: ListCollapseIcon},
         {name: 'Settings', path: '/admin/ret-stting', icon: Settings},
     ]
 
