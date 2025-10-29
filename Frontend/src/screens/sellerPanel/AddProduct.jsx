@@ -27,13 +27,32 @@ const comboOptions = [
   "Single",
 ];
 
+const sizeOptions = [
+  "XS",
+  "S",
+  "M",
+  "L",
+  "XL",
+  "2XL",
+  "3XL",
+  "4XL",
+  "5XL",
+  "6XL",
+  "7XL",
+  "8XL",
+  "9XL",
+  "10XL",
+  "FreeSize",
+];
+
 const AddProduct = () => {
   // ---------- State ----------
   const [name, setName] = useState("");
   const [gst, setGst] = useState("");
   const [hsn, setHsn] = useState("");
   const [styleCode, setStyleCode] = useState("");
-  const [size, setSize] = useState("");
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [open, setOpen] = useState(false);
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [color, setColor] = useState("");
@@ -81,6 +100,14 @@ const AddProduct = () => {
     setInputValue(e.target.value);
   };
 
+  const toggleSize = (size) => {
+    if (selectedSizes.includes(size)) {
+      setSelectedSizes(selectedSizes.filter((s) => s !== size));
+    } else {
+      setSelectedSizes([...selectedSizes, size]);
+    }
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
@@ -124,7 +151,7 @@ const AddProduct = () => {
       formData.append("gst_number", gst);
       formData.append("hsnCode", hsn);
       formData.append("styleCode", styleCode);
-      formData.append("size", size);
+      formData.append("size", selectedSizes);
       formData.append("battery", battery);
       formData.append("material", material);
       formData.append("age", age);
@@ -135,7 +162,6 @@ const AddProduct = () => {
       formData.append("packerAdd", packerAdd);
       formData.append("packerPin", packerPin);
       formData.append("comboType", comboType);
-     
 
       const dimensions = {
         width,
@@ -279,20 +305,44 @@ const AddProduct = () => {
               </label>
             </div>
 
-            {/* Size Field */}
-            <div className="relative">
-              <input
-                type="text"
-                id="size"
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
-                placeholder=" " // Needed for `peer-placeholder-shown` to trigger, but space keeps it hidden
-                className={inputClass}
-              />
-              <label htmlFor="size" className={labelClass(size)}>
-                Size
-              </label>
+              {/* Size Field */}
+            <div className="relative w-64 mt-3">
+              {/* Input field (acts like a select) */}
+              <div
+                className="border rounded px-2 py-1 cursor-pointer flex justify-between items-center font-medium text-gray-400"
+                onClick={() => setOpen(!open)}
+              >
+                <span>
+                  {selectedSizes.length > 0
+                    ? selectedSizes.join(", ")
+                    : "Select sizes"}
+                </span>
+                <span className="ml-2">&#9662;</span> {/* down arrow */}
+              </div>
+
+              {/* Options dropdown */}
+              {open && (
+                <div className="absolute left-0 right-0 border mt-1 bg-white z-10 max-h-40 overflow-auto hide-scrollbar scrollbar-none rounded shadow-lg">
+                  {sizeOptions.map((size) => (
+                    <div
+                      key={size}
+                      className="px-2 py-1 hover:bg-pink-100 cursor-pointer flex items-center gap-2"
+                      onClick={() => toggleSize(size)}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedSizes.includes(size)}
+                        readOnly
+                        className="accent-pink-400"
+                      />
+                      <span>{size}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+
+
           </div>
           <h1 className="text-lg font-medium  text-gray-600 py-3 mt-5 border-b border-gray-400/30 w-full">
             Product Details
@@ -883,7 +933,13 @@ const AddProduct = () => {
       </div>
 
       <div className="w-full h-16 bg-white fixed bottom-0 right-0 flex items-center justify-between px-10">
-        <div onClick={() => {navigate('/seller'); scrollTo(0,0);}} className="border border-purple-600 max-w-xs p-2 px-4 text-center rounded-sm font-medium text-purple-600 text-lg cursor-pointer">
+        <div
+          onClick={() => {
+            navigate("/seller");
+            scrollTo(0, 0);
+          }}
+          className="border border-purple-600 max-w-xs p-2 px-4 text-center rounded-sm font-medium text-purple-600 text-lg cursor-pointer"
+        >
           Cancel
         </div>
         <button

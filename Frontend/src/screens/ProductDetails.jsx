@@ -79,10 +79,10 @@ const ProductDetails = () => {
 
   return !loading ? (
     <div className="flex flex-col px-5 sm:px-16 gap-3 pt-28">
-      <h1 className="font-medium text-lg mt-2">
+      {/* <h1 className="font-medium text-lg mt-2">
         Home/Women/Women Ethnic/WearKurtis style list kurti with embroidered
         work
-      </h1>
+      </h1> */}
       <div className=" w-full flex flex-col lg:flex-row justify-center gap-8">
         <div className="flex gap-2 w-full">
           <div className="flex flex-col items-center gap-2 mt-2 min-w-[3rem]">

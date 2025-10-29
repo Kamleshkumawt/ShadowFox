@@ -164,7 +164,7 @@ const toggleDiscount = (discount) => {
   return !isLoading && (
     <div className="w-full h-full flex flex-col items-center justify-center px-10 sm:px-20 pt-20">
       <div className="w-full h-full flex flex-col items-start justify-start gap-2">
-        <h1 className="text-[24px] font-semibold mt-12">{query}</h1>
+        <h1 className="text-[24px] font-semibold mt-5">{query}</h1>
       </div>
       <div className="w-full h-full flex items-start justify-center">
         <div className="w-[23%] hidden sm:flex h-full  flex-col items-start justify-start py-5 gap-3">

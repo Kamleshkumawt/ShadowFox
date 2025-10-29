@@ -1,16 +1,78 @@
-# React + Vite
+# ApanaStore - E-commerce Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to ApanaStore, a modern e-commerce platform built with React and Vite.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ApanaStore provides a seamless shopping experience with the following features:
 
-## React Compiler
+- User authentication
+- Product catalog
+- Shopping cart
+- Secure checkout
+- Order tracking
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technology Stack
 
-## Expanding the ESLint configuration
+- React 18
+- Vite
+- ESLint
+- Modern CSS
+- RESTful API integration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting Started (Frontend & Backend)
+
+### Frontend (client)
+1. Open a terminal and navigate to the frontend folder:
+    - cd frontend
+2. Install dependencies:
+    - npm install
+3. Create environment file and set API URL:
+    - cp .env.example .env
+    - Set VITE_API_URL to your backend URL (for example http://localhost:5000)
+4. Start development server:
+    - npm run dev
+    - App runs by default at http://localhost:5173
+5. Build for production:
+    - npm run build
+    - Serve preview: npm run preview
+
+### Backend (server)
+1. Open a terminal and navigate to the backend folder:
+    - cd backend
+2. Install dependencies:
+    - npm install
+3. Create environment file and configure:
+    - cp .env.example .env
+    - Set required variables (e.g., PORT, DATABASE_URL, JWT_SECRET, etc.)
+4. Prepare the database (if applicable):
+    - Run migrations/seeds (script names may vary):
+      - npm run migrate
+      - npm run seed
+    - For Prisma: npx prisma migrate deploy
+5. Start development server:
+    - npm run dev
+    - Default server URL: http://localhost:3000
+6. Start production server:
+    - npm run start
+
+### Notes & Troubleshooting
+- Ensure frontend VITE_API_URL matches backend URL and port.
+- If CORS errors occur, enable CORS in backend configuration.
+- Check .env.example for required variables and example values.
+- Ports can be changed in .env; update both frontend and backend accordingly.
+- For containerized setups, refer to docker-compose or deployment docs if present.
+## Getting Started
+
+1. Clone the repository
+2. Run `npm install`
+3. Start development server: `npm run dev`
+4. Open `http://localhost:5173`
+
+## Development Guidelines
+
+Please follow our coding standards and submit PRs for review.
+
+## License
+
+MIT License - Feel free to use and modify

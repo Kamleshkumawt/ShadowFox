@@ -6,7 +6,20 @@ const Card = ({ data }) => {
   const [addToWishlistProduct,{isLoading}] = useAddToWishlistProductMutation();
   const [isAddedToWishlist, setIsAddedToWishlist] = useState(false);
 
+    const navigate = useNavigate();
+
   const handleAddToWishlist = async (productId) => {
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/signIn');
+      return;
+    }
+
+    if(isAddedToWishlist){
+      return;
+    }
+
     try {
       // console.log('Adding to wishlist:', productId);
       const products = {
@@ -19,7 +32,7 @@ const Card = ({ data }) => {
       console.error('Error adding to wishlist:', error);
     }
   }
-  const navigate = useNavigate();
+
   return (
     <div className="max-w-[15rem] min-w-[14rem] rounded-lg overflow-hidden border border-gray-200 bg-white">
       <div
@@ -35,8 +48,8 @@ const Card = ({ data }) => {
           alt="image"
           className="object-contain h-full w-full"
         />
+
         {/* Wishlist Icon */}
-        {!data?.isWishlist && (
           <div className=" absolute top-3 right-3 flex justify-end ">
           <button onClick={(e) => {
               e.stopPropagation(); // ✅ Prevent navigation
@@ -44,7 +57,7 @@ const Card = ({ data }) => {
             }} 
             disabled={isLoading} 
             className={`transition cursor-pointer ${
-              isAddedToWishlist || data?.isWishlist ? 'text-blue-800' : 'text-red-500 hover:text-red-500'
+              isAddedToWishlist ? 'text-blue-800' : 'text-red-500 hover:text-red-500'
             }`}
           >
             <svg
@@ -61,7 +74,6 @@ const Card = ({ data }) => {
             </svg>
           </button>
         </div>
-        )}
 
       </div>
 

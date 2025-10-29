@@ -231,8 +231,8 @@ const Navbar = () => {
         <div className="flex items-center justify-between gap-7">
           <span onClick={()=> {navigate('/sellerSignUp');scrollTo(0,0)}} className="text-[16px] cursor-pointer">Become a Supplier</span>
           <span className="w-[2px] h-9 bg-gray-300"></span>
-          <span className="text-[16px] cursor-pointer">Investor Relations</span>
-          <span className="w-[2px] h-9 bg-gray-300"></span>
+          {/* <span className="text-[16px] cursor-pointer">Investor Relations</span>
+          <span className="w-[2px] h-9 bg-gray-300"></span> */}
 
           <div className="flex items-center gap-6">
             {/* Profile Icon */}
@@ -439,13 +439,12 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="w-full h-[40px] bg-white border-b-2 border-gray-300">
+      {/* <div className="w-full h-[40px] bg-white border-b-2 border-gray-300">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Women Ethnic</NavigationMenuTrigger>
 
-              {/* <NavigationMenuContent className="p-4 grid grid-cols-3 gap-6 max-w-4xl"> */}
               <NavigationMenuContent
                 style={{
                   width: "1410px",
@@ -454,7 +453,7 @@ const Navbar = () => {
                 }}
                 className="p-4 bg-white shadow-lg flex items-start justify-start gap-6"
               >
-                {/* Sarees */}
+            
                 <div className="flex flex-col leading-0">
                   <div className="font-semibold mb-2">Sarees</div>
                   <NavigationMenuLink>All Sarees</NavigationMenuLink>
@@ -467,7 +466,6 @@ const Navbar = () => {
                   <NavigationMenuLink>Net Sarees</NavigationMenuLink>
                 </div>
 
-                {/* Kurtis */}
                 <div>
                   <div className="font-semibold mb-2">Kurtis</div>
                   <NavigationMenuLink>All Kurtis</NavigationMenuLink>
@@ -477,7 +475,6 @@ const Navbar = () => {
                   <NavigationMenuLink>Chikankari Kurtis</NavigationMenuLink>
                 </div>
 
-                {/* Kurta Sets */}
                 <div>
                   <div className="font-semibold mb-2">Kurta Sets</div>
                   <NavigationMenuLink>All Kurta Sets</NavigationMenuLink>
@@ -488,7 +485,7 @@ const Navbar = () => {
                   <NavigationMenuLink>Sharara Sets</NavigationMenuLink>
                 </div>
 
-                {/* Kurta Sets */}
+                
                 <div>
                   <div className="font-semibold mb-2">Dupatta Sets</div>
                   <NavigationMenuLink>Cotton Sets</NavigationMenuLink>
@@ -496,7 +493,7 @@ const Navbar = () => {
                   <NavigationMenuLink>Printed Sets</NavigationMenuLink>
                 </div>
 
-                {/* Suits & Dress Material */}
+              
                 <div>
                   <div className="font-semibold mb-2">
                     Suits & Dress Material
@@ -511,7 +508,7 @@ const Navbar = () => {
                   <NavigationMenuLink>Patiala Suits</NavigationMenuLink>
                 </div>
 
-                {/* Lehengas */}
+         
                 <div>
                   <div className="font-semibold mb-2">Lehengas</div>
                   <NavigationMenuLink>Lehenga Cholis</NavigationMenuLink>
@@ -519,7 +516,6 @@ const Navbar = () => {
                   <NavigationMenuLink>Bridal Lehenga</NavigationMenuLink>
                 </div>
 
-                {/* Other Ethnic */}
                 <div>
                   <div className="font-semibold mb-2">Other Ethnic</div>
                   <NavigationMenuLink>Blouses</NavigationMenuLink>
@@ -543,7 +539,7 @@ const Navbar = () => {
                 }}
                 className="p-4 bg-white shadow-lg flex items-start justify-start gap-6"
               >
-                {/* Sarees */}
+      
                 <div className="flex flex-col leading-0">
                   <div className="font-semibold mb-2">Topwear</div>
                   <NavigationMenuLink>All Topwear</NavigationMenuLink>
@@ -553,7 +549,7 @@ const Navbar = () => {
                   <NavigationMenuLink>Jumpsuits</NavigationMenuLink>
                 </div>
 
-                {/* Kurtis */}
+
                 <div>
                   <div className="font-semibold mb-2">Bottomwear</div>
                   <NavigationMenuLink>All Bottomwear</NavigationMenuLink>
@@ -563,7 +559,7 @@ const Navbar = () => {
                   <NavigationMenuLink>Skirts</NavigationMenuLink>
                 </div>
 
-                {/* Kurta Sets */}
+
                 <div>
                   <div className="font-semibold mb-2">Innerwear</div>
                   <NavigationMenuLink>Bra</NavigationMenuLink>
@@ -571,14 +567,14 @@ const Navbar = () => {
                   <NavigationMenuLink>Briefs</NavigationMenuLink>
                 </div>
 
-                {/* Kurta Sets */}
+  
                 <div>
                   <div className="font-semibold mb-2">Sleepwear</div>
                   <NavigationMenuLink>Nightsuits</NavigationMenuLink>
                   <NavigationMenuLink>Women Nightdress</NavigationMenuLink>
                 </div>
 
-                {/* Suits & Dress Material */}
+
                 <div>
                   <div className="font-semibold mb-2">Maternity Wear</div>
                   <NavigationMenuLink>
@@ -589,7 +585,7 @@ const Navbar = () => {
                   </NavigationMenuLink>
                 </div>
 
-                {/* Lehengas */}
+          
                 <div>
                   <div className="font-semibold mb-2">Sports Wear</div>
                   <NavigationMenuLink>All Women Sportwear</NavigationMenuLink>
@@ -599,7 +595,10 @@ const Navbar = () => {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-      </div>
+      </div> */}
+
+
+
     </div>
   ) : <Loading/>
 };

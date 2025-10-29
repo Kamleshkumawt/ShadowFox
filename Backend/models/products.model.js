@@ -40,10 +40,10 @@ const productSchema = new mongoose.Schema({
         required: true,
         default: 0
     },
-    size: {
+    size: [{
         type: String,
         required: true
-    },
+    }],
     tags: [{ type: String }],
     frontImage: {
         url: {
@@ -134,7 +134,6 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isWishlist: { type: Boolean, default: false },
     reviews_count: { type: Number, default: 0 },
     rating: { type: Number, default: 0 }
 }, { timestamps: true });

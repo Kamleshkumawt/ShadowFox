@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -24,7 +25,7 @@ const Footer = () => {
         {/* Column 2: Explore */}
     <div className='text-xl gap-4 flex flex-col '>
       <p className="hover:text-blue-500 cursor-pointer">Careers</p>
-      <p className="hover:text-blue-500 cursor-pointer">Become a Supplier</p>
+      <Link to="/sellerSignUp" className="hover:text-blue-500 cursor-pointer">Become a Supplier</Link>
       <p className="hover:text-blue-500 cursor-pointer">Hall of Fame</p>
       <p className="hover:text-blue-500 cursor-pointer">Sitemap</p>
     </div>

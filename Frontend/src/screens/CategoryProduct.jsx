@@ -166,9 +166,9 @@ const toggleDiscount = (discount) => {
   return !isLoading && (
     <div className="w-full h-full flex flex-col items-center justify-center px-20 pt-20">
       <div className="w-full h-full flex flex-col items-start justify-start gap-2">
-        <p className="text-[16px] mt-2">
+        {/* <p className="text-[16px] mt-2">
           Home/Women/Women Western Wear/Palazzo Pants
-        </p>
+        </p> */}
         <h1 className="text-[24px] font-semibold">{categories?.name}</h1>
         <p className="text-[17px] text-gray-700 font-medium">
           Showing 21-40 out of 10000 products
