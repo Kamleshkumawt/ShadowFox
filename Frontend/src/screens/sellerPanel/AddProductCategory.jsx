@@ -47,12 +47,28 @@ const AddProductCategory = () => {
   }, []);
 
   // ---------- Initialize root categories in categoryTree ----------
+  // useEffect(() => {
+  //   if (allCategoriesData.length) {
+  //     const rootCategories = allCategoriesData.filter((cat) => !cat.parentId);
+  //     setCategoryTree({ 0: rootCategories });
+  //   }
+  // }, [allCategoriesData]);
+
   useEffect(() => {
     if (allCategoriesData.length) {
+      // filter root categories
       const rootCategories = allCategoriesData.filter((cat) => !cat.parentId);
-      setCategoryTree({ 0: rootCategories });
+
+      // ✅ if query exists, filter by category name
+      const filteredCategories = query
+        ? rootCategories.filter((cat) =>
+            cat.name.toLowerCase().includes(query.toLowerCase().trim())
+          )
+        : rootCategories;
+
+      setCategoryTree({ 0: filteredCategories });
     }
-  }, [allCategoriesData]);
+  }, [allCategoriesData, query]);
 
   // ---------- Update categoryTree when subcategories fetched ----------
 //   useEffect(() => {
@@ -152,7 +168,7 @@ if (!categoryTree || Object.keys(categoryTree).length === 0) return <Loading/>
         {/* Input */}
         <input
           type="text"
-          placeholder="Try Saree, Kurti or Search by Product Code"
+          placeholder="Try Saree, Kurti, Toys,Mugs adn more...."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           // onFocus={() => setShowDropdown(true)}

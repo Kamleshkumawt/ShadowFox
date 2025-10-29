@@ -30,7 +30,6 @@ export const getAllReturnsBySellerId = async (req, res) => {
     }
 }
 
-
 //get all returns for admin
 export const getAllReturns = async (req, res) => {
     try {

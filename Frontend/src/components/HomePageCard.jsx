@@ -28,10 +28,10 @@ const HomePageCard = ({data}) => {
           console.warn('Category name is missing');
         }
       }}
-    className="max-w-[14rem] rounded-xs overflow-hidden  border border-gray-200 p-3 space-y-2 cursor-pointer bg-white">
+    className="max-w-[14rem] rounded-xs overflow-hidden  border border-gray-200 p-3 px-5 space-y-2 cursor-pointer bg-white">
 
   {/* Image container */}
-  <div className="w-full h-48 flex items-center justify-center bg-gray-100">
+  <div className="w-full h-48 flex items-center justify-center bg-white ">
     <img
       // src="https://rukminim1.flixcart.com/image/420/420/xif0q/headphone/3/m/u/nb111-wireless-headphone-magnetic-neckband-250h-standby-200mah-original-imah77cwrvwjzbyt.jpeg?q=60"
       src={data?.frontImage.url}

@@ -9,7 +9,7 @@ import {Link} from 'react-router-dom'
 const ShowAllProduct = () => {
   const [products, setProducts] = useState([]);
   const seller = useSelector((state) => state.auth.seller);
-  console.log("user :", seller);
+  // console.log("user :", seller);
 
   const {data, isLoading} = useGetProductBySellerIdQuery(seller._id);
 
@@ -17,9 +17,9 @@ const ShowAllProduct = () => {
   
   const handleDelete = async (id) => {
     try {
-    console.log('Deleting product with ID:', id);
+    // console.log('Deleting product with ID:', id);
     await deleteProductById(id).unwrap(); // unwrap() throws if the mutation fails
-    console.log('Deleted successfully');
+    // console.log('Deleted successfully');
   } catch (error) {
     console.error('Delete failed:', error);
   }
@@ -27,7 +27,7 @@ const ShowAllProduct = () => {
 
   useEffect(() => {
     if(data) {
-      console.log('data is fetched : ', data);
+      // console.log('data is fetched : ', data);
       setProducts(data.products);
     }
   }, [data]);
@@ -39,6 +39,7 @@ const ShowAllProduct = () => {
         <table className="w-full border-collapse rounded-md overflow-hidden text-nowrap">
           <thead className="bg-primary/20 text-left text-white">
           <tr>
+            <th className="p-2 font-medium pl-5">Product Image</th>
             <th className="p-2 font-medium pl-5">Name</th>
             <th className="p-2 font-medium">Quantity</th>
             <th className="p-2 font-medium">Listing Date</th>
@@ -58,7 +59,8 @@ const ShowAllProduct = () => {
                 key={index}
                 className="border-b border-primary/10 bg-primary/5 even:bg-primary/10 font-medium"
               >
-                <td className="p-2 min-w-45 pl-5">{item.name}</td>
+                <td className="p-2 pl-10 "><img className="w-10 rounded" src={item.frontImage.url} alt="" /></td>
+                <td className="p-2 min-w-45 pl-5">{item.name.slice(0, 20)}</td>
                 <td className="p-2 ">{item.quantity}</td>
                 <td className="p-2">{dateFormat(item.createdAt)}</td>
                 <td className="p-2">{item.rating}</td>

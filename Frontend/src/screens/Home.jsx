@@ -123,13 +123,13 @@ const Home = () => {
       return false;
     }
 
-    // Filter by combo
-    // if (
-    //   selectedCombos.length > 0 &&
-    //   !selectedCombos.includes(product.comboType)
-    // ) {
-    //   return false;
-    // }
+    //Filter by combo
+    if (
+      selectedCombos.length > 0 &&
+      !selectedCombos.includes(product.comboType)
+    ) {
+      return false;
+    }
 
     // Filter by gender
     // if (
@@ -160,15 +160,27 @@ const Home = () => {
     }
 
     // Filter by size
+    // if (
+    //   selectedSize.length > 0 &&
+    //   // !selectedSize.some((size) => product.availableSizes.includes(size))
+    //   !selectedSize
+    //     .map((c) => c.toLowerCase().trim())
+    //     .includes(product.size.toLowerCase().trim())
+    // ) {
+    //   return false;
+    // }
+
     if (
-      selectedSize.length > 0 &&
-      // !selectedSize.some((size) => product.availableSizes.includes(size))
-      !selectedSize
-        .map((c) => c.toLowerCase().trim())
-        .includes(product.size.toLowerCase().trim())
-    ) {
-      return false;
-    }
+  selectedSize.length > 0 &&
+  !((Array.isArray(product.size) ? product.size : [product.size]).some((s) =>
+    selectedSize
+      .map((c) => c.toLowerCase().trim())
+      .includes(String(s).toLowerCase().trim())
+  ))
+) {
+  return false;
+}
+
 
     return true;
   });
@@ -233,7 +245,7 @@ const Home = () => {
 
         <div className="w-[32%] flex flex-col items-center justify-center gap-3 bg-white p-2">
           <div className="flex items-center justify-between w-full">
-            <h1 className="text-2xl font-semibold">Make Your style</h1>{" "}
+            <h1 className="text-2xl font-semibold">Shop Your Favorites</h1>{" "}
             <span className="bg-blue-600 text-white px-2 p-1 rounded-full">
               {">"}
             </span>

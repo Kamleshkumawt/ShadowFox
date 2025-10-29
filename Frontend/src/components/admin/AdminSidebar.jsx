@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon, ListCollapseIcon, ListIcon, PlusSquareIcon, Settings } from 'lucide-react'
+import { LayoutDashboardIcon, ListCollapseIcon, PlusSquareIcon, Settings } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useSignOutAdminAccountMutation } from '../../store/api/adminAuthApi'
 import { useDispatch } from 'react-redux'
@@ -35,6 +35,7 @@ const AdminSidebar = () => {
 
     const adminNAvlinks = [
         {name: 'Dashboard', path: '/admin', icon: LayoutDashboardIcon},
+        {name: 'Add Category', path: '/admin/add-category', icon: PlusSquareIcon},
         {name: 'List Users', path: '/admin/show/all-user', icon: ListCollapseIcon},
         {name: 'List Blocked Users', path: '/admin/show/all-blocked-user', icon: ListCollapseIcon},
         {name: 'List Seller', path: '/admin/show/all-seller', icon: ListCollapseIcon},

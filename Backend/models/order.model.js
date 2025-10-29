@@ -85,6 +85,7 @@ const orderSchema = new mongoose.Schema({
 },{timestamps:true});
 
 orderSchema.index({ "items.productId": 1 });
+orderSchema.index({ "items.sellerId": 1 });
 orderSchema.index({ status: 1, createdAt: 1 });
 
 

@@ -49,6 +49,7 @@ import EditUserByAdmin from '../screens/adminPanel/EditUserByAdmin'
 import EditSellerByAdmin from '../screens/adminPanel/EditSellerByAdmin'
 import AuthUser from '../middleware/AuthUser'
 import NotFound from '../screens/NotFound'
+import AddCategory from '../screens/adminPanel/AddCategory'
 
 
 
@@ -112,6 +113,7 @@ const AppRouter = () => {
                 <Route path="seller/details/:id" element={<EditSellerByAdmin />} />
                 <Route path="show/all-blocked-user" element={<ShowAllBlockedUser />} />
                 <Route path="show/all-blocked-seller" element={<ShowAllBlockedSeller />} />
+                <Route path="add-category" element={<AddCategory />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

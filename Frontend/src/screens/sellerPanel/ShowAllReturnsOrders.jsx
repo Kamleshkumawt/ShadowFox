@@ -7,8 +7,8 @@ import { formatAmount } from '../../lib/formatAmount';
 
 const ShowAllReturnsOrders = () => {
    const [orders, setOrders] = useState([]);
-    const user = useSelector((state) => state.auth.user);
-    console.log("user :", user);
+    const seller = useSelector((state) => state.auth.seller);
+    console.log("seller :", seller);
   
     const [returnsGetProduct,{data, isLoading}] = useReturnsGetProductMutation();
 
@@ -32,7 +32,9 @@ const ShowAllReturnsOrders = () => {
         <table className="w-full border-collapse rounded-md overflow-hidden text-nowrap">
           <thead className="bg-primary/20 text-left text-white">
           <tr>
+            <th className="p-2 font-medium pl-5">Product Image</th>
             <th className="p-2 font-medium pl-5">User Name</th>
+            <th className="p-2 font-medium pl-5">User Email</th>
             <th className="p-2 font-medium pl-5">User Address</th>
             <th className="p-2 font-medium">Product Name</th>
             <th className="p-2 font-medium">Product Price</th>
@@ -49,8 +51,10 @@ const ShowAllReturnsOrders = () => {
                 key={index}
                 className="border-b border-primary/10 bg-primary/5 even:bg-primary/10 font-medium"
               >
+                <td className="p-2 flex items-center justify-center ">{item.items.map((item) => <><img className="w-10 rounded" src={item.productId.frontImage.url} alt="" /></>)}</td>
                 <td className="p-2 min-w-45 pl-5">{item.userId.username}</td>
-                <td className="p-2 min-w-45 pl-5">{item.userId.username}</td>
+                <td className="p-2 min-w-45 pl-5">{item.userId.email}</td>
+                <td className="p-2 min-w-45 pl-5">{item.shipping_address.city}</td>
                 <td className="p-2 ">{item.items.map((item) => item.productId.name)}</td>
                 <td className="p-2 ">{formatAmount(item.items.map((item) => (item.productId.price)))}</td>
                 <td className="p-2 ">{item.items.map((item) => item.quantity)}</td>

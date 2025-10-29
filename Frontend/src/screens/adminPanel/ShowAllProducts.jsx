@@ -39,6 +39,7 @@ const ShowAllProducts = () => {
         <table className="w-full border-collapse rounded-md overflow-hidden text-nowrap">
           <thead className="bg-primary/20 text-left text-white">
           <tr>
+            <th className="p-2 font-medium pl-5">Product Image</th>
             <th className="p-2 font-medium pl-5">Name</th>
             <th className="p-2 font-medium">Quantity</th>
             <th className="p-2 font-medium">Listing Date</th>
@@ -58,6 +59,7 @@ const ShowAllProducts = () => {
                 key={index}
                 className="border-b border-primary/10 bg-primary/5 even:bg-primary/10 font-medium"
               >
+                <td className="p-2 pl-10 "><img className="w-10 rounded" src={item.frontImage.url} alt="" /></td>
                 <td className="p-2 min-w-45 pl-5">{item.name.slice(0, 20)}</td>
                 <td className="p-2 ">{item.quantity}</td>
                 <td className="p-2">{dateFormat(item.createdAt)}</td>

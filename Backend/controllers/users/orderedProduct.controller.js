@@ -66,33 +66,45 @@ export const getOrdersBySellerId = async (req, res) => {
   try {
     const sellerId = req.params.id;
 
-    console.log("sellerId", sellerId);
-
     const sellerObjectId = new mongoose.Types.ObjectId(sellerId);
 
     const orders = await orderModel
-      .find({ "items.sellerId": sellerObjectId })
-      .populate("items.productId")
-      .populate("userId")
+      .find()
+      .populate({
+        path: "items.productId",
+        select: "name price frontImage sellerId",
+      })
+      .populate("userId", "username email")
       .lean();
 
-    console.log("all orders:", orders);
 
-    const filteredOrders = orders
-      .map((order) => ({
-        ...order,
-        items: order.items.filter(
-          (item) => item.sellerId?.toString() === sellerObjectId.toString()
-        ),
-      }))
-      .filter((order) => order.items.length > 0);
+    const sellerOrders = orders
+      .map((order) => {
+        // keep only items from this seller
+        const sellerItems = order.items.filter(
+          (item) =>
+            item.productId?.sellerId?.toString() === sellerObjectId.toString()
+        );
 
-    console.log("orders:", filteredOrders);
+        // if the order contains any of this seller’s items, keep it
+        if (sellerItems.length > 0) {
+          return {
+            ...order,
+            items: sellerItems, // only include this seller’s items
+          };
+        }
+        return null;
+      })
+      .filter(Boolean); // remove nulls
+
+    // console.log("✅ All Orders:", orders.length);
+    // console.log("✅ Seller Orders:", sellerOrders.length);
+
 
     res.status(200).json({
       success: true,
       message: "Orders fetched successfully",
-      orders: filteredOrders,
+      orders:sellerOrders,
     });
   } catch (error) {
     res

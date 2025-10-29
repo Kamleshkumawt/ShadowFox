@@ -5,6 +5,7 @@ import { useGetAllProductMutation } from "../store/api/productApi";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import { formatAmount } from "../lib/formatAmount";
+import { useSelector } from "react-redux";
 
 const ratings = [
   { label: "Excellent", count: 722 },
@@ -22,6 +23,9 @@ const ProductDetails = () => {
     useGetAllProductMutation();
   const [show, setShow] = useState(false);
   const [showSelectedImg, setShowSelectedImg] = useState(null);
+  const [deliveryInfo, setDeliveryInfo] = useState(null);
+
+  const user = useSelector((state) => state.auth.user);
 
   const { id } = useParams();
 
@@ -30,13 +34,13 @@ const ProductDetails = () => {
   useEffect(() => {
     if (data && data.products) {
       // Find the product with matching id
-      
-      const showData =  data.products.find(
-          (p) => p.name.toLowerCase().trim() === id.toLowerCase().trim()
-        );
+
+      const showData = data.products.find(
+        (p) => p.name.toLowerCase().trim() === id.toLowerCase().trim()
+      );
       setShow(showData);
       setShowSelectedImg(showData?.frontImage);
-      console.log('data: for show ',showData);
+      console.log("data: for show ", showData);
     }
   }, [data, id]);
 
@@ -47,9 +51,18 @@ const ProductDetails = () => {
   useEffect(() => {
     if (data) {
       // console.log(data.products);
+
       setProducts(data.products);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (user) {
+      // console.log(data.products);
+
+      setPincode(user?.address[0].postalCode);
+    }
+  }, [user]);
 
   const maxCount = Math.max(...ratings.map((r) => r.count));
 
@@ -75,6 +88,25 @@ const ProductDetails = () => {
     } catch (error) {
       console.error("Add to cart error:", error);
     }
+  };
+
+  const handleCheckDelivery = () => {
+    if (!pincode) {
+      alert("Please enter a pincode");
+      return;
+    }
+
+    // Example: hardcoded delivery info
+    const deliveryDates = {
+      110001: "2-3 days",
+      560001: "1 day",
+      400001: "3-4 days",
+    };
+
+    const estimatedDelivery =
+      deliveryDates[pincode] || "Delivery info not available";
+
+    setDeliveryInfo(estimatedDelivery);
   };
 
   return !loading ? (
@@ -116,12 +148,8 @@ const ProductDetails = () => {
                   fill="#9F2089"
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5 sm:w-6 sm:h-6"
-    
                 >
-                  <g
-                   
-                    fill="#333"
-                  >
+                  <g fill="#333">
                     <path d="M.75 1.5A.75.75 0 0 1 1.5.75h2.084a1.75 1.75 0 0 1 1.68 1.262L6.05 4.72h12.625a1.75 1.75 0 0 1 1.683 2.23L18.661 12.9a1.75 1.75 0 0 1-1.683 1.27H8.303a1.75 1.75 0 0 1-1.695-1.315l-1.845-7.19-.94-3.236a.25.25 0 0 0-.24-.18H1.5a.75.75 0 0 1-.75-.75Zm5.703 4.719 1.608 6.264a.25.25 0 0 0 .242.188h8.675a.25.25 0 0 0 .24-.181l1.698-5.952a.25.25 0 0 0-.24-.319H6.452ZM9.923 16.238a.5.5 0 0 0-.493.506.5.5 0 0 0 .493.506.5.5 0 0 0 .493-.506.5.5 0 0 0-.493-.506Zm-1.993.506a2 2 0 0 1 1.993-2.006 2 2 0 0 1 1.993 2.006 2 2 0 0 1-1.993 2.006 2 2 0 0 1-1.993-2.006ZM15.72 16.238a.5.5 0 0 0-.493.506.5.5 0 0 0 .493.506.5.5 0 0 0 .493-.506.5.5 0 0 0-.493-.506Zm-1.993.506a2 2 0 0 1 1.993-2.006 2 2 0 0 1 1.993 2.006 2 2 0 0 1-1.993 2.006 2 2 0 0 1-1.993-2.006Z"></path>
                   </g>
                   <defs>
@@ -136,10 +164,11 @@ const ProductDetails = () => {
                 </svg>
                 Add to Cart
               </div>
-              <div 
-              onClick={() => handleAddToCartProduct()}
-              disabled={!isLoading}
-              className="border border-[#9f2089] text-[#fff] bg-[#9f2089] p-2 px-1 sm:px-5  text-sm sm:text-lg font-medium  rounded-xs flex items-center justify-center gap-2   w-full cursor-pointer">
+              <div
+                onClick={() => handleAddToCartProduct()}
+                disabled={!isLoading}
+                className="border border-[#9f2089] text-[#fff] bg-[#9f2089] p-2 px-1 sm:px-5  text-sm sm:text-lg font-medium  rounded-xs flex items-center justify-center gap-2   w-full cursor-pointer"
+              >
                 <svg
                   width="20"
                   height="20"
@@ -167,7 +196,7 @@ const ProductDetails = () => {
             </div>
             <span className="border-b border-gray-400 block min-w-[10rem] sm:min-w-xs"></span>
             <div className="flex flex-col gap-2">
-              <h1 className="text-lg font-semibold ">1 Similar Products</h1>
+              <h1 className="text-lg font-semibold ">2 Similar Products</h1>
               <div className="flex items-center gap-3">
                 <img
                   src="https://images.unsplash.com/photo-1760126130338-4e6c9043ee2d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=764"
@@ -183,7 +212,9 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
+
         <div className="w-full flex flex-col gap-3">
+          {/* main details for products*/}
           <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-3">
             <h1 className="text-gray-400 text-xl font-medium max-w-[38rem]">
               {show?.name?.slice(0, 70)}
@@ -207,12 +238,9 @@ const ProductDetails = () => {
                   // iconSize="20"
                   className="sc-ftTHYK kizHtP"
                 >
-                  <g  fill="#666">
+                  <g fill="#666">
                     <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0Zm0 18.44c-4.65 0-8.44-3.79-8.44-8.44 0-4.65 3.79-8.44 8.44-8.44 4.65 0 8.44 3.79 8.44 8.44 0 4.65-3.79 8.44-8.44 8.44Z"></path>
-                    <path
-      
-                      d="M10 4.825a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0 3.017a1 1 0 0 0-1 1v5.333a1 1 0 0 0 2 0V8.842a1 1 0 0 0-1-1Z"
-                    ></path>
+                    <path d="M10 4.825a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0 3.017a1 1 0 0 0-1 1v5.333a1 1 0 0 0 2 0V8.842a1 1 0 0 0-1-1Z"></path>
                   </g>
                   <defs>
                     <clipPath id="info_svg__a">
@@ -235,7 +263,7 @@ const ProductDetails = () => {
                   // iconSize="10"
                   className="sc-ftTHYK bmIaUL"
                 >
-                  <g >
+                  <g>
                     <path
                       d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z"
                       fill="#ffffff"
@@ -256,6 +284,8 @@ const ProductDetails = () => {
               Free Delivery
             </div>
           </div>
+
+          {/*selected Size*/}
           <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-4 ">
             <h1 className="text-gray-800 text-xl font-semibold  ">
               Select Size
@@ -266,6 +296,8 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
+
+          {/*Product Details*/}
           <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-4 ">
             <h1 className="text-gray-800 text-xl font-semibold  ">
               Product Details
@@ -275,19 +307,16 @@ const ProductDetails = () => {
                 Name :<span>{show?.name}</span>
               </p>
               <p className="flex items-center gap-1">
-                Saree Fabric : <span>{show?.material}</span>
+                Fabric : <span>{show?.material}</span>
               </p>
               <p className="flex items-center gap-1">
-                Blouse : <span> No Blouse</span>
+                weight : <span> {show?.weight}g</span>
               </p>
               <p className="flex items-center gap-1">
-                Blouse Fabric : <span>Woven Design</span>
+                color : <span>{show?.color}</span>
               </p>
               <p className="flex items-center gap-1">
-                Pattern : <span>Same as Border</span>
-              </p>
-              <p className="flex items-center gap-1">
-                Net Quantity (N) : <span> Single</span>
+                Net Quantity (N) : <span> {show?.quantity}</span>
               </p>
               <p className="flex items-center gap-1">
                 Sizes :<span>{show?.size}</span>
@@ -295,8 +324,12 @@ const ProductDetails = () => {
               <p className="flex items-center gap-1">
                 Country of Origin : <span>India</span>
               </p>
+              <p className="max-w-sm">
+                Description : <span>{show?.description}</span>
+              </p>
             </div>
           </div>
+
           {/* <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-4 ">
             <h1 className="text-gray-800 text-xl font-semibold  ">Sold By</h1>
             <div className="flex items-start justify-around gap-5 text-gray-500">
@@ -366,90 +399,147 @@ const ProductDetails = () => {
               </div>
             </div>
           </div> */}
-          <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-4 ">
-            <h1 className="text-gray-800 text-xl font-semibold  ">
-              Check Delivery Date
-            </h1>
-            {/* Pincode Number Field */}
-            <div className="relative mt-4 flex items-center">
-              <input
-                type="text"
-                id="pincode"
-                name="pincode"
-                value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
-                placeholder=" "
-                className="peer w-full border-b-2 border-gray-300 px-4 pt-5 pb-2 text-sm focus:outline-none focus:border-purple-600"
-                required
-              />
-              <label
-                htmlFor="pincode"
-                className={`absolute left-2 transition-all duration-200 font-medium cursor-pointer
+
+          {/*Check Delivery Date */}
+          {user && (
+            <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-4 ">
+              <h1 className="text-gray-800 text-xl font-semibold  ">
+                Check Delivery Date
+              </h1>
+              {/* Pincode Number Field */}
+              <div className="relative mt-4 flex items-center">
+                <input
+                  type="text"
+                  id="pincode"
+                  name="pincode"
+                  value={pincode}
+                  onChange={(e) => setPincode(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full border-b-2 border-gray-300 px-4 pt-5 pb-2 text-sm focus:outline-none focus:border-purple-600"
+                  required
+                />
+                <label
+                  htmlFor="pincode"
+                  className={`absolute left-2 transition-all duration-200 font-medium cursor-pointer
                     ${
                       pincode
                         ? "top-1 text-xs text-purple-600"
                         : "top-3 text-xs text-gray-400"
                     }
                     peer-focus:top-1 peer-focus:text-xs peer-focus:text-purple-600`}
-              >
-                Enter Delivery Pincode
-              </label>
-              <span className="-ml-10 cursor-pointer text-purple-600 font-medium">
-                CHECK
-              </span>
-            </div>
-            <div className="flex flex-col items-start text-gray-500 font-medium">
-              <p className="flex items-center gap-1 text-black">
-                <svg
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  width={20}
-                  height={20}
-                  xmlns="http://www.w3.org/2000/svg"
-                  // iconSize="20"
-                  className="sc-ftTHYK kmDIOl"
                 >
-                  <path
-                    d="M15.896 12.548a2.508 2.508 0 0 1 2.506 2.506 2.508 2.508 0 0 1-2.506 2.505 2.508 2.508 0 0 1-2.505-2.505 2.508 2.508 0 0 1 2.505-2.506Zm0 3.716a1.21 1.21 0 0 0 0-2.42 1.21 1.21 0 0 0 0 2.42ZM4.708 12.548a2.508 2.508 0 0 1 2.506 2.506 2.508 2.508 0 0 1-2.506 2.505 2.508 2.508 0 0 1-2.505-2.505 2.508 2.508 0 0 1 2.505-2.506Zm0 3.716a1.21 1.21 0 0 0 0-2.42c-.667 0-1.21.543-1.21 1.21 0 .667.543 1.21 1.21 1.21Z"
-                    fill="#333"
-                  ></path>
-                  <path
-                    d="M17.538 5.66c.242 0 .465.135.576.35l1.814 3.52a.648.648 0 0 1 .072.298v5.227c0 .357-.29.647-.648.647h-1.577v-1.296a.929.929 0 0 0 .93-.928V9.985l-1.283-2.488a1 1 0 0 0-.889-.542h-4.33V5.66h5.335ZM6.588 14.406h7.386v1.296H6.588v-1.296Z"
-                    fill="#333"
-                  ></path>
-                  <path
-                    d="M.648 2.44h11.555c.358 0 .648.29.648.648v11.966h-1.296V4.736a1 1 0 0 0-1-1H2.296a1 1 0 0 0-1 1v8.67a1 1 0 0 0 1 1h.555v1.296H.648A.648.648 0 0 1 0 15.054V3.088c0-.357.29-.648.648-.648Z"
-                    fill="#333"
-                  ></path>
-                  <path
-                    d="M12.203 9.2h7.149v1.297h-7.15V9.2Z"
-                    fill="#333"
-                  ></path>
-                </svg>
-                <span> Enter Pincode for Estimated Delivery Date</span>
-              </p>
-              <p className="flex items-center gap-1 text-black">
-                <svg
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  width={20}
-                  height={20}
-                  xmlns="http://www.w3.org/2000/svg"
-                  // iconSize="20"
-                  className="sc-ftTHYK kmDIOl"
-                >
-                  <path
-                    d="M20 8.28c0-.03-.01-.05-.01-.07V5.15c0-1.22-.99-2.21-2.21-2.21H14.9V1.66a.675.675 0 0 0-.67-.66H14c-.37 0-.66.3-.66.66v1.27H6.65V1.66c0-.36-.3-.66-.66-.66h-.23c-.37 0-.67.3-.67.66v1.27H2.21C.99 2.93 0 3.92 0 5.15v11.56c0 1.22.99 2.21 2.21 2.21h15.56c1.22 0 2.21-.99 2.21-2.21V8.35c.01-.02.02-.04.02-.07ZM2.21 4.49h2.88v.84c0 .37.3.67.67.67h.23c.37 0 .66-.3.66-.66v-.85h6.69v.84c0 .37.29.67.66.67h.23c.37 0 .66-.3.66-.66v-.85h2.88c.36 0 .65.29.65.65V7.5H1.56V5.15c0-.37.29-.66.65-.66Zm15.56 12.87H2.21c-.36 0-.65-.29-.65-.65V9.06h16.87v7.64c0 .37-.3.66-.66.66Z"
-                    fill="#666"
-                  ></path>
-                </svg>
-                <span>Dispatch in 1 day</span>
-              </p>
+                  Enter Delivery Pincode
+                </label>
+                <span className="-ml-10 cursor-pointer text-purple-600 font-medium">
+                  CHECK
+                </span>
+              </div>
+              <div className="flex flex-col items-start text-gray-500 font-medium">
+                <p className="flex items-center gap-1 text-black">
+                  <svg
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    width={20}
+                    height={20}
+                    xmlns="http://www.w3.org/2000/svg"
+                    // iconSize="20"
+                    className="sc-ftTHYK kmDIOl"
+                  >
+                    <path
+                      d="M15.896 12.548a2.508 2.508 0 0 1 2.506 2.506 2.508 2.508 0 0 1-2.506 2.505 2.508 2.508 0 0 1-2.505-2.505 2.508 2.508 0 0 1 2.505-2.506Zm0 3.716a1.21 1.21 0 0 0 0-2.42 1.21 1.21 0 0 0 0 2.42ZM4.708 12.548a2.508 2.508 0 0 1 2.506 2.506 2.508 2.508 0 0 1-2.506 2.505 2.508 2.508 0 0 1-2.505-2.505 2.508 2.508 0 0 1 2.505-2.506Zm0 3.716a1.21 1.21 0 0 0 0-2.42c-.667 0-1.21.543-1.21 1.21 0 .667.543 1.21 1.21 1.21Z"
+                      fill="#333"
+                    ></path>
+                    <path
+                      d="M17.538 5.66c.242 0 .465.135.576.35l1.814 3.52a.648.648 0 0 1 .072.298v5.227c0 .357-.29.647-.648.647h-1.577v-1.296a.929.929 0 0 0 .93-.928V9.985l-1.283-2.488a1 1 0 0 0-.889-.542h-4.33V5.66h5.335ZM6.588 14.406h7.386v1.296H6.588v-1.296Z"
+                      fill="#333"
+                    ></path>
+                    <path
+                      d="M.648 2.44h11.555c.358 0 .648.29.648.648v11.966h-1.296V4.736a1 1 0 0 0-1-1H2.296a1 1 0 0 0-1 1v8.67a1 1 0 0 0 1 1h.555v1.296H.648A.648.648 0 0 1 0 15.054V3.088c0-.357.29-.648.648-.648Z"
+                      fill="#333"
+                    ></path>
+                    <path
+                      d="M12.203 9.2h7.149v1.297h-7.15V9.2Z"
+                      fill="#333"
+                    ></path>
+                  </svg>
+                  <span> Enter Pincode for Estimated Delivery Date</span>
+                </p>
+                <p className="flex items-center gap-1 text-black">
+                  <svg
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    width={20}
+                    height={20}
+                    xmlns="http://www.w3.org/2000/svg"
+                    // iconSize="20"
+                    className="sc-ftTHYK kmDIOl"
+                  >
+                    <path
+                      d="M20 8.28c0-.03-.01-.05-.01-.07V5.15c0-1.22-.99-2.21-2.21-2.21H14.9V1.66a.675.675 0 0 0-.67-.66H14c-.37 0-.66.3-.66.66v1.27H6.65V1.66c0-.36-.3-.66-.66-.66h-.23c-.37 0-.67.3-.67.66v1.27H2.21C.99 2.93 0 3.92 0 5.15v11.56c0 1.22.99 2.21 2.21 2.21h15.56c1.22 0 2.21-.99 2.21-2.21V8.35c.01-.02.02-.04.02-.07ZM2.21 4.49h2.88v.84c0 .37.3.67.67.67h.23c.37 0 .66-.3.66-.66v-.85h6.69v.84c0 .37.29.67.66.67h.23c.37 0 .66-.3.66-.66v-.85h2.88c.36 0 .65.29.65.65V7.5H1.56V5.15c0-.37.29-.66.65-.66Zm15.56 12.87H2.21c-.36 0-.65-.29-.65-.65V9.06h16.87v7.64c0 .37-.3.66-.66.66Z"
+                      fill="#666"
+                    ></path>
+                  </svg>
+                  <span>Dispatch in 1 day</span>
+                </p>
+              </div>
             </div>
-          </div>
+          )}
+
+          {user && (
+            <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-4">
+              <h1 className="text-gray-800 text-xl font-semibold">
+                Check Delivery Date
+              </h1>
+              <div className="relative mt-4 flex items-center">
+                <input
+                  type="text"
+                  id="pincode"
+                  name="pincode"
+                  value={pincode}
+                  onChange={(e) => setPincode(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full border-b-2 border-gray-300 px-4 pt-5 pb-2 text-sm focus:outline-none focus:border-purple-600"
+                  required
+                />
+                <label
+                  htmlFor="pincode"
+                  className={`absolute left-2 transition-all duration-200 font-medium cursor-pointer
+          ${
+            pincode
+              ? "top-1 text-xs text-purple-600"
+              : "top-3 text-xs text-gray-400"
+          }
+          peer-focus:top-1 peer-focus:text-xs peer-focus:text-purple-600`}
+                >
+                  Enter Delivery Pincode
+                </label>
+                <span
+                  onClick={handleCheckDelivery}
+                  className="-ml-10 cursor-pointer text-purple-600 font-medium"
+                >
+                  CHECK
+                </span>
+              </div>
+
+              <div className="flex flex-col items-start text-gray-500 font-medium">
+                <p className="flex items-center gap-1 text-black">
+                  {/* SVG Icon */}
+                  {!deliveryInfo && (
+                    <span> Enter Pincode for Estimated Delivery Date</span>
+                  )}
+                  {deliveryInfo && <span>Delivery by Saturday, 8 Nov</span>}
+                </p>
+                <p className="flex items-center gap-1 text-black">
+                  {/* SVG Icon */}
+                  <span>Dispatch in {deliveryInfo} day</span>
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="w-full border border-gray-300 rounded-sm p-5 flex flex-col gap-5 ">
             <h1 className="text-gray-800 text-xl font-semibold  ">
-              Check Delivery Date
+              Product Ratings & Reviews
             </h1>
             <div className="flex flex-col  gap-5 w-full">
               <div className=" flex items-center gap-2">
@@ -466,7 +556,7 @@ const ProductDetails = () => {
                       // iconSize="10"
                       className="sc-ftTHYK bmIaUL"
                     >
-                      <g >
+                      <g>
                         <path
                           d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z"
                           fill="#038d63"
@@ -562,7 +652,7 @@ const ProductDetails = () => {
                       // iconSize="10"
                       className="sc-ftTHYK bmIaUL"
                     >
-                      <g >
+                      <g>
                         <path
                           d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z"
                           fill="#ffffff"
@@ -639,7 +729,7 @@ const ProductDetails = () => {
                       // iconSize="10"
                       className="sc-ftTHYK bmIaUL"
                     >
-                      <g >
+                      <g>
                         <path
                           d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z"
                           fill="#ffffff"
@@ -683,7 +773,6 @@ const ProductDetails = () => {
                     className="sc-ftTHYK kpbgFG cursor-pointer"
                   >
                     <path
-                      
                       d="M4.712 5.245 8.68 1.13a1.039 1.039 0 0 1 1.51-.008c.258.268.366.647.294 1.018l-.68 3.402h4.046c1.54 0 2.578 1.635 1.977 3.106L13.492 14.3c-.229.542-.745.899-1.318.899H5.73c-.788 0-1.432-.669-1.432-1.486V6.293c0-.394.15-.773.415-1.048Zm-1.847 8.471c0 .818-.645 1.486-1.433 1.486-.787 0-1.432-.668-1.432-1.486V7.773c0-.817.645-1.486 1.432-1.486.788 0 1.433.67 1.433 1.486v5.943Z"
                       fill="#666"
                     ></path>

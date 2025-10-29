@@ -8,13 +8,12 @@ import { formatAmount } from '../../lib/formatAmount';
 const ShowAllShippedOrders = () => {
    const [orders, setOrders] = useState([]);
    const seller = useSelector((state) => state.auth.seller);
-     console.log("seller :", seller);
-   
+  
     const {data, isLoading} = useGetOrderBySellerIdQuery(seller._id);
   
     useEffect(() => {
       if(data) {
-        console.log('data is fetched : ', data);
+        // console.log('data is fetched : ', data);
         const filteredOrders = data.orders.filter(order => order.status === 'Shipped');
         setOrders(filteredOrders);
       }
@@ -28,7 +27,9 @@ const ShowAllShippedOrders = () => {
         <table className="w-full border-collapse rounded-md overflow-hidden text-nowrap">
           <thead className="bg-primary/20 text-left text-white">
           <tr>
+            <th className="p-2 font-medium pl-5">Product Image</th>
             <th className="p-2 font-medium pl-5">User Name</th>
+            <th className="p-2 font-medium pl-5">User Email</th>
             <th className="p-2 font-medium pl-5">User Address</th>
             <th className="p-2 font-medium">Product Name</th>
             <th className="p-2 font-medium">Product Price</th>
@@ -45,8 +46,10 @@ const ShowAllShippedOrders = () => {
                 key={index}
                 className="border-b border-primary/10 bg-primary/5 even:bg-primary/10 font-medium"
               >
+                <td className="p-2 pl-10 ">{item.items.map((item) => <><img className="w-10 rounded" src={item.productId.frontImage.url} alt="" /></>)}</td>
                 <td className="p-2 min-w-45 pl-5">{item.userId.username}</td>
-                <td className="p-2 min-w-45 pl-5">{item.userId.username}</td>
+                <td className="p-2 min-w-45 pl-5">{item.userId.email}</td>
+                <td className="p-2 min-w-45 pl-5">{item.shipping_address.city}</td>
                 <td className="p-2 ">{item.items.map((item) => item.productId.name)}</td>
                 <td className="p-2 ">{formatAmount(item.items.map((item) => (item.productId.price)))}</td>
                 <td className="p-2 ">{item.items.map((item) => item.quantity)}</td>
